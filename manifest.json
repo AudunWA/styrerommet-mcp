@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/mcpb/main/schemas/mcpb-manifest-v0.3.schema.json",
+  "manifest_version": "0.3",
+  "name": "styrerommet-mcp",
+  "display_name": "Styrerommet",
+  "version": "0.1.0",
+  "description": "Local tools for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg.",
+  "author": { "name": "Audun Wigum Arbo" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AudunWA/styrerommet-mcp"
+  },
+  "license": "MIT",
+  "privacy_policies": [
+    "https://www.obos.no/om-obos/personvern/personvernerklaring-for-obos-eiendomsforvaltning-as",
+    "https://vibbo.no/personvernerklaering"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"]
+    }
+  },
+  "tools_generated": true,
+  "compatibility": { "runtimes": { "node": ">=24" } }
+}

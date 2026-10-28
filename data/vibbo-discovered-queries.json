@@ -1,0 +1,487 @@
+[
+  {
+    "operationType": "query",
+    "operationName": "allPostsInGroup",
+    "queryText": "query allPostsInGroup($organizationSlug: OrganizationID!, $groupId: NodeID!) {\n  groupPosts(organizationId: $organizationSlug, groupId: $groupId) {\n    id\n    slug\n    body\n    createdBy {\n      id\n      userId\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "allVibboGroups",
+    "queryText": "query allVibboGroups($organizationSlug: OrganizationID!, $limit: Int) {\n  allVibboGroups(organizationId: $organizationSlug, limit: $limit) {\n    ...VibboGroups\n  }\n}\nfragment VibboGroups on VibboGroup {\n  id\n  name\n  description\n  slug\n  type\n  imageUrl\n  isPrivateGroup\n  memberCount\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  organization {\n    isCluster\n    id\n    name\n  }\n  viewerIsAdmin\n  viewerIsMember\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "apartmentFinances",
+    "queryText": "query apartmentFinances($organizationSlug: OrganizationID!, $apartmentNumber: Int!) {\n  apartmentFinances(\n    organizationId: $organizationSlug\n    objectNumber: $apartmentNumber\n  ) {\n    invoices {\n      invoiceId\n      kid\n      amount\n      remainingAmount\n      paymentDate\n      bankAccountNumber\n      paymentStatus\n      reminderStatus\n      type\n      pdfDownloadUrl\n    }\n    amountDue\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "bookingByToken",
+    "queryText": "query bookingByToken($jwt: String!) {\n  getBookingByToken(jwt: $jwt) {\n    ...BookingReceipt\n  }\n}\nfragment BookingReceipt on BookingReceipt {\n  id\n  from\n  description\n  to\n  external\n  confirmedAt\n  status\n  price\n  surchargeAmount\n  surchargeDescription\n  priceBreakdown {\n    bookingDate\n    price\n  }\n  calendar {\n    id\n    title\n    reservationType\n    paymentRequired\n    timeFrom\n    timeTo\n    imageUrl\n    topic {\n      id\n      slug\n      title\n      attachments {\n        id\n        url\n        filename\n        contentType\n        meta {\n          fileSize\n          width\n          height\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "bookingDetails",
+    "queryText": "query bookingDetails($id: NodeID!) {\n  booking(id: $id) {\n    ...BookingDetails\n  }\n}\nfragment BookingDetails on Booking {\n  id\n  from\n  to\n  external\n  description\n  status\n  price\n  surchargeAmount\n  surchargeDescription\n  calendar {\n    id\n    title\n    reservationType\n    timeFrom\n    timeTo\n    paymentRequired\n    price\n    priceExtern\n    priceUnit\n    topic {\n      id\n      slug\n      title\n      attachments {\n        id\n        url\n        filename\n        contentType\n        meta {\n          fileSize\n          width\n          height\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "confirmContactInfoPage",
+    "queryText": "query confirmContactInfoPage {\n  viewer {\n    id\n    changeRequest {\n      email {\n        id\n        changeRequestId\n        newEmail\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "entityRevision",
+    "queryText": "query entityRevision($revisionId: NodeID!) {\n  revision: revisionById(id: $revisionId) {\n    ...EntityRevisionWithContent\n  }\n}\nfragment EntityRevisionWithContent on EntityRevision {\n  ...EntityRevisionBase\n  content\n}\nfragment EntityRevisionBase on EntityRevision {\n  id\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "executiveBoardMembers",
+    "queryText": "query executiveBoardMembers($organizationId: OrganizationID!) {\n  getBoardMembersForExpense(organizationId: $organizationId) {\n    id\n    personId\n    name\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "expenseDraftDefaultAccountNumberForExpensesPage",
+    "queryText": "query expenseDraftDefaultAccountNumberForExpensesPage($organizationId: OrganizationID!) {\n  expenseDraftDefaultAccountNumber(organizationId: $organizationId)\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "expenseDraftForExpenseRegisterForm",
+    "queryText": "query expenseDraftForExpenseRegisterForm($id: NodeID!) {\n  expenseDraft(id: $id) {\n    id\n    amount\n    category\n    description\n    participants {\n      id\n      personId\n      name\n    }\n    recipient {\n      personId\n      name\n      accountNumber\n    }\n    attachments {\n      id\n      previewUrl\n      name\n      downloadUrl\n      analysis {\n        status\n        confidenceScore\n        amount\n        reason\n        ocrQuality\n        suspectedDuplicate\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "formAttachmentAnswers",
+    "queryText": "query formAttachmentAnswers($formId: NodeID!, $limit: Int, $offset: Int) {\n  form(id: $formId) {\n    id\n    attachmentAnswers(limit: $limit, offset: $offset) {\n      totalCount\n      nodes {\n        submissionId\n        submittedAt\n        response\n        submitter {\n          userId\n          name\n          roles\n          apartments\n        }\n        attachments {\n          id\n          filename\n          url\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "formFieldAnswers",
+    "queryText": "query formFieldAnswers($formId: NodeID!, $fieldId: String!, $limit: Int, $offset: Int) {\n  form(id: $formId) {\n    id\n    fieldAnswers(fieldId: $fieldId, limit: $limit, offset: $offset) {\n      totalCount\n      nodes {\n        submissionId\n        submittedAt\n        response\n        submitter {\n          userId\n          name\n          roles\n          apartments\n        }\n        attachments {\n          id\n          filename\n          url\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "formSubmissionCount",
+    "queryText": "query formSubmissionCount($formId: NodeID!) {\n  form(id: $formId) {\n    id\n    submissionCount\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "formSubmissions",
+    "queryText": "query formSubmissions($formId: NodeID!, $limit: Int, $offset: Int) {\n  form(id: $formId) {\n    id\n    title\n    attachmentsEnabled\n    createdAt\n    fields {\n      id\n      value\n    }\n    submissionCount\n    submissions(limit: $limit, offset: $offset) {\n      totalCount\n      nodes {\n        id\n        submittedAt\n        authorOrganization {\n          id\n          name\n        }\n        attachments {\n          id\n          filename\n          url\n        }\n        submitter {\n          userId\n          name\n          email\n          phone\n          roles\n          apartments\n        }\n        fields {\n          fieldId\n          fieldTitle\n          response\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getBooking",
+    "queryText": "query getBooking($id: NodeID!) {\n  booking(id: $id) {\n    id\n    organization {\n      id\n      name\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getExternalBooking",
+    "queryText": "query getExternalBooking($id: ID!) {\n  getExternalBooking(id: $id) {\n    ...ExternalBooking\n  }\n}\nfragment ExternalBooking on ExternalBooking {\n  id\n  from\n  description\n  to\n  external\n  confirmedAt\n  email\n  status\n  firstName\n  lastName\n  phoneNumber\n  price\n  surchargeAmount\n  surchargeDescription\n  priceBreakdown {\n    bookingDate\n    price\n  }\n  calendar {\n    id\n    title\n    reservationType\n    paymentRequired\n    timeFrom\n    timeTo\n    imageUrl\n    topic {\n      id\n      slug\n      title\n      attachments {\n        id\n        url\n        filename\n        contentType\n        meta {\n          fileSize\n          width\n          height\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getTaxInformation",
+    "queryText": "query getTaxInformation($input: GetTaxInformationInput!) {\n  getTaxInformation(input: $input) {\n    year\n    ownership\n    fortune\n    costs\n    debt\n    ownershipFrom\n    ownershipTo\n    lastUpdated\n    income\n    propertyValue\n    transfer\n    remarks\n    birthdate\n    organisationNumber\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getThreadGroupStatus",
+    "queryText": "query getThreadGroupStatus($organizationId: OrganizationID!, $threadGroupId: NodeID!) {\n  getThreadGroupStatus(\n    organizationId: $organizationId\n    threadGroupId: $threadGroupId\n  ) {\n    id\n    totalCount\n    createdCount\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hasMobileKeyProject",
+    "queryText": "query hasMobileKeyProject($input: OrganizationID!) {\n  hasMobileKeyProject(input: $input)\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "isFeatureEnabled",
+    "queryText": "query isFeatureEnabled($name: String!, $properties: [FeatureEnabledProperties], $fallback: Boolean) {\n  isFeatureEnabled(name: $name, properties: $properties, fallback: $fallback)\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "kioskAdminMemberships",
+    "queryText": "query kioskAdminMemberships {\n  viewer {\n    personId\n    memberships {\n      obosCompanyNumber\n      name\n      roles\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "kioskUsers",
+    "queryText": "query kioskUsers {\n  kioskUsers {\n    id\n    user {\n      personId\n      name\n    }\n    memberships {\n      organizationId\n      organization {\n        id\n        name\n        obosCompanyNumber\n      }\n      member {\n        id\n        roles\n        kioskLoginUrl\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "MobileKeyLocks",
+    "queryText": "query MobileKeyLocks($input: MobileKeyLocksInput!) {\n  mobileKeyLocks(input: $input) {\n    unlocLockId\n    name\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "myExpenseItemsForExpenseCardList",
+    "queryText": "query myExpenseItemsForExpenseCardList($organizationId: OrganizationID!) {\n  myExpenseItems(organizationId: $organizationId) {\n    status\n    invoiceExpenseItems {\n      id\n      createdAt\n      amount\n      category\n      description\n      participants {\n        personId\n        name\n      }\n      recipient {\n        name\n        accountNumber\n      }\n      statusInfo {\n        status\n        lastUpdatedAt\n        comment {\n          text\n          action\n          createdBy {\n            id\n            name\n          }\n          createdAt\n        }\n      }\n      approvalStatus\n      attachments {\n        id\n        name\n        previewUrl\n        downloadUrl\n        analysis {\n          status\n          confidenceScore\n          amount\n          reason\n          ocrQuality\n          suspectedDuplicate\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "newsComments",
+    "queryText": "query newsComments($organizationSlug: OrganizationID!, $newsSlug: String!) {\n  organization(id: $organizationSlug) {\n    id\n    news: newsBySlug(slug: $newsSlug) {\n      id\n      comments {\n        ...Comment\n      }\n    }\n  }\n}\nfragment Comment on Comment {\n  ...CommentData\n  threadId\n  thread {\n    ...CommentData\n  }\n}\nfragment CommentData on Comment {\n  id\n  content\n  anchor\n  hidden\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  authorOrganizationId\n  authorOrganization {\n    id\n    name\n  }\n  authorPrimaryRole\n  createdAt\n  updatedAt\n  deletedAt\n  attachments {\n    ...Attachment\n  }\n  ...SocialReactableListItem\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "newsPreviewByYear",
+    "queryText": "query newsPreviewByYear($organizationId: OrganizationID!, $filters: FindNewsFiltersInput!) {\n  organization(id: $organizationId) {\n    id\n    news(filters: $filters) {\n      ...NewsPreview\n      topics {\n        ...TopicPreview\n      }\n    }\n  }\n}\nfragment NewsPreview on News {\n  id\n  title\n  ingress\n  slug\n  isPublished\n  pinned(organizationId: $organizationId)\n  dateFrom\n  viewerHasRead\n  commentsEnabled\n  commentsCount\n  isClusterNews\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n  draft {\n    meta\n  }\n  mainImage {\n    id\n    url\n    meta {\n      width\n      height\n    }\n  }\n  reactionCount(type: THUMBS_UP)\n  organization {\n    id\n    slug\n    name\n  }\n  authorOrganization {\n    id\n    name\n    slug\n  }\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "newsReadBy",
+    "queryText": "query newsReadBy($organizationSlug: OrganizationID!, $newsId: NodeID!) {\n  organization(id: $organizationSlug) {\n    id\n    organizationCode\n    news: newsById(id: $newsId) {\n      id\n      newsReadByCount\n      __typename\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "newsReadByDetails",
+    "queryText": "query newsReadByDetails($organizationSlug: OrganizationID!, $newsId: NodeID!) {\n  organization(id: $organizationSlug) {\n    id\n    organizationCode\n    hasGarages\n    residents(canReadNewsId: $newsId) {\n      id\n      firstName\n      lastName\n      loggedInToVibbo\n      hasEmailConsent\n      hasSmsConsent\n      email\n      phoneNumber\n      hasReadNews(newsId: $newsId)\n      primaryResidentType\n      residencies {\n        id\n        type\n        apartment {\n          id\n          apartmentNumber\n          residentialNumber\n          unitNumber\n          doorway\n          address\n          objectType\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "notificationCenter",
+    "queryText": "query notificationCenter($organizationId: OrganizationID!, $limit: Int, $after: DateTime) {\n  notificationFeed(organizationId: $organizationId, limit: $limit, after: $after) {\n    viewerLastViewedNotificationsAt\n    items {\n      id\n      kind\n      happenedAt\n      item {\n        __typename\n        ... on News {\n          id\n          slug\n          title\n          ingress\n        }\n        ... on Topic {\n          id\n          slug\n          title\n          isClusterTopic\n        }\n        ... on Comment {\n          id\n          content\n          author: createdBy {\n            id\n            name\n            profilePhotoUrl\n          }\n        }\n        ... on Post {\n          id\n          slug\n          title\n          body\n          updatedBy {\n            id\n            name\n            firstName\n            lastName\n            profilePhotoUrl\n          }\n          postAttachments: attachments {\n            id\n            url\n            filename\n            contentType\n            meta {\n              id\n              width\n              height\n            }\n          }\n        }\n        ... on Booking {\n          id\n          from\n          to\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n          calendar {\n            id\n            title\n            imageUrl\n            topic {\n              slug\n              attachments {\n                id\n                url\n                filename\n                contentType\n                meta {\n                  id\n                  width\n                  height\n                }\n              }\n            }\n          }\n        }\n        ... on VibboEvent {\n          id\n          name\n          description\n          imageUrl\n          isBoardEvent\n          viewerIsAttendee\n          createdAt\n          slug\n          dateFrom\n          dateTo\n        }\n        ... on SocialReaction {\n          id\n          type\n          createdBy {\n            id\n            name\n            firstName\n            profilePhotoUrl\n          }\n        }\n        ... on VibboGroup {\n          id\n          slug\n          name\n          description\n          imageUrl\n          groupType: type\n          memberCount\n          createdBy {\n            id\n            name\n            userId\n            firstName\n          }\n        }\n        ... on GroupPost {\n          id\n          slug\n          body\n          createdBy {\n            id\n            name\n            firstName\n            userId\n          }\n        }\n        ... on ApartmentInvoiceNotification {\n          invoiceId\n          apartmentNumber\n          paymentDate\n          amount\n        }\n      }\n      parent {\n        __typename\n        ... on News {\n          id\n          slug\n          title\n        }\n        ... on Topic {\n          id\n          slug\n          title\n        }\n        ... on Post {\n          id\n          slug\n          title\n        }\n        ... on Comment {\n          id\n          content\n          parent: commentParent {\n            __typename\n            id\n            relativePath\n            title\n          }\n        }\n        ... on VibboGroup {\n          id\n          slug\n          name\n        }\n      }\n    }\n    totalCount\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "notificationCount",
+    "queryText": "query notificationCount($organizationId: OrganizationID!, $includeNotifications: Boolean = true) {\n  organization(id: $organizationId) {\n    id\n    threadNotificationsForViewer\n    unseenActivitiesForViewer\n    pendingTransferApplicationsCountForViewer\n    unseenNotificationsForViewer @include(if: $includeNotifications)\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "oldestNewsDate",
+    "queryText": "query oldestNewsDate($organizationId: OrganizationID!) {\n  oldestNewsDate(organizationId: $organizationId)\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "organizationMembers",
+    "queryText": "query organizationMembers($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    residents {\n      id\n      userId\n      name\n      firstName\n      lastName\n      isBoardMember\n      profilePhotoUrl\n      residencies {\n        id\n        apartment {\n          id\n          address\n          objectType\n          apartmentNumber\n          apartmentType\n        }\n      }\n    }\n    executiveMembers(filterOBOS: true) {\n      id\n      name\n      firstName\n      lastName\n      userId\n      profilePhotoUrl\n      jobTitle\n    }\n  }\n  janitors(organizationId: $organizationSlug) {\n    id\n    name\n    firstName\n    lastName\n    userId\n    profilePhotoUrl\n    jobTitle\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "pendingInvitations",
+    "queryText": "query pendingInvitations {\n    viewer {\n      id\n\n      pendingInvitations {\n        id\n        name\n        firstName\n        lastName\n        phoneNumber\n        email\n        role\n        viewerCanApprove\n        apartmentNumber\n        apartmentAddress\n        needsApartmentSelection\n        sentForManualHandling\n        invitedByOwner\n        organization {\n          id\n          name\n          slug\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "postComments",
+    "queryText": "query postComments($organizationSlug: OrganizationID!, $postSlug: String!) {\n  organization(id: $organizationSlug) {\n    id\n    post: postBySlug(slug: $postSlug) {\n      id\n      comments {\n        ...Comment\n      }\n    }\n  }\n}\nfragment Comment on Comment {\n  ...CommentData\n  threadId\n  thread {\n    ...CommentData\n  }\n}\nfragment CommentData on Comment {\n  id\n  content\n  anchor\n  hidden\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  authorOrganizationId\n  authorOrganization {\n    id\n    name\n  }\n  authorPrimaryRole\n  createdAt\n  updatedAt\n  deletedAt\n  attachments {\n    ...Attachment\n  }\n  ...SocialReactableListItem\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "refetchProfilePhoto",
+    "queryText": "query refetchProfilePhoto {\n        viewer {\n          id\n          profilePhotoUrl\n        }\n      }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "revisionHistoryList",
+    "queryText": "query revisionHistoryList($relatedNodeId: UnpackedNodeID!) {\n  history: revisionHistoryForRelatedNodeId(relatedNodeId: $relatedNodeId) {\n    ...EntityRevisionBase\n  }\n}\nfragment EntityRevisionBase on EntityRevision {\n  id\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "searchPublicOrganizations",
+    "queryText": "query searchPublicOrganizations($query: String!) {\n    searchPublicOrganizations(query: $query) {\n      items {\n        result {\n          id\n          name\n          slug\n          obosCompanyNumber\n\n          primaryAddress {\n            address\n          }\n\n          addresses {\n            address\n          }\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "topicReadByCount",
+    "queryText": "query topicReadByCount($organizationSlug: OrganizationID!, $topicSlug: String!) {\n  organization(id: $organizationSlug) {\n    id\n    topic: topicBySlug(slug: $topicSlug) {\n      id\n      topicReadByCount\n      __typename\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "topicReadByDetails",
+    "queryText": "query topicReadByDetails($organizationSlug: OrganizationID!, $topicId: NodeID!) {\n  organization(id: $organizationSlug) {\n    id\n    organizationCode\n    residents {\n      id\n      firstName\n      lastName\n      loggedInToVibbo\n      email\n      phoneNumber\n      hasReadTopic(topicId: $topicId)\n      primaryResidentType\n      residencies {\n        id\n        type\n        apartment {\n          id\n          apartmentNumber\n          residentialNumber\n          unitNumber\n          doorway\n          address\n          objectType\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboAboutOrganizationQuery",
+    "queryText": "query vibboAboutOrganizationQuery($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n      slug\n      name\n      obosCompanyNumber\n      organizationNumber\n      boardEmail\n      boardPhoneNumber\n      organizationCodeDescription\n      neighborhoodProfileUrl\n      insurance {\n        policy {\n          insuranceCompanyName\n          policyNumber\n        }\n      }\n      documents {\n        downloadUrl\n        year\n        filename\n        changedAt\n        assemblyDate\n        category {\n          code\n          name\n        }\n      }\n      clusters {\n        id\n        name\n        organizations(skipMembership: true) {\n          id\n          name\n        }\n      }\n      statistics {\n        id\n        buildings {\n          apartmentsCount\n          buildingTypes {\n            description\n          }\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboActivityPage",
+    "queryText": "query vibboActivityPage($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboActivityStream",
+    "queryText": "query vibboActivityStream($organizationId: OrganizationID!, $limit: Int, $after: DateTime, $filter: OrganizationActivityFilter) {\n  stream: activityInOrganization(\n    organizationId: $organizationId\n    limit: $limit\n    after: $after\n    filter: $filter\n  ) {\n    viewerLastViewedActivityAt\n    items {\n      id\n      kind\n      happenedAt\n      item {\n        __typename\n        ... on News {\n          id\n          slug\n          title\n          ingress\n          pinned\n          topics {\n            id\n            isClusterTopic\n            title\n          }\n          isClusterNews\n          mainImage {\n            id\n            url\n            filename\n            meta {\n              id\n              width\n              height\n            }\n          }\n          authorOrganization {\n            id\n            name\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n          commentsCount\n          thumbsUpCount: reactionCount(type: THUMBS_UP)\n        }\n        ... on Topic {\n          id\n          slug\n          title\n          ingress\n          mainImage {\n            id\n            url\n            filename\n            meta {\n              id\n              width\n              height\n            }\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n        }\n        ... on Post {\n          id\n          slug\n          title\n          body\n          category {\n            id\n            label\n          }\n          updatedBy {\n            id\n            name\n            firstName\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n          postAttachments: attachments {\n            id\n            url\n            filename\n            contentType\n            meta {\n              id\n              width\n              height\n            }\n          }\n          commentsCount\n          thumbsUpCount: reactionCount(type: THUMBS_UP)\n        }\n        ... on Comment {\n          id\n          content\n          author: createdBy {\n            id\n            name\n          }\n          thumbsUpCount: reactionCount(type: THUMBS_UP)\n        }\n        ... on VibboEvent {\n          id\n          name\n          description\n          imageUrl\n          isBoardEvent\n          attendeeCount\n          viewerIsAttendee\n          createdAt\n          slug\n          dateFrom\n          createdBy {\n            id\n            name\n            firstName\n            userId\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n        }\n        ... on VibboGroup {\n          id\n          slug\n          name\n          description\n          imageUrl\n          memberCount\n          createdBy {\n            id\n            name\n            userId\n            firstName\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n        }\n        ... on GroupPost {\n          id\n          slug\n          body\n          createdBy {\n            id\n            name\n            firstName\n            userId\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n        }\n      }\n      parent {\n        __typename\n        ... on News {\n          id\n          slug\n          title\n        }\n        ... on Post {\n          id\n          slug\n          title\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n        }\n        ... on Topic {\n          id\n          slug\n          title\n        }\n        ... on VibboEvent {\n          id\n          slug\n          name\n        }\n        ... on VibboGroup {\n          id\n          slug\n          name\n        }\n        ... on GroupPost {\n          id\n          slug\n          url\n          group {\n            id\n            name\n            slug\n          }\n        }\n      }\n    }\n    totalCount\n  }\n  pinnedNews: pinnedNewsActivityInOrganization(organizationId: $organizationId) {\n    viewerLastViewedActivityAt\n    items {\n      id\n      kind\n      happenedAt\n      item {\n        __typename\n        ... on News {\n          id\n          slug\n          title\n          ingress\n          pinned(organizationId: $organizationId)\n          topics {\n            id\n            isClusterTopic\n            title\n          }\n          isClusterNews\n          mainImage {\n            id\n            url\n            filename\n            meta {\n              id\n              width\n              height\n            }\n          }\n          authorOrganization {\n            id\n            name\n          }\n          organization {\n            id\n            slug\n            name\n            isCluster\n          }\n          commentsCount\n          thumbsUpCount: reactionCount(type: THUMBS_UP)\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboAdministrateReservations",
+    "queryText": "query vibboAdministrateReservations($organizationSlug: OrganizationID!, $page: Int!, $pageSize: Int!, $sortBy: CalendarSortBy, $sortDirection: SortDirection, $searchTerm: String, $from: DateTime, $to: DateTime, $calendarId: NodeID, $statusFilter: BookingDashboardStatusFilter) {\n  getBookingsForOrganization(\n    organizationId: $organizationSlug\n    page: $page\n    pageSize: $pageSize\n    sortBy: $sortBy\n    sortDirection: $sortDirection\n    searchTerm: $searchTerm\n    from: $from\n    to: $to\n    calendarId: $calendarId\n    statusFilter: $statusFilter\n  ) {\n    bookings {\n      ...BookingAdministrationDetails\n    }\n    pagination {\n      total\n      page\n      pageSize\n      pageCount\n      hasMore\n    }\n  }\n}\nfragment BookingAdministrationDetails on Booking {\n  ...Booking\n  isDeleted\n  organization {\n    id\n    name\n  }\n  calendar {\n    ...Calendar\n  }\n}\nfragment Booking on Booking {\n  id\n  from\n  description\n  to\n  privateBooking\n  external\n  confirmedAt\n  email\n  status\n  price\n  surchargeAmount\n  surchargeDescription\n  isPaidOrPendingPayment\n  mobileKeyPhones\n  priceBreakdown {\n    bookingDate\n    price\n  }\n  canAutoRefund\n  isOutsideAutoRefundWindow\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    phoneNumber\n    email\n    residencies {\n      id\n      type\n      apartment {\n        id\n        apartmentNumber\n        residentialNumber\n        unitNumber\n        doorway\n        address\n      }\n    }\n  }\n}\nfragment Calendar on ItemCalendar {\n  id\n  title\n  timeFrom\n  timeTo\n  reservationType\n  maximumMonthsAhead\n  paymentRequired\n  price\n  priceExtern\n  priceUnit\n  surchargeAmount\n  surchargeDescription\n  surchargeFreeForResidents\n  isFreeForResidents\n  overridePrices {\n    ...CalendarPriceOverride\n  }\n  availability {\n    ...Availability\n  }\n  limitation\n  sendBoardNotification\n  externalEmailAddress\n  hasBookings\n  hasActivePaidBookings\n  topic {\n    id\n    slug\n    authorOrganization {\n      id\n      name\n      boardEmail\n    }\n    organization {\n      id\n      name\n      boardEmail\n      boardPhoneNumber\n    }\n    isClusterTopic\n  }\n  imageId\n  imageUrl\n  paymentCategory\n  locked\n  mobileKeyLockIds\n  hasMobileKeys\n  mobileKeySharingEnabled\n  showExternalPrice\n  rentalRulesContent\n  rentalRulesRequired\n  rentalRulesVersion\n}\nfragment CalendarPriceOverride on CalendarPriceOverride {\n  id\n  weekday\n  audienceType\n  price\n  createdAt\n}\nfragment Availability on Availability {\n  MONDAY {\n    ...AvailabilityData\n  }\n  TUESDAY {\n    ...AvailabilityData\n  }\n  WEDNESDAY {\n    ...AvailabilityData\n  }\n  THURSDAY {\n    ...AvailabilityData\n  }\n  FRIDAY {\n    ...AvailabilityData\n  }\n  SATURDAY {\n    ...AvailabilityData\n  }\n  SUNDAY {\n    ...AvailabilityData\n  }\n}\nfragment AvailabilityData on AvailabilityData {\n  from\n  to\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboApartmentStatistics",
+    "queryText": "query vibboApartmentStatistics($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n\n      statistics {\n        id\n        apartments {\n          id\n          total\n          loggedInToVibbo\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBoardEmailReveal",
+    "queryText": "query vibboBoardEmailReveal($organizationId: OrganizationID!) {\n  organization: publicOrganization(id: $organizationId) {\n    id\n    boardEmail\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBoardMessages",
+    "queryText": "query vibboBoardMessages($organizationId: OrganizationID!) {\n    organization: organization(id: $organizationId) {\n      id\n      organizationCode\n\n      apartments {\n        id\n        apartmentNumber\n        unitNumber\n        residentialNumber\n        address\n        city\n        postalCode\n      }\n\n      availableTopics: topics(isPublished: true) {\n        ...TopicPreview\n      }\n\n      contacts: editableContacts {\n        ...ThreadContact\n      }\n\n      residents {\n        id\n        userId\n        firstName\n        lastName\n        name\n        loggedInToVibbo\n        primaryResidentType\n        residencies {\n          id\n          type\n          legalOwnerName\n          apartment {\n            id\n            apartmentNumber\n            residentialNumber\n            unitNumber\n            doorway\n            address\n          }\n        }\n      }\n    }\n  }\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}\nfragment ThreadContact on OrganizationEditableContact {\n    id\n    userId\n    name\n    jobTitle\n    profilePhotoUrl\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseCalendars",
+    "queryText": "query vibboBrowseCalendars($organizationSlug: OrganizationID!) {\n  calendars(organizationId: $organizationSlug) {\n    ...BookingCalendar\n  }\n}\nfragment BookingCalendar on ItemCalendar {\n  id\n  title\n  paymentRequired\n  timeFrom\n  timeTo\n  reservationType\n  maximumMonthsAhead\n  closestAvailabilityFrom\n  imageUrl\n  closestAvailabilityTo\n  published\n  createdAt\n  mobileKeyLockIds\n  hasMobileKeys\n  availability {\n    ...Availability\n  }\n  limitation\n  topic {\n    isClusterTopic\n    id\n    title\n    slug\n    attachments {\n      id\n      url\n      filename\n      contentType\n      meta {\n        fileSize\n        width\n        height\n      }\n    }\n  }\n}\nfragment Availability on Availability {\n  MONDAY {\n    ...AvailabilityData\n  }\n  TUESDAY {\n    ...AvailabilityData\n  }\n  WEDNESDAY {\n    ...AvailabilityData\n  }\n  THURSDAY {\n    ...AvailabilityData\n  }\n  FRIDAY {\n    ...AvailabilityData\n  }\n  SATURDAY {\n    ...AvailabilityData\n  }\n  SUNDAY {\n    ...AvailabilityData\n  }\n}\nfragment AvailabilityData on AvailabilityData {\n  from\n  to\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseContacts",
+    "queryText": "query vibboBrowseContacts($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n      slug\n      name\n      boardEmail\n      boardEmailThreadNotifications\n      boardPhoneNumber\n\n      topics {\n        id\n        slug\n        title\n        isPublished\n        createdFromTemplate\n        isClusterTopic\n\n        draft {\n          meta\n        }\n      }\n\n      editableContacts {\n        ...OrganizationEditableContact\n        canBeContacted\n      }\n    }\n  }\nfragment OrganizationEditableContact on OrganizationEditableContact {\n    id\n    userId\n    firstName\n    lastName\n    hiddenPhoneNumber\n    phoneNumber\n    hiddenEmail\n    email\n    jobTitle\n    profilePhotoUrl\n    roles\n\n    topics {\n      id\n      slug\n      title\n      isPublished\n      createdFromTemplate\n\n      draft {\n        meta\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseEvents",
+    "queryText": "query vibboBrowseEvents($organizationId: OrganizationID!, $filters: FindEventFiltersInput!) {\n  organization(id: $organizationId) {\n    id\n    slug\n  }\n  vibboEvents(organizationId: $organizationId, filters: $filters) {\n    totalCount\n    events {\n      ...EventPreview\n    }\n  }\n}\nfragment EventPreview on VibboEvent {\n  id\n  name\n  slug\n  isPublished\n  dateFrom\n  dateTo\n  isClusterEvent\n  isBoardEvent\n  description\n  attendeeCount\n  maxAttendees\n  allowGuests\n  viewerGuestCount\n  viewerIsAttendee\n  isCancelled\n  location\n  viewerRsvp\n  imageUrl\n  imageId\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseNews",
+    "queryText": "query vibboBrowseNews($organizationId: OrganizationID!, $first: Int!) {\n  organization(id: $organizationId) {\n    id\n    slug\n    name\n    latestNews(first: $first) {\n      ...NewsPreview\n      topics {\n        ...TopicPreview\n      }\n    }\n  }\n}\nfragment NewsPreview on News {\n  id\n  title\n  ingress\n  slug\n  isPublished\n  pinned(organizationId: $organizationId)\n  dateFrom\n  viewerHasRead\n  commentsEnabled\n  commentsCount\n  isClusterNews\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n  draft {\n    meta\n  }\n  mainImage {\n    id\n    url\n    meta {\n      width\n      height\n    }\n  }\n  reactionCount(type: THUMBS_UP)\n  organization {\n    id\n    slug\n    name\n  }\n  authorOrganization {\n    id\n    name\n    slug\n  }\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowsePosts",
+    "queryText": "query vibboBrowsePosts($organizationSlug: OrganizationID!, $limit: Int, $after: NodeID, $categoryId: String, $cluster: ClusterInclusion) {\n  organization(id: $organizationSlug) {\n    id\n    slug\n    name\n    postsEnabled\n    hasCluster\n    posts(limit: $limit, after: $after, categoryId: $categoryId, cluster: $cluster) {\n      ...Post\n    }\n    organizationCode\n  }\n}\nfragment Post on Post {\n  id\n  title\n  body\n  slug\n  publishedAt\n  visibleToAllAddresses\n  visibleToAddresses\n  createdAt\n  updatedAt\n  deletedAt\n  category {\n    id\n    label\n    value\n  }\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  attachments {\n    id\n    url\n    filename\n    contentType\n    meta {\n      width\n      height\n      fileSize\n    }\n  }\n  commentsCount\n  organization {\n    id\n    slug\n    name\n    obosCompanyNumber\n    isCluster\n    hasCluster\n    organizations(skipMembership: true) {\n      id\n      name\n    }\n    clusters {\n      id\n      slug\n      name\n      organizations(skipMembership: true) {\n        id\n        name\n      }\n    }\n  }\n  ...SocialReactableListItem\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseReservations",
+    "queryText": "query vibboBrowseReservations($organizationSlug: OrganizationID!, $page: Int!, $pageSize: Int!) {\n  getBookingsForUser(\n    organizationId: $organizationSlug\n    page: $page\n    pageSize: $pageSize\n  ) {\n    ...Reservation\n  }\n}\nfragment Reservation on Booking {\n  id\n  description\n  from\n  to\n  privateBooking\n  external\n  confirmedAt\n  email\n  status\n  mobileKeyPhones\n  calendar {\n    id\n    title\n    reservationType\n    timeFrom\n    timeTo\n    imageUrl\n    topic {\n      id\n      slug\n      title\n      attachments {\n        id\n        url\n        filename\n        contentType\n        meta {\n          fileSize\n          width\n          height\n        }\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboBrowseTopics",
+    "queryText": "query vibboBrowseTopics($organizationId: OrganizationID!) {\n  organization(id: $organizationId) {\n    id\n    slug\n    name\n    hasCluster\n    topics {\n      ...TopicPreview\n    }\n  }\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboContactForm",
+    "queryText": "query vibboContactForm($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n\n      topics {\n        id\n        slug\n        title\n        isPublished\n        isClusterTopic\n      }\n\n      viewerAsMember {\n        id\n        email\n\n        residencies {\n          id\n          apartment {\n            id\n            apartmentNumber\n            apartmentType\n            objectType\n            unitNumber\n            residentialNumber\n            address\n          }\n        }\n      }\n\n      contacts: editableContacts {\n        id\n        userId\n        firstName\n        lastName\n        roles\n        canBeContacted\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboContactsQuery",
+    "queryText": "query vibboContactsQuery($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n      editableContacts {\n        id\n        firstName\n        lastName\n        jobTitle\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboDashboardEvents",
+    "queryText": "query vibboDashboardEvents($organizationId: OrganizationID!) {\n  events: vibboEvents(\n    organizationId: $organizationId\n    filters: {timeline: UPCOMING, limit: 3, viewerMaybeAttending: true}\n  ) {\n    events {\n      ...EventPreview\n    }\n  }\n}\nfragment EventPreview on VibboEvent {\n  id\n  name\n  slug\n  isPublished\n  dateFrom\n  dateTo\n  isClusterEvent\n  isBoardEvent\n  description\n  attendeeCount\n  maxAttendees\n  allowGuests\n  viewerGuestCount\n  viewerIsAttendee\n  isCancelled\n  location\n  viewerRsvp\n  imageUrl\n  imageId\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboDashboardPage",
+    "queryText": "query vibboDashboardPage($organizationId: OrganizationID!) {\n  viewer {\n    id\n    name\n    flags\n  }\n  organization(id: $organizationId) {\n    id\n    slug\n    name\n    organizationCode\n    onProperty\n    obosCompanyNumber\n    postsEnabled\n    onProperty\n    status\n    deleted\n    hasCluster\n    mainPhoto {\n      id\n      storageUrl\n      meta {\n        width\n        height\n      }\n    }\n    generalAssemblies(onlyActive: true) {\n      ...AssemblyPreviewDashboard\n    }\n    topics {\n      ...TopicPreview\n    }\n    clusters {\n      id\n      slug\n      name\n      organizations(skipMembership: true) {\n        id\n        name\n      }\n    }\n    modulesAvailable\n  }\n}\nfragment AssemblyPreviewDashboard on GeneralAssembly {\n  id\n  slug\n  phase\n  date\n  endDate\n  location\n  videoLocation\n  physicalMeetingDate\n  digital\n  ordinary\n  proposalsEndAt\n  invitationAttachmentUrl\n  protocolAttachmentUrl\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboDocuments",
+    "queryText": "query vibboDocuments($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    documents {\n      ...OrganizationDocumentsSearch\n    }\n  }\n}\nfragment OrganizationDocumentsSearch on OrganizationDocument {\n  year\n  filename\n  category {\n    code\n    name\n  }\n  downloadUrl\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboEventBySlug",
+    "queryText": "query vibboEventBySlug($organizationId: OrganizationID!, $slug: String!) {\n  organization(id: $organizationId) {\n    id\n    slug\n  }\n  vibboEventBySlug(organizationId: $organizationId, slug: $slug) {\n    ...EventDetail\n  }\n}\nfragment EventDetail on VibboEvent {\n  ...EventPreview\n  organization {\n    id\n    slug\n  }\n  authorOrganization {\n    id\n    slug\n    name\n  }\n  hasPassed\n  isOngoing\n  canShare\n  url\n  viewerIsCreator\n  createdBy {\n    id\n    userId\n    name\n    userId\n    firstName\n    lastName\n    profilePhotoUrl\n  }\n  cancelledBy {\n    id\n    userId\n  }\n  allRsvps {\n    ...EventRsvps\n  }\n}\nfragment EventPreview on VibboEvent {\n  id\n  name\n  slug\n  isPublished\n  dateFrom\n  dateTo\n  isClusterEvent\n  isBoardEvent\n  description\n  attendeeCount\n  maxAttendees\n  allowGuests\n  viewerGuestCount\n  viewerIsAttendee\n  isCancelled\n  location\n  viewerRsvp\n  imageUrl\n  imageId\n}\nfragment EventRsvps on VibboEventRsvpsResult {\n  name\n  email\n  userId\n  profilePhotoUrl\n  external\n  status\n  guestCount\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboEventComments",
+    "queryText": "query vibboEventComments($organizationId: OrganizationID!, $eventSlug: String!) {\n  vibboEventBySlug(organizationId: $organizationId, slug: $eventSlug) {\n    id\n    comments {\n      ...Comment\n    }\n  }\n}\nfragment Comment on Comment {\n  ...CommentData\n  threadId\n  thread {\n    ...CommentData\n  }\n}\nfragment CommentData on Comment {\n  id\n  content\n  anchor\n  hidden\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  authorOrganizationId\n  authorOrganization {\n    id\n    name\n  }\n  authorPrimaryRole\n  createdAt\n  updatedAt\n  deletedAt\n  attachments {\n    ...Attachment\n  }\n  ...SocialReactableListItem\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboGroup",
+    "queryText": "query vibboGroup($organizationSlug: OrganizationID!, $groupSlug: String!, $withMembers: Boolean = false, $limit: Int, $after: NodeID) {\n  vibboGroup(organizationId: $organizationSlug, groupSlug: $groupSlug) {\n    id\n    name\n    description\n    slug\n    imageUrl\n    imageId\n    isPrivateGroup\n    type\n    memberCount\n    updatedAt\n    createdAt\n    createdBy {\n      id\n      userId\n      name\n      profilePhotoUrl\n      jobTitle\n    }\n    posts(limit: $limit, after: $after) {\n      id\n      body\n      slug\n      publishedAt\n      createdAt\n      updatedAt\n      deletedAt\n      createdBy {\n        id\n        userId\n        name\n        profilePhotoUrl\n        jobTitle\n      }\n      attachments {\n        id\n        url\n        filename\n        contentType\n        meta {\n          width\n          height\n          fileSize\n        }\n      }\n      commentsCount\n      ...SocialReactableListItem\n    }\n    postCount\n    viewerIsMember\n    viewerIsAdmin\n    viewerAsGroupMember {\n      id\n      userId\n      name\n      profilePhotoUrl\n      admin\n      isBoardMemberOrEmployee\n      listOfOrganizations\n    }\n    adminCount\n    members @include(if: $withMembers) {\n      id\n      userId\n      name\n      profilePhotoUrl\n      admin\n      isBoardMemberOrEmployee\n      listOfOrganizations\n    }\n    organization {\n      isCluster\n      id\n      name\n    }\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboGroupPostComments",
+    "queryText": "query vibboGroupPostComments($organizationId: OrganizationID!, $groupId: NodeID!, $groupPostSlug: String!) {\n  groupPost(\n    organizationId: $organizationId\n    groupId: $groupId\n    groupPostSlug: $groupPostSlug\n  ) {\n    comments {\n      ...Comment\n    }\n  }\n}\nfragment Comment on Comment {\n  ...CommentData\n  threadId\n  thread {\n    ...CommentData\n  }\n}\nfragment CommentData on Comment {\n  id\n  content\n  anchor\n  hidden\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  authorOrganizationId\n  authorOrganization {\n    id\n    name\n  }\n  authorPrimaryRole\n  createdAt\n  updatedAt\n  deletedAt\n  attachments {\n    ...Attachment\n  }\n  ...SocialReactableListItem\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboLandingPageNotificationsQuery",
+    "queryText": "query vibboLandingPageNotificationsQuery {\n    notifications(\n      showInStyrerommet: false\n      showInVibbo: true\n      showOnFrontpage: true\n      showActive: true\n    ) {\n      id\n      type\n      title\n      message\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboMemberUrl",
+    "queryText": "query vibboMemberUrl($organizationId: OrganizationID!, $personId: ID!) {\n            organization(id: $organizationId) {\n              id\n              member(personId: $personId) {\n                id\n                url\n              }\n            }\n          }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboMessageFromBoard",
+    "queryText": "query vibboMessageFromBoard($organizationId: OrganizationID!) {\n    organization(id: $organizationId) {\n      id\n      organizationCode\n\n      topics {\n        ...TopicPreview\n      }\n\n      residents {\n        id\n        userId\n        profilePhotoUrl\n        firstName\n        lastName\n        name\n        phoneNumber\n        organizationNumber\n        electronicConsent\n        loggedInToVibbo\n        primaryResidentType\n        residencies {\n          id\n          type\n          apartment {\n            id\n            apartmentNumber\n            residentialNumber\n            unitNumber\n            doorway\n            address\n          }\n        }\n      }\n    }\n  }\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboMyApartmentPage",
+    "queryText": "query vibboMyApartmentPage($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    organizationCode\n    obosCompanyNumber\n    organizationNumber\n    onProperty\n    pendingApplications(boardPerspective: false) {\n      ...ResidentApplication\n    }\n    viewerAsMember {\n      id\n      personId\n      name\n      residencies {\n        id\n        type\n        legalOwnerName\n        apartment {\n          id\n          apartmentNumber\n          apartmentType\n          unitNumber\n          residentialNumber\n          rented\n          sharedOwnership\n          address\n          postalCode\n          city\n          doorway\n          objectType\n          requiresBruksoverlating\n          transferApplications {\n            ...TransferApplication\n          }\n          transferApplicationChanges {\n            ...TransferApplicationChange\n          }\n          contract {\n            ...ContractOptions\n          }\n          residencies {\n            id\n            bruksoverlating\n            contractStart\n            contractEnd\n            type\n            legalOwnerName\n            fromVibbo\n            resident {\n              ...ApartmentResident\n            }\n          }\n        }\n      }\n    }\n  }\n}\nfragment ResidentApplication on ResidentApplication {\n  id\n  name\n  firstName\n  lastName\n  phoneNumber\n  email\n  role\n  viewerCanApprove\n  comment\n  apartmentNumber\n  reminderWasSent\n  sentForManualHandling\n  invitedByOwner\n  needsApartmentSelection\n}\nfragment TransferApplication on TransferApplication {\n  id\n  createdBy {\n    id\n    firstName\n    lastName\n    profilePhotoUrl\n    email\n    phoneNumber\n    userId\n    organizationNumber\n  }\n  createdAt\n  apartmentNumber\n  decidedAt\n  decidedBy {\n    id\n  }\n  tenantFirstName\n  tenantLastName\n  tenantPhoneNumber\n  tenantEmail\n  tenantBirthDate\n  numberOfResidents\n  numberOfPets\n  contractFrom\n  contractTo\n  rejectionReason\n  isTenantFamily\n  hasSelfOrFamilyResided\n  description\n  status\n  housingObject {\n    id\n    address\n    postalCode\n    city\n    apartmentNumber\n    unitNumber\n    residentialNumber\n    contract {\n      contractEnd\n    }\n  }\n  settings {\n    viewerCanApprove\n    viewerCanReject\n    viewerCanCancel\n  }\n}\nfragment TransferApplicationChange on TransferApplicationChange {\n  id\n  type\n  createdBy {\n    id\n    firstName\n    lastName\n    profilePhotoUrl\n    email\n    phoneNumber\n    userId\n    organizationNumber\n  }\n  createdAt\n  apartmentNumber\n  decidedAt\n  decidedBy {\n    id\n  }\n  tenantFirstName\n  tenantLastName\n  previousTenantFirstName\n  previousTenantLastName\n  previousContractTo\n  tenantPhoneNumber\n  tenantEmail\n  tenantBirthDate\n  numberOfResidents\n  numberOfPets\n  contractFrom\n  contractTo\n  rejectionReason\n  isTenantFamily\n  hasSelfOrFamilyResided\n  description\n  status\n  housingObject {\n    id\n    address\n    postalCode\n    city\n    apartmentNumber\n    unitNumber\n    residentialNumber\n    contract {\n      contractEnd\n    }\n  }\n  settings {\n    viewerCanApprove\n    viewerCanReject\n    viewerCanCancel\n  }\n}\nfragment ContractOptions on HousingObjectContract {\n  viewerCanRegisterTransferApplication\n  viewerCanExtendContract\n  viewerCanChangeContract\n  viewerCanTerminateContract\n  contractEnd\n  contractStart\n  hasTransferApplication\n}\nfragment ApartmentResident on Member {\n  id\n  userId\n  personId\n  firstName\n  lastName\n  phoneNumber\n  email\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboNewsForTopic",
+    "queryText": "query vibboNewsForTopic($organizationId: OrganizationID!, $topicSlug: String!, $first: Int) {\n  organization(id: $organizationId) {\n    id\n    topic: topicBySlug(slug: $topicSlug) {\n      id\n      news: latestNews(first: $first) {\n        ...NewsPreview\n      }\n    }\n  }\n}\nfragment NewsPreview on News {\n  id\n  title\n  ingress\n  slug\n  isPublished\n  pinned(organizationId: $organizationId)\n  dateFrom\n  viewerHasRead\n  commentsEnabled\n  commentsCount\n  isClusterNews\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n  draft {\n    meta\n  }\n  mainImage {\n    id\n    url\n    meta {\n      width\n      height\n    }\n  }\n  reactionCount(type: THUMBS_UP)\n  organization {\n    id\n    slug\n    name\n  }\n  authorOrganization {\n    id\n    name\n    slug\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboNewsPage",
+    "queryText": "query vibboNewsPage($organizationId: OrganizationID!, $newsSlug: String!) {\n  organization(id: $organizationId) {\n    id\n    slug\n    name\n    boardEmail\n    boardPhoneNumber\n    isObjectCompanyWithManyGarages\n    hasGarages\n    pinnedNews {\n      id\n    }\n    topics {\n      ...TopicPreview\n    }\n    addresses {\n      address\n    }\n    contacts: editableContacts {\n      id\n      profilePhotoUrl\n      firstName\n      lastName\n      email\n      phoneNumber\n      hiddenEmail\n      hiddenPhoneNumber\n      jobTitle\n      userId\n      topics {\n        id\n      }\n    }\n    news: newsBySlug(slug: $newsSlug) {\n      ...NewsDetail\n    }\n  }\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}\nfragment NewsDetail on News {\n  id\n  title\n  slug\n  isPublished\n  initialPublishDate\n  initialPublishBy {\n    id\n    name\n  }\n  isClusterNews\n  organization {\n    id\n    slug\n    name\n  }\n  authorOrganization {\n    id\n    name\n    slug\n  }\n  printUrl: url(print: true, organizationId: $organizationId)\n  notNotifiedPrintUrl: url(notNotifiedResidents: true)\n  pinned(organizationId: $organizationId)\n  notifiedByEmail\n  notifiedBySms\n  visibleToResidents\n  visibleToAddresses\n  visibleToGarageOwners\n  dateFrom\n  dateTo\n  viewerHasRead\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n  article\n  draft {\n    content\n    createdAt\n    createdBy {\n      id\n      name\n    }\n    updatedAt\n    updatedBy {\n      id\n      name\n    }\n  }\n  polls {\n    ...PollDetail\n  }\n  forms {\n    id\n    title\n    locked\n    fields {\n      id\n      value\n      required\n    }\n    recipientEmailAddress\n    attachmentsEnabled\n    deliverByMessage\n    deliverByEmail\n    isClusterForm\n    organizationName\n  }\n  topics {\n    ...TopicPreview\n    contacts {\n      id\n      firstName\n      lastName\n      email\n      phoneNumber\n      jobTitle\n    }\n  }\n  commentsEnabled\n  commentsCount\n  attachments {\n    id\n    url\n    contentType\n    meta {\n      width\n      height\n    }\n  }\n  mainImage {\n    id\n    url\n    meta {\n      width\n      height\n    }\n  }\n  ...SocialReactableListItem\n  reactions(type: THUMBS_UP, limit: 3) {\n    ...SocialReaction\n  }\n}\nfragment PollDetail on Poll {\n  id\n  title\n  isMultipleChoice\n  isAnonymous\n  locked\n  isClusterPoll\n  options {\n    ...PollOptionDetail\n  }\n}\nfragment PollOptionDetail on PollOption {\n  id\n  value\n  votes {\n    createdAt\n    createdBy {\n      userId\n      name\n      profilePhotoUrl\n    }\n    authorOrganization {\n      id\n      name\n    }\n  }\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}\nfragment SocialReaction on SocialReaction {\n  id\n  __typename\n  type\n  createdAt\n  parentId\n  createdBy {\n    id\n    name\n    profilePhotoUrl\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboNotificationSettingsPage",
+    "queryText": "query vibboNotificationSettingsPage($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    viewerAsMember {\n      id\n      missing\n      electronicConsent\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizationByCompanyNumber",
+    "queryText": "query vibboOrganizationByCompanyNumber($companyNumber: ID!) {\n    viewer {\n      id\n    }\n\n    organization: publicOrganizationByCompanyNumber(obosCompanyNumber: $companyNumber) {\n      id\n      slug\n      name\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizationFlags",
+    "queryText": "query vibboOrganizationFlags($organizationId: OrganizationID!) {\n    viewer {\n      id\n      organizationFlags(organizationId: $organizationId)\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizationLoginPage",
+    "queryText": "query vibboOrganizationLoginPage(\n    $organizationSlug: OrganizationID!\n    $newsSlug: String!\n    $postSlug: String!\n    $topicSlug: String!\n  ) {\n    organization: publicOrganization(id: $organizationSlug) {\n      id\n      name\n      slug\n\n      mainPhoto {\n        id\n        storageUrl\n      }\n    }\n\n    publicNews(organizationId: $organizationSlug, newsSlug: $newsSlug) {\n      id\n      slug\n      title\n      ingress\n      date: dateFrom\n      imageUrl\n    }\n\n    publicPost(organizationId: $organizationSlug, postSlug: $postSlug) {\n      id\n      slug\n      title\n      ingress\n      date: publishedAt\n      imageUrl\n    }\n\n    publicTopic(organizationId: $organizationSlug, topicSlug: $topicSlug) {\n      id\n      slug\n      title\n      ingress\n      date: createdAt\n      imageUrl\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizationOpenPage",
+    "queryText": "query vibboOrganizationOpenPage($organizationId: OrganizationID!) {\n  viewer {\n    id\n  }\n  organization: publicOrganization(id: $organizationId) {\n    id\n    name\n    slug\n    organizationNumber\n    organizationCodeDescription\n    organizationCode\n    hasBoardEmail\n    boardPhoneNumber\n    aboutText {\n      content\n    }\n    aboutArticle {\n      ...AboutOrganizationArticle\n    }\n    companyType\n    obosCompanyNumber\n    neighborhoodProfileUrl\n    mainPhoto {\n      id\n      storageUrl\n    }\n    primaryAddress {\n      address\n      city\n      zipCode\n    }\n    addresses {\n      address\n      city\n      zipCode\n    }\n    topics {\n      id\n      title\n      slug\n      isClusterTopic\n      isPublished\n      organization {\n        id\n        slug\n      }\n    }\n    documents {\n      downloadUrl\n      year\n      filename\n      changedAt\n      assemblyDate\n      category {\n        code\n        name\n      }\n    }\n    insurance {\n      policy {\n        insuranceCompanyName\n        policyNumber\n      }\n    }\n    statistics {\n      id\n      buildings {\n        id\n        apartmentsCount\n        parkingSpotsCount\n        buildingTypes {\n          description\n        }\n      }\n    }\n  }\n}\nfragment AboutOrganizationArticle on AboutOrganizationArticle {\n  id\n  ingress\n  article\n  attachments {\n    id\n    filename\n    url\n    contentType\n    meta {\n      fileSize\n      width\n      height\n    }\n  }\n  draft {\n    content\n    createdAt\n    createdBy {\n      id\n      name\n    }\n    updatedAt\n    updatedBy {\n      id\n      name\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizationPendingApplications",
+    "queryText": "query vibboOrganizationPendingApplications($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    pendingApplications(boardPerspective: false) {\n      ...ResidentApplication\n    }\n  }\n}\nfragment ResidentApplication on ResidentApplication {\n  id\n  name\n  firstName\n  lastName\n  phoneNumber\n  email\n  role\n  viewerCanApprove\n  comment\n  apartmentNumber\n  reminderWasSent\n  sentForManualHandling\n  invitedByOwner\n  needsApartmentSelection\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboOrganizations",
+    "queryText": "query vibboOrganizations {\n  viewer {\n    id\n    memberships {\n      name\n      roles\n      obosCompanyNumber\n      slug: organizationSlug\n      vibboEnabled\n      cluster\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboPost",
+    "queryText": "query vibboPost($organizationSlug: OrganizationID!, $postSlug: String!) {\n  organization(id: $organizationSlug) {\n    id\n    slug\n    name\n    hasCluster\n    clusters {\n      id\n      slug\n      name\n      organizations(skipMembership: true) {\n        id\n        name\n      }\n    }\n    addresses {\n      address\n    }\n    post: postBySlug(slug: $postSlug) {\n      ...Post\n    }\n  }\n}\nfragment Post on Post {\n  id\n  title\n  body\n  slug\n  publishedAt\n  visibleToAllAddresses\n  visibleToAddresses\n  createdAt\n  updatedAt\n  deletedAt\n  category {\n    id\n    label\n    value\n  }\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  attachments {\n    id\n    url\n    filename\n    contentType\n    meta {\n      width\n      height\n      fileSize\n    }\n  }\n  commentsCount\n  organization {\n    id\n    slug\n    name\n    obosCompanyNumber\n    isCluster\n    hasCluster\n    organizations(skipMembership: true) {\n      id\n      name\n    }\n    clusters {\n      id\n      slug\n      name\n      organizations(skipMembership: true) {\n        id\n        name\n      }\n    }\n  }\n  ...SocialReactableListItem\n}\nfragment SocialReactableListItem on SocialReactable {\n  id\n  __typename\n  reactionCount(type: THUMBS_UP)\n  viewerReactions\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboPostCategories",
+    "queryText": "query vibboPostCategories {\n  postCategories {\n    id\n    label\n    value\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboPostsEnabled",
+    "queryText": "query vibboPostsEnabled($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    slug\n    postsEnabled\n    hasCluster\n    organizationCode\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboProfilePage",
+    "queryText": "query vibboProfilePage($organizationSlug: OrganizationID!) {\n    viewer {\n      isDeleteCancellable(organizationId: $organizationSlug)\n      cancelDeleteProcessEndDate(organizationId: $organizationSlug)\n      ...Viewer\n    }\n\n    organization(id: $organizationSlug) {\n      id\n      name\n      slug\n\n      viewerAsMember {\n        id\n        email\n        phoneNumber\n        electronicConsent\n        roles\n      }\n    }\n  }\nfragment Viewer on User {\n    id\n    name\n    email\n    phoneNumber\n    canEditEmailAddress\n    profilePhotoUrl\n    electronicConsentFlag\n    flags\n\n    changeRequest {\n      email {\n        id\n        newEmail\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboProposalsPage",
+    "queryText": "query vibboProposalsPage($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n\n      activeAssemblies: generalAssemblies(onlyActive: true) {\n        ...AssemblyPreview\n      }\n\n      proposals: generalAssemblyProposals(byViewer: true, showDrafts: true) {\n        ...ProposalDetail\n      }\n    }\n  }\nfragment AssemblyPreview on GeneralAssembly {\n  id\n  slug\n  phase\n  date\n  endDate\n  location\n  videoLocation\n  physicalMeetingDate\n  digital\n  ordinary\n  proposalsEndAt\n  invitationAttachmentUrl\n  protocolAttachmentUrl\n  issues(issueType: election) {\n    id\n    title\n    description\n    ... on GeneralAssemblyElectionIssue {\n      election {\n        id\n        role\n        electedFor\n      }\n      nominations(byViewer: true) {\n        ...NominationDetail\n      }\n      eligibleOwners {\n        id\n        userId\n        name\n      }\n    }\n  }\n}\nfragment NominationDetail on ElectionIssueNomination {\n  id\n  userId\n  accepted\n  name\n  comment\n  electionIssueId\n  electionIssueTitle\n  roles\n  isSelfNomination\n  isViewer\n  createdAt\n  nominatedBy {\n    id\n    name\n  }\n}\nfragment ProposalDetail on GeneralAssemblyProposal {\n    id\n    title\n    description\n    motionProposal\n    createdAt\n    assemblyId\n    rejectionReason\n    rejected\n    accepted\n    isDraft\n    isWithdrawn\n    fromRejectedProposal {\n      id\n      rejectionReason\n    }\n    rootProposal {\n      id\n    }\n\n    attachments {\n      ...Attachment\n    }\n  }\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboRegisterAsResidentPage",
+    "queryText": "query vibboRegisterAsResidentPage {\n  viewer {\n    id\n    phoneNumber\n    isDemo\n    memberships {\n      obosCompanyNumber\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboRegisterInOrganizationOpenPage",
+    "queryText": "query vibboRegisterInOrganizationOpenPage($organizationId: OrganizationID!) {\n  organization: publicOrganization(id: $organizationId) {\n    id\n    name\n    slug\n    organizationNumber\n    companyType\n    obosCompanyNumber\n    primaryAddress {\n      address\n      city\n      zipCode\n    }\n    addresses {\n      address\n      city\n      zipCode\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboResidentAdministrationPage",
+    "queryText": "query vibboResidentAdministrationPage($organizationSlug: OrganizationID!) {\n  organization(id: $organizationSlug) {\n    id\n    slug\n    name\n    obosCompanyNumber\n    organizationCode\n    statistics {\n      id\n      buildings {\n        id\n        apartmentsCount\n      }\n    }\n    invitation {\n      invitationSentAt\n      invitationSentBy {\n        id\n        name\n      }\n    }\n    addresses {\n      address\n    }\n    residents {\n      id\n      userId\n      personId\n      firstName\n      lastName\n      name\n      profilePhotoUrl\n      permissions\n      primaryResidentType\n      residencies {\n        id\n        bruksoverlating\n        type\n        legalOwnerName\n        contractStart\n        contractEnd\n        resident {\n          ...ApartmentResident\n        }\n        apartment {\n          id\n          objectType\n          requiresBruksoverlating\n          hasAnonymousManager\n          apartmentNumber\n          residentialNumber\n          unitNumber\n          doorway\n          address\n          city\n          postalCode\n          apartmentType\n        }\n      }\n    }\n    pendingApplications(boardPerspective: true) {\n      id\n      createdAt\n      name\n      firstName\n      lastName\n      phoneNumber\n      email\n      comment\n      reminderWasSent\n      apartmentNumber\n      viewerCanApprove\n      invitedByOwner\n      sentForManualHandling\n      role\n      owner {\n        id\n        name\n        phoneNumber\n        residenciesWithTypeOwner: residencies(type: [OWNER]) {\n          id\n          apartment {\n            id\n            objectType\n            unitNumber\n            residentialNumber\n            doorway\n            requiresBruksoverlating\n            hasAnonymousManager\n            apartmentNumber\n            address\n          }\n        }\n      }\n    }\n    transferApplications {\n      ...TransferApplication\n    }\n    transferApplicationChanges {\n      ...TransferApplicationChange\n    }\n  }\n}\nfragment ApartmentResident on Member {\n  id\n  userId\n  personId\n  firstName\n  lastName\n  phoneNumber\n  email\n}\nfragment TransferApplication on TransferApplication {\n  id\n  createdBy {\n    id\n    firstName\n    lastName\n    profilePhotoUrl\n    email\n    phoneNumber\n    userId\n    organizationNumber\n  }\n  createdAt\n  apartmentNumber\n  decidedAt\n  decidedBy {\n    id\n  }\n  tenantFirstName\n  tenantLastName\n  tenantPhoneNumber\n  tenantEmail\n  tenantBirthDate\n  numberOfResidents\n  numberOfPets\n  contractFrom\n  contractTo\n  rejectionReason\n  isTenantFamily\n  hasSelfOrFamilyResided\n  description\n  status\n  housingObject {\n    id\n    address\n    postalCode\n    city\n    apartmentNumber\n    unitNumber\n    residentialNumber\n    contract {\n      contractEnd\n    }\n  }\n  settings {\n    viewerCanApprove\n    viewerCanReject\n    viewerCanCancel\n  }\n}\nfragment TransferApplicationChange on TransferApplicationChange {\n  id\n  type\n  createdBy {\n    id\n    firstName\n    lastName\n    profilePhotoUrl\n    email\n    phoneNumber\n    userId\n    organizationNumber\n  }\n  createdAt\n  apartmentNumber\n  decidedAt\n  decidedBy {\n    id\n  }\n  tenantFirstName\n  tenantLastName\n  previousTenantFirstName\n  previousTenantLastName\n  previousContractTo\n  tenantPhoneNumber\n  tenantEmail\n  tenantBirthDate\n  numberOfResidents\n  numberOfPets\n  contractFrom\n  contractTo\n  rejectionReason\n  isTenantFamily\n  hasSelfOrFamilyResided\n  description\n  status\n  housingObject {\n    id\n    address\n    postalCode\n    city\n    apartmentNumber\n    unitNumber\n    residentialNumber\n    contract {\n      contractEnd\n    }\n  }\n  settings {\n    viewerCanApprove\n    viewerCanReject\n    viewerCanCancel\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboResidentNotificationInfoQuery",
+    "queryText": "query vibboResidentNotificationInfoQuery($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n\n      residents {\n        id\n        loggedInToVibbo\n        receivesPushNotifications\n        hasEmailConsent\n        hasSmsConsent\n        electronicConsent\n        email\n        phoneNumber\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboResidentStatistics",
+    "queryText": "query vibboResidentStatistics($organizationSlug: OrganizationID!) {\n    organization(id: $organizationSlug) {\n      id\n\n      statistics {\n        id\n        residents {\n          id\n          total\n          ownersOnVibbo\n          ownersNotOnVibbo\n          futureOwners\n          tenants\n          coresidents\n          other\n          receivesPushNotifications\n          hasEmailConsent\n          hasSmsConsent\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboSearchQuery",
+    "queryText": "query vibboSearchQuery($organizationId: OrganizationID!, $query: String!) {\n    search: vibboSearch(organizationId: $organizationId, text: $query) {\n      items {\n        result {\n          ... on News {\n            id\n            slug\n            title\n            publishedAt: initialPublishDate\n          }\n          ... on Topic {\n            id\n            slug\n            title\n            publishedAt: initialPublishDate\n          }\n          ... on Post {\n            id\n            slug\n            title\n            publishedAt\n          }\n          ... on SearchableLink {\n            id\n            title\n            description\n            url\n          }\n          typename: __typename\n        }\n        highlight {\n          highlight\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboSocialReactions",
+    "queryText": "query vibboSocialReactions($parentId: UnpackedNodeID!, $type: SocialReactionType!) {\n    socialReactions(parentId: $parentId, type: $type) {\n      ...SocialReaction\n    }\n  }\nfragment SocialReaction on SocialReaction {\n  id\n  __typename\n  type\n  createdAt\n  parentId\n  createdBy {\n    id\n    name\n    profilePhotoUrl\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboThreadBySlug",
+    "queryText": "query vibboThreadBySlug($threadSlug: String!, $organizationId: OrganizationID) {\n  threadBySlug(slug: $threadSlug) {\n    ...ThreadDetail\n  }\n}\nfragment ThreadDetail on Thread {\n  id\n  slug\n  title\n  lastMessageAt\n  createdAt\n  archivedAt\n  archivedBy {\n    id\n    name\n  }\n  isMarkedAsDeletedByCorrespondent\n  isAnsweredByBoard\n  markedAsAnsweredAt\n  markedAsAnsweredBy {\n    id\n    firstName\n    lastName\n  }\n  topic {\n    ...TopicPreview\n  }\n  messages {\n    ...ThreadMessage\n  }\n  totalMessagesCount\n  assignedTo {\n    id\n    userId\n    name\n    firstName\n    jobTitle\n    profilePhotoUrl\n  }\n  apartments {\n    id\n    apartmentNumber\n    residentialNumber\n    unitNumber\n    doorway\n    address\n    city\n    postalCode\n    apartmentType\n    objectType\n  }\n  correspondent {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n    primaryResidentType\n    phoneNumber\n    email\n    residencies {\n      id\n      type\n      apartment {\n        id\n        apartmentNumber\n        residentialNumber\n        unitNumber\n        doorway\n        address\n        city\n        postalCode\n        objectType\n      }\n    }\n  }\n  viewerHasRead\n  correspondentHasRead\n  boardHasRead\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}\nfragment ThreadMessage on ThreadMessage {\n  id\n  fromEmail\n  fromBoard\n  fromAutoReplyEmail\n  body\n  createdAt\n  createdBy {\n    id\n    userId\n    name\n    jobTitle\n    profilePhotoUrl\n    roles\n  }\n  attachments {\n    ...Attachment\n  }\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboThreadMessagesBySlug",
+    "queryText": "query vibboThreadMessagesBySlug($threadSlug: String!, $after: NodeID, $first: Int) {\n  threadBySlug(slug: $threadSlug) {\n    id\n    totalMessagesCount\n    messages(after: $after, first: $first) {\n      ...ThreadMessage\n    }\n  }\n}\nfragment ThreadMessage on ThreadMessage {\n  id\n  fromEmail\n  fromBoard\n  fromAutoReplyEmail\n  body\n  createdAt\n  createdBy {\n    id\n    userId\n    name\n    jobTitle\n    profilePhotoUrl\n    roles\n  }\n  attachments {\n    ...Attachment\n  }\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboThreadsQuery",
+    "queryText": "query vibboThreadsQuery($organizationId: OrganizationID!, $boardPerspective: Boolean!, $status: ThreadStatus!, $correspondentUserId: NodeID, $assigneeUserId: NodeID, $apartmentNumber: Int, $topicId: NodeID, $search: String, $limit: Int!, $afterDate: DateTime) {\n  organization(id: $organizationId) {\n    id\n    threads(\n      filters: {search: $search, status: $status, correspondentUserId: $correspondentUserId, assigneeUserId: $assigneeUserId, apartmentNumber: $apartmentNumber, topicId: $topicId, boardPerspective: $boardPerspective}\n      limit: $limit\n      afterDate: $afterDate\n    ) {\n      counters {\n        total\n        answered\n        unanswered\n        archived\n      }\n      threads {\n        ...ThreadDetail\n      }\n    }\n  }\n}\nfragment ThreadDetail on Thread {\n  id\n  slug\n  title\n  lastMessageAt\n  createdAt\n  archivedAt\n  archivedBy {\n    id\n    name\n  }\n  isMarkedAsDeletedByCorrespondent\n  isAnsweredByBoard\n  markedAsAnsweredAt\n  markedAsAnsweredBy {\n    id\n    firstName\n    lastName\n  }\n  topic {\n    ...TopicPreview\n  }\n  messages {\n    ...ThreadMessage\n  }\n  totalMessagesCount\n  assignedTo {\n    id\n    userId\n    name\n    firstName\n    jobTitle\n    profilePhotoUrl\n  }\n  apartments {\n    id\n    apartmentNumber\n    residentialNumber\n    unitNumber\n    doorway\n    address\n    city\n    postalCode\n    apartmentType\n    objectType\n  }\n  correspondent {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n    primaryResidentType\n    phoneNumber\n    email\n    residencies {\n      id\n      type\n      apartment {\n        id\n        apartmentNumber\n        residentialNumber\n        unitNumber\n        doorway\n        address\n        city\n        postalCode\n        objectType\n      }\n    }\n  }\n  viewerHasRead\n  correspondentHasRead\n  boardHasRead\n}\nfragment TopicPreview on Topic {\n  id\n  slug\n  title\n  isPublished\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  isClusterTopic\n  createdFromTemplate\n  draft {\n    meta\n  }\n  organization {\n    id\n  }\n}\nfragment ThreadMessage on ThreadMessage {\n  id\n  fromEmail\n  fromBoard\n  fromAutoReplyEmail\n  body\n  createdAt\n  createdBy {\n    id\n    userId\n    name\n    jobTitle\n    profilePhotoUrl\n    roles\n  }\n  attachments {\n    ...Attachment\n  }\n}\nfragment Attachment on Attachment {\n  id\n  filename\n  url\n  contentType\n  meta {\n    fileSize\n    width\n    height\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboTopicPage",
+    "queryText": "query vibboTopicPage($organizationId: OrganizationID!, $topicSlug: String!, $bookingPaginationInput: BookingPaginationInput) {\n  publicOrganization(id: $organizationId) {\n    id\n    slug\n    name\n    boardEmail\n    boardPhoneNumber\n    topic: topicBySlug(slug: $topicSlug) {\n      ...TopicDetail\n    }\n  }\n  organization(id: $organizationId) {\n    id\n    slug\n    name\n    boardEmail\n    boardPhoneNumber\n    topic: topicBySlug(slug: $topicSlug) {\n      ...TopicDetail\n    }\n    contacts: editableContacts {\n      id\n      userId\n      name\n      jobTitle\n      profilePhotoUrl\n      topics {\n        id\n      }\n    }\n  }\n}\nfragment TopicDetail on Topic {\n  id\n  title\n  slug\n  isPublished\n  initialPublishDate\n  initialPublishBy {\n    id\n    name\n  }\n  showOnDashboard(organizationId: $organizationId)\n  showOnPublicOrganizationPage\n  viewerHasRead\n  printUrl: url(organizationId: $organizationId, print: true)\n  createdAt\n  createdBy {\n    id\n    name\n  }\n  updatedAt\n  updatedBy {\n    id\n    name\n  }\n  organization {\n    id\n    isCluster\n  }\n  authorOrganization {\n    id\n    name\n    boardEmail\n  }\n  isClusterTopic\n  article\n  draft {\n    content\n    createdAt\n    createdBy {\n      id\n      name\n    }\n    updatedAt\n    updatedBy {\n      id\n      name\n    }\n  }\n  attachments {\n    id\n    url\n    meta {\n      width\n      height\n    }\n  }\n  forms {\n    id\n    title\n    locked\n    fields {\n      id\n      value\n      required\n    }\n    recipientEmailAddress\n    attachmentsEnabled\n    deliverByMessage\n    deliverByEmail\n    isClusterForm\n    organizationName\n  }\n  contacts {\n    id\n    firstName\n    lastName\n    email\n    phoneNumber\n    hiddenEmail\n    hiddenPhoneNumber\n    name\n    jobTitle\n    userId\n    profilePhotoUrl\n    topics {\n      id\n    }\n  }\n  calendars {\n    ...CalendarWithBookings\n  }\n}\nfragment CalendarWithBookings on ItemCalendar {\n  ...Calendar\n  bookings(bookingPaginationInput: $bookingPaginationInput) {\n    ...Booking\n  }\n}\nfragment Calendar on ItemCalendar {\n  id\n  title\n  timeFrom\n  timeTo\n  reservationType\n  maximumMonthsAhead\n  paymentRequired\n  price\n  priceExtern\n  priceUnit\n  surchargeAmount\n  surchargeDescription\n  surchargeFreeForResidents\n  isFreeForResidents\n  overridePrices {\n    ...CalendarPriceOverride\n  }\n  availability {\n    ...Availability\n  }\n  limitation\n  sendBoardNotification\n  externalEmailAddress\n  hasBookings\n  hasActivePaidBookings\n  topic {\n    id\n    slug\n    authorOrganization {\n      id\n      name\n      boardEmail\n    }\n    organization {\n      id\n      name\n      boardEmail\n      boardPhoneNumber\n    }\n    isClusterTopic\n  }\n  imageId\n  imageUrl\n  paymentCategory\n  locked\n  mobileKeyLockIds\n  hasMobileKeys\n  mobileKeySharingEnabled\n  showExternalPrice\n  rentalRulesContent\n  rentalRulesRequired\n  rentalRulesVersion\n}\nfragment CalendarPriceOverride on CalendarPriceOverride {\n  id\n  weekday\n  audienceType\n  price\n  createdAt\n}\nfragment Availability on Availability {\n  MONDAY {\n    ...AvailabilityData\n  }\n  TUESDAY {\n    ...AvailabilityData\n  }\n  WEDNESDAY {\n    ...AvailabilityData\n  }\n  THURSDAY {\n    ...AvailabilityData\n  }\n  FRIDAY {\n    ...AvailabilityData\n  }\n  SATURDAY {\n    ...AvailabilityData\n  }\n  SUNDAY {\n    ...AvailabilityData\n  }\n}\nfragment AvailabilityData on AvailabilityData {\n  from\n  to\n}\nfragment Booking on Booking {\n  id\n  from\n  description\n  to\n  privateBooking\n  external\n  confirmedAt\n  email\n  status\n  price\n  surchargeAmount\n  surchargeDescription\n  isPaidOrPendingPayment\n  mobileKeyPhones\n  priceBreakdown {\n    bookingDate\n    price\n  }\n  canAutoRefund\n  isOutsideAutoRefundWindow\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    phoneNumber\n    email\n    residencies {\n      id\n      type\n      apartment {\n        id\n        apartmentNumber\n        residentialNumber\n        unitNumber\n        doorway\n        address\n      }\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboUpdateProfileBannerQuery",
+    "queryText": "query vibboUpdateProfileBannerQuery($organizationSlug: OrganizationID!) {\n    viewer {\n      id\n      name\n      email\n      phoneNumber\n      canEditEmailAddress\n    }\n\n    organization(id: $organizationSlug) {\n      id\n\n      viewerAsMember {\n        id\n        email\n        phoneNumber\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboUserContextQuery",
+    "queryText": "query vibboUserContextQuery {\n    viewer {\n      id # Used by Google Analytics\n      personId\n      name\n      firstName\n      sub\n      profilePhotoUrl\n      flags\n      admin\n      isKioskAdmin\n      isHousingManager\n      isDemo\n      phoneNumber\n\n      notifications(showInStyrerommet: false, showInVibbo: true) {\n        id\n        title\n        message\n        type\n      }\n\n      pendingInvitations {\n        id\n        viewerCanApprove\n        organization {\n          id\n          obosCompanyNumber\n        }\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboUserWithOrganizationContextQuery",
+    "queryText": "query vibboUserWithOrganizationContextQuery($organizationSlug: OrganizationID!) {\n    version\n\n    viewer {\n      id # Used by Google Analytics\n      personId\n      name\n      firstName\n      sub\n      profilePhotoUrl\n      flags\n      organizationFlags(organizationId: $organizationSlug)\n      admin\n      isKioskAdmin\n      isHousingManager\n      phoneNumber\n\n      notifications(showInStyrerommet: false, showInVibbo: true) {\n        id\n        title\n        message\n        type\n      }\n\n      pendingInvitations {\n        id\n        viewerCanApprove\n        organization {\n          id\n          obosCompanyNumber\n        }\n      }\n    }\n\n    organization(id: $organizationSlug) {\n      # Be careful not to add too much bloat here, as this data will ALWAYS be queried\n      id\n      apartmentsCount\n      vibboEnabled\n      name\n      onProperty\n      hasCluster\n      hasActiveCalendars\n      slug\n      obosCompanyNumber\n      intendedForTest\n      status\n      requiresBruksoverlating\n      organizationCode\n      clusters {\n        id\n        name\n        slug\n        organizations(skipMembership: true) {\n          id\n          name\n        }\n      }\n      modulesAvailable\n\n      viewerAsMember {\n        id\n        email\n        permissions\n        electronicConsent\n        roles\n        visibleRoleNames\n      }\n    }\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerObosMembership",
+    "queryText": "query viewerObosMembership {\n  viewerObosMembership {\n    isEligibleForNewMembership\n    hasSeenCongratulationsScreen\n    membership {\n      status\n      startedAt\n    }\n    membershipOffer {\n      membershipActivatedAt\n      membershipResolvedAt\n    }\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerTrackingConsent",
+    "queryText": "query viewerTrackingConsent {\n  viewerTrackingConsent {\n    hasOptedIn\n    latestOptedInDate\n  }\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerVibboGroups",
+    "queryText": "query viewerVibboGroups($organizationSlug: OrganizationID!, $limit: Int) {\n  viewerVibboGroups(organizationId: $organizationSlug, limit: $limit) {\n    ...VibboGroups\n    updatedAt\n    createdAt\n    posts {\n      updatedAt\n    }\n  }\n}\nfragment VibboGroups on VibboGroup {\n  id\n  name\n  description\n  slug\n  type\n  imageUrl\n  isPrivateGroup\n  memberCount\n  createdBy {\n    id\n    userId\n    name\n    profilePhotoUrl\n    jobTitle\n  }\n  organization {\n    isCluster\n    id\n    name\n  }\n  viewerIsAdmin\n  viewerIsMember\n}"
+  }
+]

@@ -1,0 +1,64 @@
+{
+  "name": "styrerommet-mcp",
+  "version": "0.1.0",
+  "description": "Local MCP server for Styrerommet, Vibbo, Cantor, Arkiv, and OBOS Mitt Bygg.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "styrerommet-mcp": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "start": "node src/index.ts",
+    "auth": "node src/index.ts --auth",
+    "auth:mittbygg": "node src/index.ts --auth mittbygg",
+    "build": "node scripts/build.ts",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm test:package",
+    "test:package": "node scripts/check-package.ts",
+    "prepack": "pnpm build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "styrerommet",
+    "vibbo",
+    "obos",
+    "cantor",
+    "jottacloud"
+  ],
+  "author": "Audun Wigum Arbo",
+  "license": "MIT",
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.4.0",
+    "@types/node": "26.6.5",
+    "fflate": "0.8.3",
+    "typescript": "7.0.2"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "playwright-core": "1.64.1",
+    "zod": "4.6.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AudunWA/styrerommet-mcp.git"
+  },
+  "homepage": "https://github.com/AudunWA/styrerommet-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/AudunWA/styrerommet-mcp/issues"
+  },
+  "files": [
+    "dist/**/*.js",
+    "data/*-discovered-queries.json",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "mcpName": "io.github.AudunWA/styrerommet-mcp"
+}

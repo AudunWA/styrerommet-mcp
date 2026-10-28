@@ -1,0 +1,23 @@
+# Credentials
+.env
+.env.*
+!.env.example
+*.env
+*.pem
+*.key
+*.token
+auth-profile/
+
+# Dependencies, build output and runtime files
+node_modules/
+dist/
+release/
+coverage/
+data/arkiv/
+data/invoices/
+data/documents/
+*.log
+*.tgz
+*.mcpb
+.DS_Store
+Thumbs.db

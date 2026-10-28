@@ -1,0 +1,802 @@
+[
+  {
+    "operationType": "query",
+    "operationName": "isFeatureEnabled",
+    "queryText": "query isFeatureEnabled($name: String!, $properties: [FeatureEnabledProperties], $fallback: Boolean) {\\n  isFeatureEnabled(name: $name, properties: $properties, fallback: $fallback)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "withMaintenanceNotifications",
+    "queryText": "query withMaintenanceNotifications {\\n  viewer {\\n    id\\n    notifications(showInStyrerommet: true, showInVibbo: false) {\\n      id\\n      title\\n      message\\n      type\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerHasRoles",
+    "queryText": "query viewerHasRoles($roles: [OrganizationRole!]!) {\\n  viewer {\\n    hasRoles(roles: $roles)\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerTrackingConsent",
+    "queryText": "query viewerTrackingConsent {\\n  viewerTrackingConsent {\\n    hasOptedIn\\n    latestOptedInDate\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "generalAssemblyById",
+    "queryText": "query generalAssemblyById($assemblyId: String!) {\\n  generalAssemblyById(assemblyId: $assemblyId) {\\n    id\\n    slug\\n    date\\n    endDate\\n    year\\n    digital\\n    ordinary\\n    organization {\\n      id\\n      slug\\n      name\\n      obosCompanyNumber\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "adminAssemblies",
+    "queryText": "query adminAssemblies($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    name\\n    obosCompanyNumber\\n    organizationCode\\n    organizationCodeDescription\\n    assemblies: generalAssemblies {\\n      id\\n      slug\\n      date\\n      endDate\\n      physicalMeetingDate\\n      phase\\n      digital\\n      ordinary\\n      location\\n      videoLocation\\n      year\\n      ended\\n      inSession\\n      createdAt\\n      createdBy {\\n        id\\n        name\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "generalAssemblyDetails",
+    "queryText": "query generalAssemblyDetails($obosCompanyNumber: OrganizationID!, $slug: String!) {\\n  generalAssembly(organizationId: $obosCompanyNumber, public: false, slug: $slug) {\\n    id\\n    slug\\n    date\\n    phase\\n    endDate\\n    physicalMeetingDate\\n    scheduledAt\\n    location\\n    videoLocation\\n    ended\\n    signed\\n    ordinary\\n    digital\\n    year\\n    proposalsEndAt\\n    invitationSentAt\\n    invitationAttachmentUrl\\n    protocolAttachmentUrl\\n    openedForMotions\\n    preliminaryProtocolUrl\\n    scheduledAt\\n    inviteScheduledFor\\n    createdAt\\n    textSentAt\\n    votingPhase\\n    votingPhaseUpdatedAt\\n    analogVotes {\\n      id\\n      createdAt\\n      createdBy {\\n        id\\n        name\\n      }\\n      apartmentNumber\\n      attachment {\\n        id\\n        filename\\n        url\\n      }\\n    }\\n    assemblyLog {\\n      createdBy {\\n        id\\n        name\\n      }\\n      eventType\\n      url\\n      createdAt\\n    }\\n    assemblyScheduledJobs {\\n      jobId\\n      message\\n      scheduleName\\n      status\\n      runAt\\n    }\\n    scheduledAt\\n    motionsClosedAt\\n    protocolUploadedAt\\n    createdBy {\\n      id\\n      name\\n    }\\n    digitalSigning {\\n      id\\n      organizationId\\n      createdAt\\n      status\\n      parentId\\n      parentType\\n      attachment {\\n        id\\n        filename\\n        url\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "adminTransferApplicationHistory",
+    "queryText": "query adminTransferApplicationHistory($organizationId: OrganizationID!) {\\n  adminTransferApplications(organizationId: $organizationId) {\\n    ...AdminTransferApplication\\n  }\\n  adminTransferApplicationChanges(organizationId: $organizationId) {\\n    ...AdminTransferApplicationChange\\n  }\\n}\nfragment AdminTransferApplication on TransferApplication {\\n  id\\n  apartmentNumber\\n  status\\n  robotStatus\\n  tenantFirstName\\n  tenantLastName\\n  tenantEmail\\n  tenantPhoneNumber\\n  tenantBirthDate\\n  numberOfResidents\\n  numberOfPets\\n  isTenantFamily\\n  hasSelfOrFamilyResided\\n  description\\n  contractFrom\\n  contractTo\\n  decidedAt\\n  rejectionReason\\n  createdAt\\n  deletedAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  decidedBy {\\n    id\\n    name\\n  }\\n}\nfragment AdminTransferApplicationChange on TransferApplicationChange {\\n  id\\n  type\\n  apartmentNumber\\n  status\\n  robotStatus\\n  tenantFirstName\\n  tenantLastName\\n  tenantEmail\\n  tenantPhoneNumber\\n  tenantBirthDate\\n  numberOfResidents\\n  numberOfPets\\n  isTenantFamily\\n  hasSelfOrFamilyResided\\n  description\\n  contractFrom\\n  contractTo\\n  decidedAt\\n  rejectionReason\\n  createdAt\\n  deletedAt\\n  previousTenantFirstName\\n  previousTenantLastName\\n  previousContractTo\\n  createdBy {\\n    id\\n    name\\n  }\\n  decidedBy {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getAllClusters",
+    "queryText": "query getAllClusters {\\n  getAllClusterOrganizations {\\n    id\\n    name\\n    slug\\n    organizations {\\n      name\\n      obosCompanyNumber\\n      slug\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "SearchDuplicatedUsers",
+    "queryText": "query SearchDuplicatedUsers($searchDuplicatedUsersInput: SearchDuplicatedUsersInput!) {\\n  searchDuplicatedUsers(input: $searchDuplicatedUsersInput) {\\n    userId\\n    personId\\n    sub\\n    auth0Id\\n    firstName\\n    lastName\\n    email\\n    phoneNumber\\n    lastActivityAt\\n    deletedAt\\n    newsCount\\n    membershipsCount\\n    postsCount\\n    commentsCount\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "organizationsNotifications",
+    "queryText": "query organizationsNotifications {\\n  completedNotifications: organizationsNotifications(\\n    options: {filters: {completed: true}}\\n  ) {\\n    data {\\n      id\\n      organizationName\\n      organizationNumber\\n      type\\n      completed\\n      createdBy\\n      createdAt\\n      note\\n    }\\n    total\\n  }\\n  incompletedNotifications: organizationsNotifications(\\n    options: {filters: {completed: false}}\\n  ) {\\n    data {\\n      id\\n      organizationName\\n      organizationNumber\\n      type\\n      completed\\n      createdBy\\n      createdAt\\n      note\\n    }\\n    total\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "searchLegalOwnerByOrganizationNumber",
+    "queryText": "query searchLegalOwnerByOrganizationNumber($organizationNumber: String!) {\\n  searchLegalOwnerByOrganizationNumber(query: $organizationNumber) {\\n    ...LegalOwnerSearchResult\\n  }\\n}\nfragment LegalOwnerSearchResult on LegalOwner {\\n  id\\n  mdcCompanyId\\n  organizationNumber\\n  name\\n  managers {\\n    ...LegalOwnerHousingManager\\n  }\\n  organizations {\\n    ...LegalOwnerOrganization\\n  }\\n}\nfragment LegalOwnerHousingManager on HousingManager {\\n  id\\n  userId\\n  firstName\\n  lastName\\n  phoneNumber\\n  email\\n  accessCompanies {\\n    ...HousingManagerOrganization\\n  }\\n}\nfragment HousingManagerOrganization on HousingManagerOrganization {\\n  id\\n  obosCompanyNumber\\n  vibboEnabled\\n}\nfragment LegalOwnerOrganization on LegalOwnerOrganization {\\n  id\\n  name\\n  obosCompanyNumber\\n  vibboEnabled\\n  units {\\n    ...DTPUnitInfo\\n  }\\n}\nfragment DTPUnitInfo on DTPUnitInfo {\\n  unitId\\n  unitNumber\\n  objectNumber\\n  unitType\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "searchHousingManagerByPhoneNumber",
+    "queryText": "query searchHousingManagerByPhoneNumber($phoneNumber: String!) {\\n  searchHousingManagerByPhoneNumber(query: $phoneNumber) {\\n    mdcId\\n    housingManager {\\n      ...HousingManagerContactInformation\\n    }\\n    housingManagement {\\n      ...HousingManagerContactInformation\\n    }\\n  }\\n}\nfragment HousingManagerContactInformation on HousingManagerContactInformation {\\n  firstName\\n  lastName\\n  phoneNumber\\n  email\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "jobsFiltersQuery",
+    "queryText": "query jobsFiltersQuery {\\n  jobTypes\\n  jobStatuses\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "searchJobs",
+    "queryText": "query searchJobs($page: Int!, $limit: Int!, $status: [JobStatus!], $jobType: [JobType!], $jobId: String, $requestId: String, $externalId: String) {\\n  searchJobs(\\n    filters: {limit: $limit, page: $page, status: $status, jobType: $jobType, jobId: $jobId, requestId: $requestId, externalId: $externalId}\\n  ) {\\n    total\\n    jobs {\\n      jobId\\n      jobType\\n      status\\n      requestId\\n      message\\n      createdAt\\n      updatedAt\\n      tries\\n      maxTries\\n      parameters\\n      requestId\\n      executionTime\\n      externalId\\n      canRetry\\n      canCancel\\n      delayUntil\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "adminMeetingsPage",
+    "queryText": "query adminMeetingsPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    name\\n    obosCompanyNumber\\n    organizationCode\\n    organizationCodeDescription\\n    meetings {\\n      date\\n      id\\n      endDate\\n      ended\\n      signed\\n      location\\n      lockedForSigning\\n      createdFromTemplate\\n    }\\n    systemContacts {\\n      id\\n      firstName\\n      lastName\\n      jobTitle\\n      profilePhotoUrl\\n      phoneNumber\\n      role\\n      email\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "meetingAdmin",
+    "queryText": "query meetingAdmin($id: NodeID!) {\\n  meeting(id: $id) {\\n    ...MeetingDetailsAdmin\\n    ...MeetingMinuteAdmin\\n    id\\n    date\\n    invitationUrl\\n    ended\\n    signed\\n    signedAt\\n    createdAt\\n    lockedForSigning\\n    organization {\\n      id\\n      organizationCode\\n      obosCompanyNumber\\n    }\\n  }\\n}\nfragment MeetingDetailsAdmin on Meeting {\\n  id\\n  date\\n  endDate\\n  location\\n  videoLocation\\n  invitationSentAt\\n  createdFromTemplate\\n}\nfragment MeetingMinuteAdmin on Meeting {\\n  ...MeetingMinuteSignatureSectionAdmin\\n  protocolUrl\\n  attendees {\\n    id\\n    name\\n    email\\n    shouldSign\\n    attended\\n    createdAt\\n    updatedAt\\n    invitationSentAt\\n    memberId\\n    hasSigned\\n    member {\\n      id\\n      name\\n      email\\n      missing\\n      roles\\n      personId\\n    }\\n  }\\n  id\\n  date\\n  location\\n  videoLocation\\n  description\\n  organization {\\n    id\\n  }\\n}\nfragment MeetingMinuteSignatureSectionAdmin on Meeting {\\n  id\\n  signed\\n  lockedForSigning\\n  viewerHasSigned\\n  viewerCanSign\\n  viewerShouldSign\\n  requiredSignees {\\n    id\\n    member {\\n      id\\n      missing\\n      name\\n    }\\n    name\\n  }\\n  signees {\\n    id\\n    missing\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "unconfirmedNameChanges",
+    "queryText": "query unconfirmedNameChanges {\\n  unconfirmedNameChanges {\\n    id\\n    obosCompanyNumber\\n    oldName\\n    newName\\n    organizationId\\n    oldSlug\\n    newSlug\\n    createdAt\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "notifications",
+    "queryText": "query notifications {\\n  notifications(showInStyrerommet: true, showInVibbo: true) {\\n    id\\n    title\\n    message\\n    type\\n    startDate\\n    endDate\\n    showInStyrerommet\\n    showInVibbo\\n    showOnFrontpage\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "features",
+    "queryText": "query features {\\n  releaseLog {\\n    id\\n    title\\n    message\\n    emoji\\n    product\\n    startDate\\n    link\\n    module\\n    imageUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getAllFailedApplications",
+    "queryText": "query getAllFailedApplications($input: SearchFailedApplicationsInput) {\\n  getAllFailedApplications(args: $input) {\\n    ...FailedApplicationListItem\\n  }\\n}\nfragment FailedApplicationListItem on FailedApplication {\\n  id\\n  conflictingPerson {\\n    firstName\\n    lastName\\n  }\\n  conflictingPhone\\n  conflictingPersonsByPhone {\\n    email\\n    firstName\\n    lastName\\n  }\\n  createdBy {\\n    firstName\\n    lastName\\n    phoneNumber\\n  }\\n  createdAt\\n  reason\\n  message\\n  tenantApplication {\\n    id\\n    firstName\\n    lastName\\n  }\\n  input\\n  unitNumber\\n  role\\n  resolvedBy\\n  requestId\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getFailedApplicationsByPhoneNumber",
+    "queryText": "query getFailedApplicationsByPhoneNumber($input: String!) {\\n  getFailedApplicationsByPhoneNumber(phoneNumber: $input) {\\n    id\\n    firstName\\n    lastName\\n    phoneNumber\\n    email\\n    message\\n    organizationNumber\\n    roleType\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "suppliersByQuery",
+    "queryText": "query suppliersByQuery($query: String!) {\\n  suppliersByQuery(query: $query) {\\n    ...SupplierAdminData\\n  }\\n}\nfragment SupplierAdminData on Supplier {\\n  id\\n  name\\n  officialName\\n  organizationNumber\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "supplierById",
+    "queryText": "query supplierById($obosCompanyNumber: ID!, $supplierId: NodeID!) {\\n  supplier(obosCompanyNumber: $obosCompanyNumber, supplierId: $supplierId) {\\n    id\\n    name\\n    officialName\\n    organizationNumber\\n    obosContracted\\n    categories {\\n      ...SupplierCategoryData\\n    }\\n    ...SupplierContactInfo\\n  }\\n}\nfragment SupplierCategoryData on SupplierCategory {\\n  id\\n  name\\n  categoryId\\n  subcategories {\\n    id\\n    name\\n    categoryId\\n  }\\n}\nfragment SupplierContactInfo on Supplier {\\n  contactInfo {\\n    phoneNumber\\n    email\\n    website\\n    address\\n    postalCode\\n    postalArea\\n    organizationNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "supplierCategories",
+    "queryText": "query supplierCategories($obosCompanyNumber: ID!) {\\n  supplierCategories(obosCompanyNumber: $obosCompanyNumber) {\\n    ...SupplierCategoryData\\n  }\\n}\nfragment SupplierCategoryData on SupplierCategory {\\n  id\\n  name\\n  categoryId\\n  subcategories {\\n    id\\n    name\\n    categoryId\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "inboxUsernameAvailable",
+    "queryText": "query inboxUsernameAvailable($organizationId: OrganizationID!, $username: String!) {\\n  inboxUsernameAvailable(organizationId: $organizationId, username: $username)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "suggestCompanyByName",
+    "queryText": "query suggestCompanyByName($query: String) {\\n  suggestCompanyByName(query: $query) {\\n    organizationId\\n    mdcHousingCompanyId\\n    obosCompanyNumber\\n    name\\n    isActive\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "companyInfo",
+    "queryText": "query companyInfo($query: String!) {\\n  company: superSearchCompany(query: $query) {\\n    housingCompanyName\\n    housingCompanyNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsSetupStatus",
+    "queryText": "query hmsSetupStatus($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    id\\n    HMSSetup {\\n      updatedAt\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "apartmentInvoices",
+    "queryText": "query apartmentInvoices($mdcPersonId: String!, $obosCompanyNumber: OrganizationID!, $objectNumber: Int!) {\\n  invoices: apartmentInvoicesDtp(\\n    mdcPersonId: $mdcPersonId\\n    companyNumber: $obosCompanyNumber\\n    objectNumber: $objectNumber\\n  ) {\\n    invoiceId\\n    kid\\n    amount\\n    remainingAmount\\n    dueDate\\n    paymentStatus\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getPersonOrganizationConsentFlags",
+    "queryText": "query getPersonOrganizationConsentFlags($organizationNumber: OrganizationID!, $personId: ID!) {\\n  organization(id: $organizationNumber) {\\n    resident: member(personId: $personId) {\\n      flags\\n      permissions\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "apartmentFinancesDebugger",
+    "queryText": "query apartmentFinancesDebugger($obosCompanyNumber: OrganizationID!, $apartmentNumber: Int!) {\\n  apartmentFinancesDebugger(\\n    organizationId: $obosCompanyNumber\\n    objectNumber: $apartmentNumber\\n  ) {\\n    invoices {\\n      invoiceId\\n      amount\\n      paymentDate\\n      paymentStatus\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "superSearchCompanyQuery",
+    "queryText": "query superSearchCompanyQuery($query: String!) {\\n  resultCompany: superSearchCompany(query: $query) {\\n    activeFrom\\n    activeTo\\n    cluster {\\n      mdcHousingCompanyId\\n      name\\n      obosCompanyNumber\\n    }\\n    generalAssembly\\n    mdcHousingCompanyId\\n    housingCompanyName\\n    smartermailInboxAccount\\n    housingCompanyNumber\\n    housingCompanyRoles {\\n      email\\n      firstName\\n      lastName\\n      mdcPersonId\\n      phoneNumber\\n      roleType\\n      holds {\\n        holdType\\n        holdValue\\n      }\\n    }\\n    housingCompanyType\\n    internalContact {\\n      email\\n      firstName\\n      lastName\\n      phoneNumber\\n    }\\n    invoiceFlow\\n    isCluster\\n    nationalOrganizationNumber\\n    obosKey\\n    organizationId\\n    organizationSlug\\n    housingCompanyEmail\\n    sourceSystem\\n    statusFDV\\n    adviserTeam {\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "deletedVibboGroupsForAdmin",
+    "queryText": "query deletedVibboGroupsForAdmin($organizationId: OrganizationID!, $limit: Int) {\\n  deletedVibboGroups(organizationId: $organizationId, limit: $limit) {\\n    id\\n    name\\n    slug\\n    deletedAt\\n    deletedBy {\\n      name\\n    }\\n    type\\n    isPrivateGroup\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "superSearchUserQuery",
+    "queryText": "query superSearchUserQuery($query: String!) {\\n  resultUser: superSearchPerson(query: $query) {\\n    userId\\n    personId\\n    auth0Id\\n    firstName\\n    lastName\\n    phoneNumber\\n    email\\n    boardEmail\\n    dateOfBirth\\n    lastLoginVibbo\\n    lastLoginStyrerommet\\n    adGroups\\n    requestedDeletion\\n    bankIdUser\\n    flags\\n    optOut\\n    optOutStatus\\n    consentFlag\\n    dbElectronicConsentFlag\\n    adminBlock\\n    dataMismatch\\n    dtpData {\\n      ownerships {\\n        ownershipId\\n        dateFrom\\n        unitCategory\\n        housingCompany {\\n          organizationId\\n          mdcHousingCompanyId\\n          obosCompanyNumber\\n          name\\n          isActive\\n        }\\n        unitInfo {\\n          unitId\\n          unitNumber\\n          objectNumber\\n          housingUnitNumber\\n          address\\n          unitType\\n          ownershipModel\\n          mainOwner {\\n            mdcId\\n            mdcIdType\\n            name\\n          }\\n        }\\n      }\\n      usages {\\n        usageId\\n        dateFrom\\n        unitCategory\\n        usageType\\n        usageSource\\n        housingCompany {\\n          organizationId\\n          mdcHousingCompanyId\\n          obosCompanyNumber\\n          name\\n          isActive\\n        }\\n        unitInfo {\\n          unitId\\n          unitNumber\\n          objectNumber\\n          housingUnitNumber\\n          address\\n          unitType\\n          ownershipModel\\n          mainOwner {\\n            mdcId\\n            mdcIdType\\n            name\\n          }\\n        }\\n      }\\n      roles {\\n        roleType\\n        housingCompany {\\n          organizationId\\n          mdcHousingCompanyId\\n          obosCompanyNumber\\n          name\\n        }\\n        holds {\\n          holdType\\n          holdValue\\n        }\\n      }\\n    }\\n    housingManager {\\n      firstName\\n      lastName\\n      phoneNumber\\n      email\\n    }\\n    legalOwners {\\n      name\\n      organizationNumber\\n      obosCompanyNumbers\\n    }\\n    loginLog {\\n      loginStatus\\n      createdAt\\n      app\\n      device\\n    }\\n    sessions {\\n      applicationName\\n      device\\n      createdAt\\n      updatedAt\\n      expiresAt\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "apartmentFinancesDebug",
+    "queryText": "query apartmentFinancesDebug($obosCompanyNumber: OrganizationID!, $objectNumber: Int!) {\\n  apartment: apartmentFinancesDebugger(\\n    organizationId: $obosCompanyNumber\\n    objectNumber: $objectNumber\\n  ) {\\n    amountDue\\n    invoices {\\n      issuedDate\\n      paymentDate\\n      kid\\n      amount\\n      remainingAmount\\n      paymentStatus\\n      reminderStatus\\n      description\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "userSessions",
+    "queryText": "query userSessions($userId: NodeID!) {\\n  logoutAnyUserSupported\\n  userSessions(userId: $userId) {\\n    ...UserSessionData\\n  }\\n}\nfragment UserSessionData on UserSession {\\n  id\\n  sessionID\\n  device\\n  expiresAt\\n  createdAt\\n  updatedAt\\n  applicationName\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "registerNetsPayment",
+    "queryText": "query registerNetsPayment($input: RegisterNetsPaymentInput!) {\\n  registerNetsPayment(input: $input) {\\n    redirectNetsUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getHousingCompanyForNets",
+    "queryText": "query getHousingCompanyForNets($NationalCompanyId: String!) {\\n  getHousingCompanyForNets(NationalCompanyId: $NationalCompanyId) {\\n    companyNumber\\n    registeredCompany {\\n      id\\n      name\\n      nationalCompanyId\\n    }\\n    emailAddress\\n    telephone {\\n      phoneNumber\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "dashboardAnnouncements",
+    "queryText": "query dashboardAnnouncements {\\n  dashboardAnnouncements {\\n    _id\\n    title\\n    description\\n    imageBlock\\n    linkUrl\\n    linkText\\n    priority\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "nextMeetingWidget",
+    "queryText": "query nextMeetingWidget($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    upcomingMeetings: meetings(ended: false) {\\n      ...NextMeetingWidget_nextMeeting\\n    }\\n  }\\n}\nfragment NextMeetingWidget_nextMeeting on Meeting {\\n  id\\n  date\\n  createdFromTemplate\\n  location\\n  videoLocation\\n  issues {\\n    ...Issue\\n    id\\n    title\\n    description\\n    motion\\n    deletedAt\\n    createdAt\\n    meeting {\\n      id\\n      date\\n    }\\n    createdBy {\\n      id\\n      name\\n    }\\n    attachments {\\n      id\\n      contentType\\n      url\\n      filename\\n      createdAt\\n    }\\n  }\\n}\nfragment Issue on Issue {\\n  id\\n  title\\n  resolved\\n  description\\n  motion\\n  resolution\\n  informed\\n  comment\\n  needsFollowUp\\n  followUpDescription\\n  resolvedAt\\n  isTemplate\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  createdFromTemplateId\\n  parentId\\n  meeting {\\n    id\\n    date\\n  }\\n  tasks {\\n    id\\n    solved\\n    title\\n    deadline\\n    assignedTo {\\n      id\\n      name\\n    }\\n    comments {\\n      id\\n    }\\n  }\\n  organization {\\n    id\\n  }\\n  history {\\n    id\\n    title\\n    resolvedAt\\n    resolution\\n    resolved\\n    description\\n    followUpDescription\\n    comment\\n    meeting {\\n      id\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n  updatedBy {\\n    id\\n    name\\n  }\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdFrom {\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "economyWidget",
+    "queryText": "query economyWidget($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    accounts {\\n      ...EconomyWidgetAccounts\\n    }\\n  }\\n}\nfragment EconomyWidgetAccounts on BankAccount {\\n  name\\n  type\\n  availableAmount\\n  updatedAt\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerTasksWidget",
+    "queryText": "query viewerTasksWidget($organizationNumber: OrganizationID!, $isViewer: Boolean!, $withDelegatedTasks: Boolean!, $withSemineInvoices: Boolean!, $withNewExpense: Boolean!, $withOldExpense: Boolean!, $filters: SearchInvoiceInput!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    threadNotificationsForViewer(onlyAssignedToViewer: true) @include(if: $isViewer)\\n    tasks(assignedToViewer: $isViewer, solved: false) {\\n      ...ViewerTasksWidget_tasks\\n    }\\n    delegatedTasks: tasks(createdByViewer: true, assignedToViewer: false) @include(if: $withDelegatedTasks) {\\n      ...ViewerTasksWidget_tasks\\n    }\\n    meetingsToSign: meetings(ended: true, signed: false) {\\n      ...ViewerTasksWidget_meetings\\n    }\\n  }\\n  invoiceExpensesToApproveByViewer(organizationId: $organizationNumber) @include(if: $withNewExpense) {\\n    ...ViewerTasksWidget_invoiceExpenses\\n  }\\n  expensesToApproveByViewer: searchExpenses(\\n    organizationId: $organizationNumber\\n    filters: {viewerShouldApprove: true}\\n  ) @include(if: $withOldExpense) {\\n    ...ViewerTasksWidget_expenses\\n  }\\n  invoicesToApproveByViewer: searchInvoices(\\n    organizationId: $organizationNumber\\n    filters: $filters\\n    failSilently: true\\n  ) @include(if: $withSemineInvoices) {\\n    invoices {\\n      ...ActiveInvoiceList\\n    }\\n    total\\n  }\\n  paymentsNeedingViewerAttention(organizationId: $organizationNumber) {\\n    staleDraftsCount\\n    pendingSignaturesCount\\n    firstStaleDraftBoardFeeId\\n    firstPendingSignatureBoardFeeId\\n  }\\n}\nfragment ViewerTasksWidget_tasks on Task {\\n  id\\n  title\\n  description\\n  deadline\\n  solved\\n  deletedAt\\n  comments {\\n    id\\n    content\\n    createdAt\\n  }\\n  assignedTo {\\n    id\\n    isViewer\\n    name\\n    member {\\n      id\\n      firstName\\n      lastName\\n      phoneNumber\\n      email\\n      roles\\n    }\\n  }\\n}\nfragment ViewerTasksWidget_meetings on Meeting {\\n  id\\n  endDate: date\\n  viewerShouldSign\\n  viewerHasSigned\\n  requiredSignees {\\n    member {\\n      personId\\n    }\\n  }\\n}\nfragment ViewerTasksWidget_invoiceExpenses on InvoiceExpense {\\n  id\\n  amount\\n  createdAt\\n  recipient {\\n    name\\n  }\\n}\nfragment ViewerTasksWidget_expenses on Expense {\\n  id\\n  payee\\n  approvalUrl\\n  amount\\n  createdAt\\n}\nfragment ActiveInvoiceList on Invoice {\\n  ...InvoicePreview\\n  viewerCanApprove\\n}\nfragment InvoicePreview on Invoice {\\n  id\\n  invoiceNumber\\n  status\\n  dueDate\\n  issueDate\\n  amount\\n  currency\\n  autoApproved\\n  supplierName\\n  supplier {\\n    id\\n    name\\n    officialName\\n    logo\\n  }\\n  assigned {\\n    id\\n    name\\n    firstName\\n    lastName\\n    roles\\n    profilePhotoUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerTasksMembers",
+    "queryText": "query viewerTasksMembers($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    members: executiveMembers {\\n      ...MemberTaskItem\\n    }\\n  }\\n}\nfragment MemberTaskItem on Member {\\n  id\\n  personId\\n  firstName\\n  roles\\n  isViewer\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewerFlags",
+    "queryText": "query viewerFlags {\\n  viewer {\\n    id\\n    flags\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyDoorPageQuery",
+    "queryText": "query obosKeyDoorPageQuery($obosCompanyNumber: OrganizationID!, $doorId: NodeID!) {\\n  organization: organization(id: $obosCompanyNumber) {\\n    id\\n    slug\\n    name\\n    obosCompanyNumber\\n    organizationNumber\\n  }\\n  door: door(organizationId: $obosCompanyNumber, id: $doorId) {\\n    id\\n    lockId\\n    name\\n    lockedUrl\\n    imageUrl\\n    accessGroups {\\n      id\\n      type\\n      address {\\n        street\\n      }\\n      users {\\n        id\\n        userId\\n        lockedUrl\\n        userName\\n        address {\\n          address\\n        }\\n        typeOfUser\\n        apartmentNumbers\\n        sharedKeys\\n        numberOfLocks\\n        canShare\\n      }\\n      name\\n      numberOfUsers\\n    }\\n    locationAddress {\\n      street\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyDoorsPage",
+    "queryText": "query obosKeyDoorsPage($obosCompanyNumber: OrganizationID!) {\\n  organization: organization(id: $obosCompanyNumber) {\\n    obosCompanyNumber\\n    organizationNumber\\n  }\\n  doors: doors(organizationId: $obosCompanyNumber) {\\n    id\\n    name\\n    imageUrl\\n    sharedKeys\\n    numberOfAccessGroups\\n    locationAddress {\\n      street\\n    }\\n    lockedUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "DGPageQuery",
+    "queryText": "query DGPageQuery($obosCompanyNumber: OrganizationID!) {\\n  organization: organization(id: $obosCompanyNumber) {\\n    id\\n    obosCompanyNumber\\n  }\\n  groups: accessGroups(organizationId: $obosCompanyNumber) {\\n    id\\n    type\\n    obosCompanyNumber\\n    numberOfDoors\\n    numberOfUsers\\n    name\\n    address {\\n      street\\n    }\\n    commonDoors {\\n      name\\n    }\\n    users {\\n      id\\n      userName\\n    }\\n    canShare\\n    start\\n    end\\n    name\\n    sharedKeys\\n    lockedUrl\\n  }\\n  doors: doors(organizationId: $obosCompanyNumber) {\\n    name\\n    imageUrl\\n  }\\n  users: obosKeyUsers(organizationId: $obosCompanyNumber) {\\n    id\\n    userId\\n    userName\\n    typeOfUser\\n    apartmentNumbers\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyOrderPageQuery",
+    "queryText": "query obosKeyOrderPageQuery($obosCompanyNumber: OrganizationID!) {\\n  organization: organization(id: $obosCompanyNumber) {\\n    obosCompanyNumber\\n    organizationNumber\\n    entranceAddresses {\\n      address\\n      city\\n      zipCode\\n      country\\n    }\\n    boardMembers {\\n      firstName\\n      lastName\\n      personId\\n      email\\n      phoneNumber\\n      roles\\n    }\\n    viewerAsMember {\\n      firstName\\n      lastName\\n      email\\n      phoneNumber\\n    }\\n  }\\n  order: obosKeyOrder(organizationId: $obosCompanyNumber) {\\n    housingCompanyName\\n    events {\\n      code\\n      id\\n      comment\\n      created\\n    }\\n    entranceAddresses {\\n      id\\n      streetName\\n      commonDoors {\\n        type\\n      }\\n    }\\n    signees {\\n      firstName\\n      lastName\\n      mobilePhoneNumber\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyUser",
+    "queryText": "query obosKeyUser($organizationId: OrganizationID!, $userId: String!) {\\n  user: obosKeyUser(organizationId: $organizationId, userId: $userId) {\\n    userId\\n    userName\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyOwnerPageQuery",
+    "queryText": "query obosKeyOwnerPageQuery($obosCompanyNumber: OrganizationID!, $ownerId: String!) {\\n  organization: organization(id: $obosCompanyNumber) {\\n    slug\\n    name\\n    obosCompanyNumber\\n    organizationNumber\\n  }\\n  owner: obosKeyUser(organizationId: $obosCompanyNumber, userId: $ownerId) {\\n    lockedUrl\\n    userId\\n    id\\n    userName\\n    canShare\\n    accessGroups {\\n      id\\n      type\\n      address {\\n        street\\n      }\\n      commonDoors {\\n        id\\n        name\\n        imageUrl\\n        locationAddress {\\n          street\\n        }\\n        sharedKeys\\n      }\\n      name\\n      numberOfUsers\\n      lockedUrl\\n    }\\n    apartmentNumbers\\n    address {\\n      address\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosKeyOwnersPage",
+    "queryText": "query obosKeyOwnersPage($obosCompanyNumber: OrganizationID!) {\\n  users: obosKeyUsers(organizationId: $obosCompanyNumber) {\\n    id\\n    lockedUrl\\n    userId\\n    userName\\n    apartmentNumbers\\n    sharedKeys\\n    address {\\n      address\\n    }\\n    typeOfUser\\n    numberOfLocks\\n    canShare\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "obosAccessGroupPage",
+    "queryText": "query obosAccessGroupPage($obosCompanyNumber: OrganizationID!, $groupId: NodeID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    obosCompanyNumber\\n  }\\n  accessGroup(organizationId: $obosCompanyNumber, accessGroupId: $groupId) {\\n    id\\n    name\\n    type\\n    obosCompanyNumber\\n    address {\\n      street\\n    }\\n    users {\\n      userName\\n      userId\\n      address {\\n        address\\n      }\\n      canShare\\n      apartmentNumbers\\n      typeOfUser\\n      lockedUrl\\n    }\\n    commonDoors {\\n      name\\n      id\\n      lockId\\n    }\\n    canShare\\n    start\\n    end\\n    lockedUrl\\n  }\\n  doors(organizationId: $obosCompanyNumber) {\\n    id\\n    lockId\\n    name\\n    imageUrl\\n    locationAddress {\\n      street\\n    }\\n  }\\n  obosKeyUsers(organizationId: $obosCompanyNumber) {\\n    id\\n    userName\\n    userId\\n    address {\\n      address\\n    }\\n    canShare\\n    apartmentNumbers\\n    typeOfUser\\n    lockedUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "economyPage",
+    "queryText": "query economyPage($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    obosCompanyNumber\\n    organizationNumber\\n    canOrderEconomyReport\\n    viewerAsMember {\\n      id\\n      roles\\n    }\\n    ...ContactCardsSection_systemContacts\\n  }\\n}\nfragment ContactCardsSection_systemContacts on Organization {\\n  obosCompanyNumber\\n  systemContacts {\\n    id\\n    firstName\\n    lastName\\n    jobTitle\\n    profilePhotoUrl\\n    phoneNumber\\n    role\\n    email\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "economyBankInformation",
+    "queryText": "query economyBankInformation($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    id\\n    systemContacts {\\n      id\\n      firstName\\n      lastName\\n      jobTitle\\n      role\\n      email\\n    }\\n    accounts {\\n      type\\n      name\\n      accountNumber\\n      availableAmount\\n      updatedAt\\n    }\\n    loans {\\n      saldo\\n      loanType\\n      bankName\\n      isObosLoan\\n      greenLoan\\n      loanNumber\\n      loanDescription\\n      interestRate\\n      completedPayments\\n      remainingPayments\\n      nextPaymentDate\\n      nextPaymentAmount\\n      numberOfPayments\\n      individualPayment\\n      fixedRate\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "oldestInvoiceDate",
+    "queryText": "query oldestInvoiceDate($externalCompanyNumber: OrganizationID!) {\\n  oldestInvoiceDate(organizationId: $externalCompanyNumber)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "repaymentPlan",
+    "queryText": "query repaymentPlan($organizationNumber: OrganizationID!, $loanType: String!, $loanNumber: String!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    accounts {\\n      accountNumber\\n      availableAmount\\n      name\\n      type\\n    }\\n    loan(loanType: $loanType, loanNumber: $loanNumber) {\\n      loanNumber\\n      loanDescription\\n      loanType\\n      bankName\\n      isObosLoan\\n      greenLoan\\n      interestRate\\n      individualPayment\\n      fixedRate\\n      nextPaymentDate\\n      remainingPayments\\n      numberOfPayments\\n      saldo\\n      repaymentPlanTerms {\\n        termNumber\\n        dueDate\\n        deduction\\n        interest\\n        fee\\n        amount\\n        balance\\n      }\\n      repaymentPlanYears {\\n        year\\n        deduction\\n        interest\\n        fee\\n        amount\\n        balance\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "organizationLoansList",
+    "queryText": "query organizationLoansList($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    loans {\\n      saldo\\n      loanType\\n      bankName\\n      greenLoan\\n      loanNumber\\n      loanDescription\\n      interestRate\\n      completedPayments\\n      remainingPayments\\n      nextPaymentDate\\n      nextPaymentAmount\\n      numberOfPayments\\n      individualPayment\\n      fixedRate\\n      repaymentPlanTerms {\\n        termNumber\\n        dueDate\\n        deduction\\n        interest\\n        fee\\n        amount\\n        balance\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "boardFeesPage",
+    "queryText": "query boardFeesPage($organizationNumber: OrganizationID!, $obosCompanyNumber: ID!) {\\n  organization(id: $organizationNumber) {\\n    ...BoardFeesPage_Organization\\n    boardFees {\\n      ...BoardFeeTable\\n    }\\n  }\\n  previousBoardMembers(obosCompanyNumber: $obosCompanyNumber) {\\n    ...BoardFeesPage_PreviousBoardMember\\n  }\\n  membersWithCurrentPayments(obosCompanyNumber: $obosCompanyNumber)\\n}\nfragment BoardFeesPage_Organization on Organization {\\n  id\\n  obosCompanyNumber\\n  organizationNumber\\n  executiveMembers {\\n    ...BoardFeesPage_Member\\n  }\\n}\nfragment BoardFeesPage_Member on Member {\\n  id\\n  personId\\n  name\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n  nationalIdNumber\\n  email\\n  phoneNumber\\n  roles\\n  hasStyrerommetAccess\\n  account {\\n    accountNumber\\n    confirmed\\n    confirmedAt\\n  }\\n}\nfragment BoardFeeTable on BoardFeesDetails {\\n  id\\n  createdAt\\n  createdBy\\n  attestedAt\\n  attestedBy\\n  title\\n  isDraft\\n  variant\\n  viewerHasSigned\\n  hasAccountValidationIssues\\n  signed\\n  updatedAt\\n  updatedBy {\\n    id\\n    firstName\\n    lastName\\n    name\\n    profilePhotoUrl\\n  }\\n  signatures {\\n    id\\n    signedAt\\n    signedBy {\\n      id\\n      firstName\\n      lastName\\n      name\\n      profilePhotoUrl\\n    }\\n  }\\n  confirmedAt\\n  confirmedBy {\\n    id\\n    firstName\\n    lastName\\n    name\\n    profilePhotoUrl\\n  }\\n  permissions {\\n    viewerHasSignRole\\n    viewerCanSign\\n    viewerCanUpdate\\n    viewerIsUsingBankId\\n    viewerHasRecentLogin\\n    viewerCanReject\\n  }\\n  payments {\\n    amount\\n    name\\n    personId\\n    accountNumberConfirmed\\n    accountNumberChanged\\n    accountNumberWhenCreated\\n    accountNumberWhenPaid\\n    accountNumberEncoded\\n  }\\n  draftState {\\n    payments {\\n      amount\\n      personId\\n      name\\n      memberId\\n    }\\n  }\\n  totalAmountFromAssembly\\n  totalAmountFromAssemblyId\\n  status\\n  sumPayments\\n  paymentOrderId\\n}\nfragment BoardFeesPage_PreviousBoardMember on PreviousBoardMember {\\n  id\\n  personId\\n  name\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n  nationalIdNumber\\n  email\\n  phoneNumber\\n  roles\\n  hasStyrerommetAccess\\n  account {\\n    accountNumber\\n    confirmed\\n    confirmedAt\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "boardFeesPaymentPage",
+    "queryText": "query boardFeesPaymentPage($organizationNumber: OrganizationID!, $boardFeeId: NodeID!, $obosCompanyNumber: ID!) {\\n  organization(id: $organizationNumber) {\\n    ...BoardFeesPage_Organization\\n  }\\n  previousBoardMembers(obosCompanyNumber: $obosCompanyNumber) {\\n    ...BoardFeesPage_PreviousBoardMember\\n  }\\n  boardFee(id: $boardFeeId, obosCompanyNumber: $obosCompanyNumber) {\\n    ...BoardFeeDraft\\n  }\\n  membersWithCurrentPayments(obosCompanyNumber: $obosCompanyNumber)\\n}\nfragment BoardFeesPage_Organization on Organization {\\n  id\\n  obosCompanyNumber\\n  organizationNumber\\n  executiveMembers {\\n    ...BoardFeesPage_Member\\n  }\\n}\nfragment BoardFeesPage_Member on Member {\\n  id\\n  personId\\n  name\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n  nationalIdNumber\\n  email\\n  phoneNumber\\n  roles\\n  hasStyrerommetAccess\\n  account {\\n    accountNumber\\n    confirmed\\n    confirmedAt\\n  }\\n}\nfragment BoardFeesPage_PreviousBoardMember on PreviousBoardMember {\\n  id\\n  personId\\n  name\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n  nationalIdNumber\\n  email\\n  phoneNumber\\n  roles\\n  hasStyrerommetAccess\\n  account {\\n    accountNumber\\n    confirmed\\n    confirmedAt\\n  }\\n}\nfragment BoardFeeDraft on BoardFeesDetails {\\n  id\\n  createdAt\\n  createdBy\\n  title\\n  isDraft\\n  variant\\n  updatedAt\\n  draftState {\\n    paymentName\\n    payments {\\n      amount\\n      personId\\n      name\\n      memberId\\n    }\\n  }\\n  totalAmountFromAssembly\\n  totalAmountFromAssemblyId\\n  assembly {\\n    id\\n    slug\\n  }\\n  updatedBy {\\n    id\\n    firstName\\n    lastName\\n    name\\n    profilePhotoUrl\\n  }\\n  permissions {\\n    viewerHasSignRole\\n    viewerCanSign\\n    viewerCanUpdate\\n    viewerIsUsingBankId\\n    viewerHasRecentLogin\\n    viewerCanReject\\n  }\\n  status\\n  sumPayments\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "viewBoardMemberFullAccount",
+    "queryText": "query viewBoardMemberFullAccount($boardFeeDraftId: NodeID!, $personId: ID!) {\\n  viewBoardMemberFullAccount(\\n    personId: $personId\\n    boardFeeDraftId: $boardFeeDraftId\\n  ) {\\n    accountNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getAuditLogsByOrganizationId",
+    "queryText": "query getAuditLogsByOrganizationId($organizationId: OrganizationID!) {\\n  getAuditLogsByOrganizationId(organizationId: $organizationId) {\\n    ...OrganizationAuditLog\\n  }\\n}\nfragment OrganizationAuditLog on AuditLog {\\n  id\\n  action\\n  createdAt\\n  parent {\\n    id\\n    title\\n  }\\n  createdBy {\\n    id\\n    personId\\n    name\\n  }\\n  payload {\\n    result\\n    data {\\n      action\\n      ...UpdateMemberAccount\\n      ...ConfirmPaymentOrder\\n      ...CreatePaymentOrder\\n      ...UpdatePaymentsLog\\n      ...BoardFeeTotalAmountChange\\n      __typename\\n    }\\n  }\\n}\nfragment UpdateMemberAccount on UpdateMemberAccountLog {\\n  accountNumber\\n  personId\\n  name\\n  action\\n  confirmed\\n  oldAccountNumber\\n}\nfragment ConfirmPaymentOrder on ConfirmPaymentOrder {\\n  paymentOrderId\\n}\nfragment CreatePaymentOrder on CreatePaymentOrder {\\n  payments {\\n    amount\\n    paymentId\\n    recipient {\\n      name\\n      personId\\n      accountNumberEncoded\\n    }\\n  }\\n}\nfragment UpdatePaymentsLog on UpdatePaymentsLog {\\n  updates {\\n    ...UpdatePayloadEntry\\n  }\\n}\nfragment UpdatePayloadEntry on UpdatePaymentEntry {\\n  field\\n  meta {\\n    name\\n    personId\\n  }\\n  newValue\\n  oldValue\\n  operation\\n  valueType\\n}\nfragment BoardFeeTotalAmountChange on BoardFeeTotalAmountChangeLog {\\n  action\\n  assemblyId\\n  currentTotalAmount\\n  proposedTotalAmount\\n  reason\\n  issueId\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "expensesPage",
+    "queryText": "query expensesPage($organizationId: OrganizationID!) {\\n  expenses: searchExpenses(organizationId: $organizationId) {\\n    id\\n    payee\\n    status\\n    createdAt\\n    approvalUrl\\n    viewerShouldApprove\\n    lines {\\n      id\\n      categoryDescription\\n      description\\n      createdAt\\n      amount\\n      status\\n      attachment {\\n        id\\n        url\\n        contentType\\n        filename\\n      }\\n      approvals {\\n        approved\\n        rejected\\n        approvedByName\\n        approvedAt\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "invoiceExpenseDetailsPage",
+    "queryText": "query invoiceExpenseDetailsPage($organizationId: OrganizationID!, $expenseId: NodeID!) {\\n  invoiceExpense(organizationId: $organizationId, expenseId: $expenseId) {\\n    id\\n    createdAt\\n    dueDate\\n    category\\n    description\\n    amount\\n    approvalStatus\\n    participants {\\n      personId\\n      name\\n    }\\n    viewerActions {\\n      canApprove\\n      canReject\\n      canForward\\n      forwardableMembers {\\n        id\\n        personId\\n        name\\n      }\\n    }\\n    recipient {\\n      name\\n      accountNumber\\n    }\\n    pendingApprover {\\n      personId\\n      name\\n    }\\n    statusInfo {\\n      status\\n      lastUpdatedAt\\n      comment {\\n        text\\n        action\\n        createdBy\\n        createdAt\\n      }\\n    }\\n    attachments {\\n      id\\n      name\\n      downloadUrl\\n    }\\n    source {\\n      attachments {\\n        id\\n        filename\\n        contentType\\n        url\\n        meta {\\n          width\\n          height\\n        }\\n      }\\n    }\\n    steps {\\n      personId\\n      name\\n      state\\n      stepCompletedAt\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "invoiceExpenseManagementPage",
+    "queryText": "query invoiceExpenseManagementPage($organizationId: OrganizationID!) {\\n  invoiceExpenses(organizationId: $organizationId) {\\n    id\\n    createdAt\\n    dueDate\\n    category\\n    description\\n    amount\\n    approvalStatus\\n    participants {\\n      personId\\n      name\\n    }\\n    recipient {\\n      name\\n      accountNumber\\n    }\\n    pendingApprover {\\n      id\\n      personId\\n      name\\n      firstName\\n      lastName\\n      profilePhotoUrl\\n    }\\n    statusInfo {\\n      status\\n      lastUpdatedAt\\n      comment {\\n        text\\n        action\\n        createdBy\\n        createdAt\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "loanApplications",
+    "queryText": "query loanApplications($organizationId: OrganizationID!) {\\n  loanApplications: organizationLoanApplications(organizationId: $organizationId) {\\n    obosCompanyNumber\\n    requestedAmount\\n    approvedAmount\\n    purpose\\n    status\\n    signingDueDate\\n    createdAt\\n    comment\\n    type\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "transactionsPage",
+    "queryText": "query transactionsPage($accountNumber: ID!, $obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    accounts {\\n      id\\n      name\\n      type\\n      accountNumber\\n    }\\n    account(accountNumber: $accountNumber) {\\n      id\\n      accountNumber\\n      availableAmount\\n      name\\n      updatedAt\\n      transactions {\\n        amount\\n        text\\n        bookedDate\\n      }\\n      creditDetails {\\n        grantedAmount\\n        availableBalance\\n        usedCredit\\n        interest\\n        commission\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "emailConfigPage",
+    "queryText": "query emailConfigPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    obosCompanyNumber\\n    inbox {\\n      id\\n      usesSmarterMail\\n      email\\n      configuration {\\n        imapHost\\n        imapSsl\\n        imapPort\\n        smtpHost\\n        smtpSsl\\n        smtpPort\\n      }\\n    }\\n    name\\n  }\\n  viewer {\\n    id\\n    phoneNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "emailLoginPage",
+    "queryText": "query emailLoginPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    obosCompanyNumber\\n    usesSmarterMail\\n    inbox {\\n      id\\n      usesSmarterMail\\n      loginUri\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "emailConfigurationRedirectPage",
+    "queryText": "query emailConfigurationRedirectPage {\\n  viewer {\\n    id\\n    memberships {\\n      obosCompanyNumber\\n      permissions\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "emailCreatePage",
+    "queryText": "query emailCreatePage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    slug\\n    usesSmarterMail\\n    inbox {\\n      id\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvArticle",
+    "queryText": "query fdvArticle($slug: String!) {\\n  getArticle(slug: $slug) {\\n    type\\n    title\\n    introduction\\n    text\\n    categories\\n    subcategories\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvArticles",
+    "queryText": "query fdvArticles {\\n  getArticles {\\n    articles {\\n      ...ArticlePreviewFragment\\n    }\\n    categories {\\n      title\\n      subcategories {\\n        title\\n      }\\n    }\\n  }\\n}\nfragment ArticlePreviewFragment on ArticlePreview {\\n  type\\n  title\\n  introduction\\n  categories\\n  subcategories\\n  imageUrl\\n  slug\\n  metaImage {\\n    src\\n    width\\n    height\\n    aspectRatio\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvArticlesBySubCategory",
+    "queryText": "query fdvArticlesBySubCategory($subCategoryTitle: String!) {\\n  getArticlesBySubCategory(subCategoryTitle: $subCategoryTitle) {\\n    ...ArticlePreviewFragment\\n  }\\n}\nfragment ArticlePreviewFragment on ArticlePreview {\\n  type\\n  title\\n  introduction\\n  categories\\n  subcategories\\n  imageUrl\\n  slug\\n  metaImage {\\n    src\\n    width\\n    height\\n    aspectRatio\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvSupplierDetail",
+    "queryText": "query fdvSupplierDetail($obosCompanyNumber: ID!, $supplierId: NodeID!) {\\n  supplier(obosCompanyNumber: $obosCompanyNumber, supplierId: $supplierId) {\\n    organizationNumber\\n    id\\n    name\\n    contacts {\\n      name\\n      email\\n      phoneNumber\\n    }\\n    distanceToClient\\n    contracts {\\n      id\\n      active\\n      startDate\\n      endDate\\n      renewalDate\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAllSuppliers",
+    "queryText": "query fdvAllSuppliers($obosCompanyNumber: ID!, $options: SuppliersOptions) {\\n  suppliers(obosCompanyNumber: $obosCompanyNumber, options: $options) {\\n    items {\\n      id\\n      name\\n      logo\\n      organizationNumber\\n      obosContracted\\n      contracts {\\n        id\\n        active\\n        startDate\\n        endDate\\n        description\\n        ongoingContract\\n        types\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAllSuppliersContractDetail",
+    "queryText": "query fdvAllSuppliersContractDetail($obosCompanyNumber: ID!, $options: SuppliersOptions) {\\n  suppliers(obosCompanyNumber: $obosCompanyNumber, options: $options) {\\n    items {\\n      id\\n      name\\n      logo\\n      organizationNumber\\n      obosContracted\\n      contracts {\\n        types\\n        id\\n        active\\n        startDate\\n        renewalDate\\n        endDate\\n        description\\n        ongoingContract\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvSupplierSummary",
+    "queryText": "query fdvSupplierSummary($obosCompanyNumber: ID!, $supplierId: NodeID!) {\\n  supplier(obosCompanyNumber: $obosCompanyNumber, supplierId: $supplierId) {\\n    id\\n    name\\n    logo\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvServices",
+    "queryText": "query fdvServices($obosCompanyNumber: ID!) {\\n  services: FDVServices(obosCompanyNumber: $obosCompanyNumber) {\\n    name\\n    category\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAllCategories",
+    "queryText": "query fdvAllCategories($organizationId: OrganizationID!) {\\n  allCategories(organizationId: $organizationId) {\\n    title\\n    id\\n    subcategories {\\n      title\\n      id\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvProjectsFilterData",
+    "queryText": "query fdvProjectsFilterData($organizationId: OrganizationID!) {\\n  allCategories(organizationId: $organizationId) {\\n    title\\n    id\\n    subcategories {\\n      title\\n      id\\n    }\\n  }\\n  FDVBuildings(organizationId: $organizationId) {\\n    name\\n    areas {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvSubcategory",
+    "queryText": "query fdvSubcategory($id: NodeID!, $organizationId: OrganizationID!) {\\n  fdvSubcategory(id: $id, organizationId: $organizationId) {\\n    title\\n    id\\n    category {\\n      id\\n      title\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvProjectsOverviewPage",
+    "queryText": "query fdvProjectsOverviewPage($organizationId: OrganizationID!) {\\n  premium: hasPremiumAccess(organizationId: $organizationId)\\n  subscription: hasSubscription(organizationId: $organizationId)\\n  projects: maintenanceProjects(organizationId: $organizationId) {\\n    id\\n    title\\n    cost\\n    status\\n    createdAt\\n    description\\n    startDate\\n    disabled\\n    category {\\n      id\\n      title\\n    }\\n    subcategories {\\n      id\\n      title\\n    }\\n    areas {\\n      name\\n      id\\n      buildingId\\n      building {\\n        name\\n        id\\n      }\\n    }\\n    buildings {\\n      name\\n      id\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getAllMaintenanceProjectsQuery",
+    "queryText": "query getAllMaintenanceProjectsQuery($organizationId: OrganizationID!) {\\n  maintenanceProjects(organizationId: $organizationId) {\\n    id\\n    title\\n    cost\\n    status\\n    createdAt\\n    description\\n    startDate\\n    disabled\\n    category {\\n      id\\n      title\\n    }\\n    subcategories {\\n      id\\n      title\\n    }\\n    areas {\\n      name\\n      id\\n      buildingId\\n      building {\\n        name\\n        id\\n      }\\n    }\\n    buildings {\\n      name\\n      id\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvMaintenanceProject",
+    "queryText": "query fdvMaintenanceProject($projectId: NodeID!, $organizationNumber: OrganizationID!) {\\n  project: maintenanceProject(\\n    projectId: $projectId\\n    organizationId: $organizationNumber\\n  ) {\\n    id\\n    title\\n    description\\n    cost\\n    status\\n    startDate\\n    createdAt\\n    disabled\\n    category {\\n      id\\n      title\\n    }\\n    involved {\\n      type\\n      nameOrId\\n    }\\n    subcategories {\\n      id\\n      title\\n    }\\n    buildings {\\n      id\\n      name\\n    }\\n    areas {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvCollectiveSetup",
+    "queryText": "query fdvCollectiveSetup($obosCompanyNumber: OrganizationID!) {\\n  FDVBuildings(organizationId: $obosCompanyNumber) {\\n    name\\n    type\\n    id\\n    areas {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvProjectPage",
+    "queryText": "query fdvProjectPage($projectId: NodeID!, $organizationNumber: OrganizationID!) {\\n  organization: organization(id: $organizationNumber) {\\n    obosCompanyNumber\\n    organizationNumber\\n  }\\n  hasPremium: hasPremiumAccess(organizationId: $organizationNumber)\\n  project: maintenanceProject(\\n    projectId: $projectId\\n    organizationId: $organizationNumber\\n  ) {\\n    id\\n    title\\n    description\\n    cost\\n    status\\n    disabled\\n    startDate\\n    createdBy {\\n      name\\n    }\\n    createdAt\\n    updatedBy {\\n      name\\n    }\\n    updatedAt\\n    involved {\\n      type\\n      nameOrId\\n    }\\n    category {\\n      id\\n      title\\n    }\\n    subcategories {\\n      id\\n      title\\n    }\\n    buildings {\\n      name\\n      id\\n    }\\n    areas {\\n      name\\n      id\\n      buildingId\\n      building {\\n        name\\n        id\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAssessment",
+    "queryText": "query fdvAssessment($subcategoryId: NodeID!, $organizationId: OrganizationID!) {\\n  FDVAssessment(subcategoryId: $subcategoryId, organizationId: $organizationId) {\\n    subcategory {\\n      id\\n      title\\n    }\\n    status {\\n      overall\\n    }\\n    description\\n    notes\\n    updatedAt\\n    updatedBy {\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAssessmentsOverview",
+    "queryText": "query fdvAssessmentsOverview($organizationId: OrganizationID!) {\\n  assessments: FDVAssessments(organizationId: $organizationId) {\\n    subcategory {\\n      id\\n    }\\n    status {\\n      type\\n      overall\\n      per_building {\\n        status\\n        building {\\n          id\\n        }\\n      }\\n    }\\n  }\\n  categories: allCategories(organizationId: $organizationId) {\\n    title\\n    id\\n    subcategories {\\n      title\\n      id\\n    }\\n  }\\n  buildings: FDVBuildings(organizationId: $organizationId) {\\n    id\\n  }\\n  hasPremium: hasPremiumAccess(organizationId: $organizationId)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAssessmentsDetail",
+    "queryText": "query fdvAssessmentsDetail($subcategoryId: NodeID!, $organizationId: OrganizationID!) {\\n  assessment: FDVAssessment(\\n    subcategoryId: $subcategoryId\\n    organizationId: $organizationId\\n  ) {\\n    status {\\n      overall\\n      type\\n      per_building {\\n        building {\\n          id\\n          name\\n        }\\n        status\\n      }\\n    }\\n    description\\n    notes\\n    attachments {\\n      attachment {\\n        id\\n        filename\\n        contentType\\n        url\\n        createdAt\\n      }\\n      description\\n    }\\n    updatedAt\\n    updatedBy {\\n      name\\n    }\\n  }\\n  subcategory: fdvSubcategory(id: $subcategoryId, organizationId: $organizationId) {\\n    title\\n    id\\n    category {\\n      id\\n      title\\n      subcategories {\\n        id\\n        title\\n      }\\n    }\\n  }\\n  buildings: FDVBuildings(organizationId: $organizationId) {\\n    name\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvAssessmentsPDF",
+    "queryText": "query fdvAssessmentsPDF($organizationId: OrganizationID!) {\\n  organization: organization(id: $organizationId) {\\n    obosCompanyNumber\\n    name\\n  }\\n  assessments: FDVAssessments(organizationId: $organizationId) {\\n    subcategory {\\n      id\\n      title\\n    }\\n    description\\n    notes\\n    status {\\n      type\\n      overall\\n      per_building {\\n        status\\n        building {\\n          id\\n          name\\n        }\\n      }\\n    }\\n    attachments {\\n      attachment {\\n        id\\n        filename\\n        contentType\\n        url\\n      }\\n      description\\n    }\\n  }\\n  categories: allCategories(organizationId: $organizationId) {\\n    title\\n    id\\n    subcategories {\\n      title\\n      id\\n      category {\\n        id\\n        title\\n        subcategories {\\n          id\\n          title\\n        }\\n      }\\n    }\\n  }\\n  buildings: FDVBuildings(organizationId: $organizationId) {\\n    id\\n    name\\n  }\\n  projects: maintenanceProjects(organizationId: $organizationId) {\\n    id\\n    title\\n    cost\\n    status\\n    createdAt\\n    startDate\\n    disabled\\n    category {\\n      id\\n      title\\n    }\\n    subcategories {\\n      id\\n      title\\n    }\\n    description\\n    buildings {\\n      name\\n      id\\n    }\\n    areas {\\n      name\\n      id\\n      buildingId\\n      building {\\n        name\\n        id\\n      }\\n    }\\n    involved {\\n      type\\n      nameOrId\\n    }\\n  }\\n  hasPremium: hasPremiumAccess(organizationId: $organizationId)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hasPremiumAccess",
+    "queryText": "query hasPremiumAccess($organizationId: OrganizationID!) {\\n  hasPremiumAccess(organizationId: $organizationId)\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "activeSubscriptions",
+    "queryText": "query activeSubscriptions {\\n  activeSubscriptions {\\n    organizationName\\n    startDate\\n    expiryDate\\n    createdBy\\n    firstName\\n    lastName\\n    obosCompanyNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "allSubscriptions",
+    "queryText": "query allSubscriptions {\\n  allSubscriptions {\\n    organizationName\\n    startDate\\n    expiryDate\\n    createdBy\\n    cancelledDate\\n    firstName\\n    lastName\\n    obosCompanyNumber\\n    activeObosCompanyNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvOverview",
+    "queryText": "query fdvOverview($organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    hasOnlyMigratedAnswers\\n    progress\\n    subjects {\\n      id\\n      title\\n      slug\\n      illustrationUrl\\n      progress(organizationId: $organizationId)\\n    }\\n    tips {\\n      id\\n      option {\\n        slug\\n        title\\n      }\\n      title\\n      description\\n      subject {\\n        id\\n        title\\n        illustrationUrl\\n      }\\n      article {\\n        title\\n        slug\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvOverallProgress",
+    "queryText": "query fdvOverallProgress($organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    hasOnlyMigratedAnswers\\n    progress\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvPdf",
+    "queryText": "query fdvPdf($organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    organization {\\n      name\\n    }\\n    subjects {\\n      id\\n      slug\\n      title\\n      questions {\\n        slug\\n        title\\n        answered(organizationId: $organizationId)\\n        answer(organizationId: $organizationId) {\\n          id\\n          answers\\n        }\\n        options {\\n          slug\\n          id\\n          title\\n        }\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvSubject",
+    "queryText": "query fdvSubject($subject: String!, $organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    subject(slug: $subject) {\\n      id\\n      slug\\n      index\\n      title\\n      progress(organizationId: $organizationId)\\n      illustrationUrl\\n      questions {\\n        id\\n        name\\n        isMultipleChoice\\n        slug\\n        title\\n        description\\n        subject {\\n          id\\n          slug\\n          illustrationUrl\\n        }\\n        answered(organizationId: $organizationId)\\n        answer(organizationId: $organizationId) {\\n          id\\n          answers\\n          updatedAt\\n          updatedBy {\\n            name\\n          }\\n          migrated\\n        }\\n        options {\\n          slug\\n          id\\n          isSingleChoice\\n          title\\n          description\\n        }\\n      }\\n      tips(organizationId: $organizationId) {\\n        id\\n        option {\\n          id\\n          slug\\n          title\\n        }\\n        title\\n        description\\n        subject {\\n          id\\n          title\\n          illustrationUrl\\n        }\\n        article {\\n          title\\n          slug\\n        }\\n      }\\n      nextSubject {\\n        id\\n        slug\\n        title\\n      }\\n      previousSubject {\\n        id\\n        slug\\n        title\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvFirstUnansweredQuestion",
+    "queryText": "query fdvFirstUnansweredQuestion($organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    firstUnansweredQuestion {\\n      ...questionParts\\n    }\\n    numberOfUnansweredQuestions\\n    progress\\n  }\\n}\nfragment questionParts on SustainabilityQuestion {\\n  id\\n  isMultipleChoice\\n  slug\\n  title\\n  name\\n  index\\n  description\\n  answered(organizationId: $organizationId)\\n  answer(organizationId: $organizationId) {\\n    answers\\n  }\\n  options {\\n    slug\\n    id\\n    title\\n    isSingleChoice\\n    description\\n    tips {\\n      title\\n      description\\n    }\\n  }\\n  tips(organizationId: $organizationId) {\\n    id\\n    title\\n    description\\n    subject {\\n      id\\n      title\\n      illustrationUrl\\n    }\\n    article {\\n      title\\n      slug\\n    }\\n  }\\n  previousQuestion {\\n    id\\n    slug\\n  }\\n  subject {\\n    id\\n    slug\\n    title\\n    illustrationUrl\\n    questions {\\n      id\\n      slug\\n      title\\n    }\\n    previousSubject {\\n      id\\n      slug\\n      questions {\\n        id\\n        slug\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvMapping",
+    "queryText": "query fdvMapping($organizationId: OrganizationID!, $slug: String!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    question(slug: $slug) {\\n      ...questionParts\\n    }\\n  }\\n}\nfragment questionParts on SustainabilityQuestion {\\n  id\\n  isMultipleChoice\\n  slug\\n  title\\n  name\\n  index\\n  description\\n  answered(organizationId: $organizationId)\\n  answer(organizationId: $organizationId) {\\n    answers\\n  }\\n  options {\\n    slug\\n    id\\n    title\\n    isSingleChoice\\n    description\\n    tips {\\n      title\\n      description\\n    }\\n  }\\n  tips(organizationId: $organizationId) {\\n    id\\n    title\\n    description\\n    subject {\\n      id\\n      title\\n      illustrationUrl\\n    }\\n    article {\\n      title\\n      slug\\n    }\\n  }\\n  previousQuestion {\\n    id\\n    slug\\n  }\\n  subject {\\n    id\\n    slug\\n    title\\n    illustrationUrl\\n    questions {\\n      id\\n      slug\\n      title\\n    }\\n    previousSubject {\\n      id\\n      slug\\n      questions {\\n        id\\n        slug\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvSubjectIntro",
+    "queryText": "query fdvSubjectIntro($organizationId: OrganizationID!, $subjectSlug: String!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    subject(slug: $subjectSlug) {\\n      id\\n      slug\\n      title\\n      index\\n      numberOfUnansweredQuestions(organizationId: $organizationId)\\n      numberOfQuestions\\n      illustrationUrl\\n      introduction\\n      nextSubject {\\n        id\\n        slug\\n      }\\n      previousSubject {\\n        id\\n        slug\\n        lastQuestion {\\n          id\\n          slug\\n        }\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fdvWizardQuestions",
+    "queryText": "query fdvWizardQuestions($organizationId: OrganizationID!) {\\n  sustainability(organizationId: $organizationId) {\\n    id\\n    questions: unansweredQuestions {\\n      id\\n      slug\\n      subject {\\n        id\\n        slug\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "kycFormStatus",
+    "queryText": "query kycFormStatus($organizationId: OrganizationID!) {\\n  kycFormStatus(organizationId: $organizationId) {\\n    ...KycFormStatusFields\\n  }\\n}\nfragment KycFormStatusFields on KycFormStatus {\\n  canDismiss\\n  hasNewBoardMembersSinceSubmission\\n  requiresRedirect\\n  activeForm {\\n    ...KycFormFields\\n  }\\n}\nfragment KycFormFields on KycForm {\\n  id\\n  organizationId\\n  submittedAt\\n  firstDismissedAt\\n  lastDismissedAt\\n  createdAt\\n  customerOrdinaryBanking\\n  customerOrdinaryBankingDetails\\n  customerLoanEquity\\n  customerLoanEquityDetails\\n  customerForeignReceive\\n  customerForeignReceiveDetails\\n  customerForeignReceiveCountry\\n  customerForeignReceiveAmount\\n  customerForeignSend\\n  customerForeignSendDetails\\n  customerForeignSendCountry\\n  customerForeignSendAmount\\n  customerExtraCash\\n  customerExtraCashDetails\\n  customerExtraCashAmount\\n  ownerJob\\n  ownerJobDetails\\n  ownerHasOwnership\\n  ownerHasOwnershipDetails\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "generalAssembliesPage",
+    "queryText": "query generalAssembliesPage($organizationNumber: ID!) {\\n  organization: organizationByObosNumber(companyNumber: $organizationNumber) {\\n    id\\n    name\\n    obosCompanyNumber\\n    organizationCode\\n    organizationCodeDescription\\n    documents {\\n      filename\\n      downloadUrl\\n      contentType\\n      category {\\n        code\\n      }\\n    }\\n    statistics {\\n      id\\n      owners {\\n        withPhoneNumber\\n        total\\n      }\\n    }\\n    assemblies: generalAssemblies {\\n      id\\n      slug\\n      date\\n      endDate\\n      phase\\n      location\\n      ordinary\\n      year\\n      signed\\n      digital\\n      proposalsEndAt\\n      inviteScheduledFor\\n      createdAt\\n    }\\n    systemContacts {\\n      id\\n      firstName\\n      lastName\\n      jobTitle\\n      profilePhotoUrl\\n      phoneNumber\\n      role\\n      email\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "assemblyAttendees",
+    "queryText": "query assemblyAttendees($assemblyId: NodeID!, $organizationId: NodeID!) {\\n  assemblyAttendees(assemblyId: $assemblyId, organizationId: $organizationId) {\\n    objects {\\n      id\\n      apartmentNumber\\n      unitNumber\\n      objectType\\n      owners {\\n        id\\n        name\\n      }\\n    }\\n    attendees {\\n      id\\n      apartmentNumber\\n      powerOfAttorney\\n      powerOfAttorneyRecipient\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "analogVotesPage",
+    "queryText": "query analogVotesPage($organizationNumber: OrganizationID!, $slug: String!, $public: Boolean) {\\n  organization(id: $organizationNumber) {\\n    id\\n    apartments: objects {\\n      apartmentNumber\\n      address\\n      voteWeight\\n      objectType\\n      owners {\\n        id\\n        name\\n      }\\n      unitNumber\\n      residentialNumber\\n    }\\n  }\\n  assembly: generalAssembly(\\n    organizationId: $organizationNumber\\n    slug: $slug\\n    public: $public\\n  ) {\\n    ...Assembly_analogVotes\\n    votedApartments\\n  }\\n}\nfragment Assembly_analogVotes on GeneralAssembly {\\n  id\\n  slug\\n  year\\n  analogVotes {\\n    ...GeneralAssembly_analogVotes\\n  }\\n  issues {\\n    __typename\\n    id\\n    title\\n    ... on GeneralAssemblyIssue {\\n      multiMotionVoting\\n      requiredMajority\\n      motions {\\n        id\\n        motion\\n      }\\n    }\\n    ... on GeneralAssemblyElectionIssue {\\n      candidates {\\n        id\\n        motivation\\n        roles {\\n          id\\n          settingsId\\n        }\\n        nominee {\\n          firstName\\n          lastName\\n          apartmentNumber\\n        }\\n        nominatedBy {\\n          name\\n        }\\n      }\\n      election {\\n        role\\n        seats\\n        id\\n        electedFor\\n      }\\n    }\\n  }\\n}\nfragment GeneralAssembly_analogVotes on AssemblyAnalogVote {\\n  id\\n  createdAt\\n  apartmentNumber\\n  attachment {\\n    id\\n  }\\n  createdBy {\\n    id\\n  }\\n  owners {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "assemblyDigitalSigning",
+    "queryText": "query assemblyDigitalSigning($obosCompanyNumber: OrganizationID!, $slug: String!, $public: Boolean) {\\n  assembly: generalAssembly(\\n    organizationId: $obosCompanyNumber\\n    slug: $slug\\n    public: $public\\n  ) {\\n    id\\n    digitalSigning {\\n      id\\n      createdAt\\n      status\\n      signatories {\\n        id\\n        firstName\\n        lastName\\n        phoneNumber\\n        signedAt\\n      }\\n      attachment {\\n        id\\n        url\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "globalSearch",
+    "queryText": "query globalSearch($query: SearchQuery!, $organizationId: OrganizationID!) {\\n  search(organizationId: $organizationId, query: $query) {\\n    items {\\n      result {\\n        ... on Issue {\\n          id\\n          title\\n          createdAt\\n          createdBy {\\n            id\\n            name\\n          }\\n          meeting {\\n            id\\n            location\\n            date\\n          }\\n        }\\n        ... on Attachment {\\n          id\\n          filename\\n          url\\n        }\\n        ... on Task {\\n          id\\n          solved\\n          title\\n          createdAt\\n          description\\n          deadline\\n          assignedTo {\\n            id\\n            name\\n          }\\n        }\\n        ... on NewsletterContent {\\n          documentId\\n          title\\n          fileUrl\\n        }\\n        ... on HMSDeviation {\\n          id\\n          resolvedAt\\n          HMSDeviationCreatedAt: createdAt\\n          HMSDeviationDescription: description\\n        }\\n        ... on HMSRoutine {\\n          HMSRoutineId: id\\n          key\\n          deadline\\n          completedAt\\n          comments {\\n            id\\n            anchor\\n          }\\n        }\\n        typename: __typename\\n      }\\n      highlight {\\n        title\\n        highlight\\n        fullName\\n      }\\n    }\\n    total\\n    suggestions\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsIndexPage",
+    "queryText": "query hmsIndexPage($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    obosCompanyNumber\\n    HMSSetup {\\n      updatedAt\\n      flags {\\n        ...HMSSetup_flags\\n      }\\n    }\\n    routines(active: true, completed: false) {\\n      ...HMSRelevant_routines\\n      ...HMSRoutineList_routines\\n    }\\n    riskAreas {\\n      ...HMSRiskArea_riskArea\\n    }\\n    deviations(resolved: false) {\\n      ...HMSRelevant_deviations\\n      createdBy {\\n        id\\n        name\\n      }\\n    }\\n  }\\n}\nfragment HMSSetup_flags on HMSSetupFlags {\\n  hasPlayground\\n  hasLaundromat\\n  hasElevator\\n  hasGarage\\n  hasExternalGarage\\n  hasCommonRoom\\n  hasCentralHeating\\n  hasCentralGasHeating\\n  hasSwitchBoard\\n  hasShelter\\n  hasBusinessLocale\\n  hasRentalApartment\\n  hasEmployee\\n  hasCleaningServices\\n  requireVentilationControl\\n}\nfragment HMSRelevant_routines on HMSRoutine {\\n  ...HMSRelevantRoutine_routine\\n}\nfragment HMSRelevantRoutine_routine on HMSRoutine {\\n  id\\n  name\\n  deadline\\n  delayedTo\\n  custom\\n  key\\n  requireAuthorized\\n  schedule {\\n    __typename\\n  }\\n}\nfragment HMSRoutineList_routines on HMSRoutine {\\n  id\\n  name\\n  key\\n  custom\\n  deadline\\n  delayedTo\\n  frequency\\n  requireAuthorized\\n  schedule {\\n    __typename\\n  }\\n}\nfragment HMSRiskArea_riskArea on HMSRiskArea {\\n  id\\n  key\\n  name\\n  description\\n  isCustom\\n  canDelete\\n  routineKeys\\n  currentAssessment {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    comment\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n}\nfragment HMSRelevant_deviations on HMSDeviation {\\n  ...HMSDeviation_deviation\\n}\nfragment HMSDeviation_deviation on HMSDeviation {\\n  id\\n  description\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdAt\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsEditRoutine",
+    "queryText": "query hmsEditRoutine($routineId: NodeID!, $organizationNumber: ID!) {\\n  routine(id: $routineId) {\\n    id\\n    key\\n    name\\n    custom\\n    frequency\\n    customChecklistText\\n    timeOfYear\\n    isDefaultRiskAreaLink\\n    riskArea {\\n      key\\n      name\\n    }\\n    schedule {\\n      ... on LegacySchedule {\\n        frequency\\n        timeOfYear\\n      }\\n      ... on FixedDateSchedule {\\n        intervalMonths\\n        months\\n      }\\n    }\\n  }\\n  organization: organizationByObosNumber(companyNumber: $organizationNumber) {\\n    id\\n    riskAreas {\\n      key\\n      name\\n      isCustom\\n      routineKeys\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsSetup",
+    "queryText": "query hmsSetup($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    ...HMSSetup_organization\\n    HMSSetup {\\n      updatedAt\\n      flags {\\n        ...HMSSetup_flags\\n      }\\n    }\\n    routines {\\n      ...HMSSetup_routines\\n    }\\n    riskAreas {\\n      ...HMSRiskArea_riskArea\\n    }\\n  }\\n}\nfragment HMSSetup_organization on Organization {\\n  id\\n  obosCompanyNumber\\n  name\\n}\nfragment HMSSetup_flags on HMSSetupFlags {\\n  hasPlayground\\n  hasLaundromat\\n  hasElevator\\n  hasGarage\\n  hasExternalGarage\\n  hasCommonRoom\\n  hasCentralHeating\\n  hasCentralGasHeating\\n  hasSwitchBoard\\n  hasShelter\\n  hasBusinessLocale\\n  hasRentalApartment\\n  hasEmployee\\n  hasCleaningServices\\n  requireVentilationControl\\n}\nfragment HMSSetup_routines on HMSRoutine {\\n  id\\n  name\\n  description\\n  key\\n  active\\n  mandatory\\n  custom\\n  requireAuthorized\\n  recommendedFrequency\\n  availableFrequencies\\n  alternativeFrequencies\\n  frequency\\n  timeOfYear\\n  lastCompletedAt\\n  deadline\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  schedule {\\n    ... on LegacySchedule {\\n      __typename\\n      frequency\\n      timeOfYear\\n    }\\n    ... on FixedDateSchedule {\\n      __typename\\n      intervalMonths\\n      months\\n    }\\n    ... on WeeklySchedule {\\n      __typename\\n      interval\\n      dayOfWeek\\n      startDate\\n    }\\n    ... on MonthlySchedule {\\n      __typename\\n      interval\\n      ordinal\\n      dayOfWeek\\n      startMonth\\n    }\\n  }\\n}\nfragment HMSRiskArea_riskArea on HMSRiskArea {\\n  id\\n  key\\n  name\\n  description\\n  isCustom\\n  canDelete\\n  routineKeys\\n  currentAssessment {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    comment\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsHistory",
+    "queryText": "query hmsHistory($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    obosCompanyNumber\\n    HMSSetup {\\n      updatedAt\\n    }\\n    routines(completed: true) {\\n      ...HMSHistory_routines\\n    }\\n    deviations(resolved: true) {\\n      ...HMSDeviation_deviation_history\\n    }\\n    riskAreas {\\n      ...HMSRiskArea_historyPage\\n    }\\n  }\\n}\nfragment HMSHistory_routines on HMSRoutine {\\n  key\\n  id\\n  name\\n  custom\\n  completedAt\\n  completedBy {\\n    id\\n    name\\n  }\\n}\nfragment HMSDeviation_deviation_history on HMSDeviation {\\n  id\\n  description\\n  createdAt\\n  resolvedAt\\n  comment\\n  attachments {\\n    id\\n    filename\\n    contentType\\n    url\\n  }\\n  resolvedBy {\\n    id\\n    name\\n  }\\n}\nfragment HMSRiskArea_historyPage on HMSRiskArea {\\n  id\\n  key\\n  name\\n  isCustom\\n  currentAssessment {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n  assessmentHistory {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    comment\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "tasksDetailsQuery",
+    "queryText": "query tasksDetailsQuery($id: NodeID!) {\\n  deviation(id: $id) {\\n    id\\n    resolvedAt\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsRiskAreaDetail",
+    "queryText": "query hmsRiskAreaDetail($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    HMSSetup {\\n      updatedAt\\n      flags {\\n        ...HMSSetup_flags\\n      }\\n    }\\n    riskAreas {\\n      ...HMSRiskAreaDetail_riskArea\\n    }\\n    routines(active: true, completed: false) {\\n      id\\n      name\\n      key\\n      frequency\\n      recommendedFrequency\\n      lastCompletedAt\\n      deadline\\n    }\\n  }\\n}\nfragment HMSSetup_flags on HMSSetupFlags {\\n  hasPlayground\\n  hasLaundromat\\n  hasElevator\\n  hasGarage\\n  hasExternalGarage\\n  hasCommonRoom\\n  hasCentralHeating\\n  hasCentralGasHeating\\n  hasSwitchBoard\\n  hasShelter\\n  hasBusinessLocale\\n  hasRentalApartment\\n  hasEmployee\\n  hasCleaningServices\\n  requireVentilationControl\\n}\nfragment HMSRiskAreaDetail_riskArea on HMSRiskArea {\\n  ...HMSRiskArea_riskArea\\n  assessmentHistory {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    comment\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n}\nfragment HMSRiskArea_riskArea on HMSRiskArea {\\n  id\\n  key\\n  name\\n  description\\n  isCustom\\n  canDelete\\n  routineKeys\\n  currentAssessment {\\n    id\\n    riskAreaKey\\n    probability\\n    consequence\\n    riskLevel\\n    riskScore\\n    comment\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "hmsRoutine",
+    "queryText": "query hmsRoutine($id: NodeID!, $organizationNumber: ID!) {\\n  routine(id: $id) {\\n    id\\n    key\\n    ...HMSRoutineView_routine\\n    ...HMSRoutineCompleteView_routine\\n    riskAssessments {\\n      riskAreaKey\\n      probability\\n      consequence\\n      riskLevel\\n      riskScore\\n      comment\\n      createdAt\\n      createdBy {\\n        id\\n        name\\n      }\\n    }\\n  }\\n  organization: organizationByObosNumber(companyNumber: $organizationNumber) {\\n    id\\n    riskAreas {\\n      key\\n      name\\n      description\\n      isCustom\\n      routineKeys\\n      currentAssessment {\\n        probability\\n        consequence\\n        riskLevel\\n        riskScore\\n        comment\\n        createdAt\\n        createdBy {\\n          id\\n          name\\n        }\\n      }\\n    }\\n    HMSSetup {\\n      flags {\\n        ...HMSSetup_flags\\n      }\\n    }\\n  }\\n}\nfragment HMSRoutineView_routine on HMSRoutine {\\n  id\\n  attachments {\\n    id\\n    filename\\n    contentType\\n    url\\n  }\\n  comments {\\n    id\\n    content\\n    anchor\\n  }\\n  organizationId\\n  name\\n  completedAt\\n  description\\n  deadline\\n  delayedTo\\n  custom\\n  requireAuthorized\\n  key\\n  customChecklistText\\n}\nfragment HMSRoutineCompleteView_routine on HMSRoutine {\\n  id\\n  key\\n  name\\n  deleted\\n  attachments {\\n    id\\n    filename\\n    contentType\\n    url\\n  }\\n  comments {\\n    id\\n    content\\n    anchor\\n  }\\n  completedAreas\\n  completedAt\\n  completedBy {\\n    id\\n    name\\n  }\\n  organizationId\\n}\nfragment HMSSetup_flags on HMSSetupFlags {\\n  hasPlayground\\n  hasLaundromat\\n  hasElevator\\n  hasGarage\\n  hasExternalGarage\\n  hasCommonRoom\\n  hasCentralHeating\\n  hasCentralGasHeating\\n  hasSwitchBoard\\n  hasShelter\\n  hasBusinessLocale\\n  hasRentalApartment\\n  hasEmployee\\n  hasCleaningServices\\n  requireVentilationControl\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "vibboThreads",
+    "queryText": "query vibboThreads($obosCompanyNumber: OrganizationID!, $filters: ThreadsFilterInput!, $limit: Int) {\\n  organization(id: $obosCompanyNumber) {\\n    threads(filters: $filters, limit: $limit) {\\n      threads {\\n        ...VibboThread\\n      }\\n    }\\n  }\\n}\nfragment VibboThread on Thread {\\n  id\\n  title\\n  url\\n  lastMessageAt\\n  correspondent {\\n    id\\n    firstName\\n    lastName\\n    profilePhotoUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "housingPage",
+    "queryText": "query housingPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    organizationCode\\n    apartments {\\n      ...HousingPageApartmentData\\n    }\\n  }\\n}\nfragment HousingPageApartmentData on Apartment {\\n  id\\n  rented\\n  address\\n  unitNumber\\n  apartmentNumber\\n  residentialNumber\\n  note {\\n    id\\n    article\\n    createdAt\\n  }\\n  legalOwners: owners {\\n    id\\n    name\\n  }\\n  owners: residencies(type: [OWNER, FUTURE_OWNER, HOUSING_MANAGER]) {\\n    ...Residency\\n  }\\n  coresidents: residencies(type: CORESIDENT) {\\n    ...Residency\\n  }\\n  tenants: residencies(type: TENANT) {\\n    ...Residency\\n  }\\n  relatives: residencies(type: RELATIVE) {\\n    ...Residency\\n  }\\n}\nfragment Residency on Residency {\\n  id\\n  movedInDate\\n  type\\n  contractStart\\n  contractEnd\\n  resident {\\n    id\\n    name\\n    personId\\n    roles\\n    firstName\\n    lastName\\n    profilePhotoUrl\\n    loggedInToVibbo\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fetchParkings",
+    "queryText": "query fetchParkings($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    objects(objectType: GARAGE) {\\n      ...ParkingPageUnitData\\n    }\\n  }\\n}\nfragment ParkingPageUnitData on HousingObject {\\n  id\\n  address\\n  objectNumber: apartmentNumber\\n  parkingType: apartmentType\\n  objectType\\n  note {\\n    id\\n    article\\n    createdAt\\n  }\\n  residents: residencies(type: [OWNER, TENANT, FUTURE_OWNER]) {\\n    type\\n    id\\n    resident {\\n      ...ObjectMemberList\\n    }\\n  }\\n}\nfragment ObjectMemberList on Member {\\n  id\\n  personId\\n  name\\n  roles\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "fetchOtherObjects",
+    "queryText": "query fetchOtherObjects($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    objects: otherObjects {\\n      ...OtherObjectsPageUnitData\\n    }\\n  }\\n}\nfragment OtherObjectsPageUnitData on HousingObject {\\n  id\\n  address\\n  objectNumber: apartmentNumber\\n  type: apartmentType\\n  objectType\\n  note {\\n    id\\n    article\\n    createdAt\\n  }\\n  residents: residencies(type: [OWNER, TENANT, FUTURE_OWNER]) {\\n    type\\n    id\\n    resident {\\n      ...ObjectMemberList\\n    }\\n  }\\n}\nfragment ObjectMemberList on Member {\\n  id\\n  personId\\n  name\\n  roles\\n  firstName\\n  lastName\\n  profilePhotoUrl\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "residencePage",
+    "queryText": "query residencePage($obosCompanyNumber: OrganizationID!, $apartmentNumber: Int!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    residence: housingObject(apartmentNumber: $apartmentNumber) {\\n      id\\n      apartmentNumber\\n      unitNumber\\n      residentialNumber\\n      address\\n      rented\\n      extraArea\\n      area\\n      numberOfRooms\\n      apartmentType\\n      buildingType\\n      sharedCost\\n      amountDue\\n      objectType\\n      insuranceCases {\\n        caseNumber\\n        claimDate\\n        reasonForClaim\\n        status\\n      }\\n      owners: residencies(type: [OWNER, HOUSING_MANAGER, FUTURE_OWNER]) {\\n        ...Residency\\n      }\\n      coresidents: residencies(type: CORESIDENT) {\\n        ...Residency\\n      }\\n      tenants: residencies(type: TENANT) {\\n        ...Residency\\n      }\\n      relatives: residencies(type: RELATIVE) {\\n        ...Residency\\n      }\\n      nextResidence: nextHousingObject {\\n        id\\n        apartmentNumber\\n      }\\n      previousResidence: previousHousingObject {\\n        id\\n        apartmentNumber\\n      }\\n      note {\\n        ...Note\\n      }\\n    }\\n  }\\n}\nfragment Residency on Residency {\\n  id\\n  movedInDate\\n  type\\n  contractStart\\n  contractEnd\\n  resident {\\n    id\\n    name\\n    personId\\n    roles\\n    firstName\\n    lastName\\n    profilePhotoUrl\\n    loggedInToVibbo\\n  }\\n}\nfragment Note on Note {\\n  id\\n  article\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  updatedBy {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "parkingDetailPage",
+    "queryText": "query parkingDetailPage($obosCompanyNumber: OrganizationID!, $objectNumber: Int!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    object: housingObject(apartmentNumber: $objectNumber) {\\n      id\\n      address\\n      objectNumber: apartmentNumber\\n      parkingType: apartmentType\\n      residencies {\\n        ...Residency\\n      }\\n      nextObject: nextHousingObject {\\n        id\\n        objectNumber: apartmentNumber\\n      }\\n      previousObject: previousHousingObject {\\n        id\\n        objectNumber: apartmentNumber\\n      }\\n      note {\\n        ...Note\\n      }\\n    }\\n  }\\n}\nfragment Residency on Residency {\\n  id\\n  movedInDate\\n  type\\n  contractStart\\n  contractEnd\\n  resident {\\n    id\\n    name\\n    personId\\n    roles\\n    firstName\\n    lastName\\n    profilePhotoUrl\\n    loggedInToVibbo\\n  }\\n}\nfragment Note on Note {\\n  id\\n  article\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  updatedBy {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "otherObjectsDetailPage",
+    "queryText": "query otherObjectsDetailPage($obosCompanyNumber: OrganizationID!, $objectNumber: Int!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    object: housingObject(apartmentNumber: $objectNumber) {\\n      id\\n      address\\n      objectNumber: apartmentNumber\\n      type: apartmentType\\n      residencies {\\n        ...Residency\\n      }\\n      nextObject: nextHousingObject {\\n        id\\n        objectNumber: apartmentNumber\\n      }\\n      previousObject: previousHousingObject {\\n        id\\n        objectNumber: apartmentNumber\\n      }\\n      note {\\n        ...Note\\n      }\\n    }\\n  }\\n}\nfragment Residency on Residency {\\n  id\\n  movedInDate\\n  type\\n  contractStart\\n  contractEnd\\n  resident {\\n    id\\n    name\\n    personId\\n    roles\\n    firstName\\n    lastName\\n    profilePhotoUrl\\n    loggedInToVibbo\\n  }\\n}\nfragment Note on Note {\\n  id\\n  article\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  updatedBy {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "residentsPage",
+    "queryText": "query residentsPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    residents(\\n      types: [OWNER, HOUSING_MANAGER, TENANT, CORESIDENT, RELATIVE, FUTURE_OWNER]\\n    ) {\\n      id\\n      name\\n      roles\\n      personId\\n      firstName\\n      lastName\\n      loggedInToVibbo\\n      primaryResidentType\\n      electronicConsent\\n      profilePhotoUrl\\n      phoneNumber\\n      email\\n      residencies {\\n        id\\n        type\\n        contractStart\\n        contractEnd\\n        apartment {\\n          id\\n          apartmentNumber\\n          objectType\\n        }\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "residentPage",
+    "queryText": "query residentPage($personId: ID!, $obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    vibboEnabled\\n    resident: member(personId: $personId) {\\n      id\\n      personId\\n      userId\\n      name\\n      firstName\\n      lastName\\n      phoneNumber\\n      electronicConsent\\n      profilePhotoUrl\\n      email\\n      nextMember(sortBy: lastName) {\\n        id\\n        personId\\n        name\\n      }\\n      previousMember(sortBy: lastName) {\\n        id\\n        personId\\n        name\\n      }\\n      address {\\n        address\\n        postalCode\\n        city\\n        country\\n        careOfName\\n        foreignAddressLine1\\n        foreignAddressLine2\\n        foreignAddressLine3\\n      }\\n      loggedInToVibbo\\n      primaryResidentType\\n      residencies {\\n        id\\n        apartment {\\n          id\\n          apartmentNumber\\n          objectType\\n          address\\n        }\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "residentPageForPerson",
+    "queryText": "query residentPageForPerson($personId: ID!, $obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    vibboEnabled\\n    resident: member(personId: $personId) {\\n      id\\n      personId\\n      userId\\n      name\\n      firstName\\n      lastName\\n      phoneNumber\\n      electronicConsent\\n      profilePhotoUrl\\n      email\\n      nextMember(sortBy: lastName) {\\n        id\\n        personId\\n        name\\n      }\\n      previousMember(sortBy: lastName) {\\n        id\\n        personId\\n        name\\n      }\\n      address {\\n        address\\n        postalCode\\n        city\\n        country\\n        careOfName\\n        foreignAddressLine1\\n        foreignAddressLine2\\n        foreignAddressLine3\\n      }\\n      loggedInToVibbo\\n      primaryResidentType\\n      residencies {\\n        id\\n        apartment {\\n          id\\n          apartmentNumber\\n          objectType\\n          address\\n        }\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "insurancePage",
+    "queryText": "query insurancePage($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    name\\n    organizationNumber\\n    insurance {\\n      policy {\\n        insuranceCompanyName\\n        insuranceIssuedViaObos\\n        insuranceCompanyNumber\\n        policyNumber\\n        insuranceDocuments {\\n          date\\n          category\\n          url\\n          type\\n          fileName\\n        }\\n      }\\n      cases {\\n        caseNumber\\n        claimDate\\n        claimLocation\\n        status\\n        reasonForClaim\\n        claimReporter\\n      }\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "insuranceOfferPage",
+    "queryText": "query insuranceOfferPage($obosCompanyNumber: OrganizationID!) {\\n  organization(id: $obosCompanyNumber) {\\n    id\\n    boardEmail\\n    apartments {\\n      id\\n      rented\\n    }\\n    statistics {\\n      ...Statistics\\n    }\\n  }\\n}\nfragment Statistics on OrganizationStatistics {\\n  id\\n  buildings {\\n    apartmentsCount\\n    buildingTypes {\\n      description\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "insuranceCasePage",
+    "queryText": "query insuranceCasePage($organizationNumber: OrganizationID!, $caseNumber: Int!) {\\n  insuranceCase: getInsuranceCase(\\n    input: {organizationId: $organizationNumber, caseNumber: $caseNumber}\\n  ) {\\n    caseNumber\\n    claimDate\\n    claimLocation\\n    status\\n    reasonForClaim\\n    claimReporter\\n    description {\\n      title\\n      body\\n    }\\n    messages {\\n      body\\n      registeredAt\\n    }\\n    affectedResidents {\\n      firstName\\n      lastName\\n      unitNumber\\n      objectNumber\\n      emailAddress\\n      phoneNumber\\n      address\\n      personId\\n    }\\n    phases {\\n      name\\n      completed\\n      completedAt\\n      status\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "notificationsBoardLandingPage",
+    "queryText": "query notificationsBoardLandingPage {\\n  notifications(\\n    showInStyrerommet: true\\n    showInVibbo: false\\n    showOnFrontpage: true\\n    showActive: true\\n  ) {\\n    id\\n    title\\n    message\\n    type\\n    showInStyrerommet\\n    showOnFrontpage\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "meeting",
+    "queryText": "query meeting($id: NodeID!) {\\n  meeting(id: $id) {\\n    ...MeetingDetails\\n    ...MeetingMinute\\n    id\\n    date\\n    invitationUrl\\n    ended\\n    signed\\n    lockedForSigning\\n    viewerShouldSign\\n    issues {\\n      ...AgendaIssues\\n      ...AgendaSuggestedIssues\\n    }\\n    organization {\\n      id\\n      organizationCode\\n      obosCompanyNumber\\n      members: executiveMembers(filterOBOS: true) {\\n        id\\n        name\\n        roles\\n        email\\n      }\\n      viewerAsMember {\\n        id\\n        personId\\n        userId\\n        name\\n        email\\n        roles\\n      }\\n      suggestedIssues: issues(states: [SUGGESTION, FOLLOWUP]) {\\n        ...AgendaSuggestedIssues\\n      }\\n      templateIssues {\\n        ...AgendaSuggestedIssues\\n      }\\n      meetings {\\n        id\\n      }\\n    }\\n  }\\n}\nfragment MeetingDetails on Meeting {\\n  id\\n  date\\n  endDate\\n  location\\n  videoLocation\\n  invitationSentAt\\n  createdFromTemplate\\n}\nfragment MeetingMinute on Meeting {\\n  ...MeetingMinuteSignatureSection\\n  protocolUrl\\n  attendees {\\n    id\\n    name\\n    email\\n    shouldSign\\n    attended\\n    createdAt\\n    updatedAt\\n    invitationSentAt\\n    member {\\n      id\\n      name\\n      email\\n      roles\\n      personId\\n    }\\n  }\\n  id\\n  date\\n  location\\n  videoLocation\\n  description\\n  organization {\\n    id\\n  }\\n  issues {\\n    id\\n    title\\n    description\\n    motion\\n    comment\\n    resolution\\n    attachments {\\n      id\\n      url\\n      filename\\n      contentType\\n    }\\n  }\\n}\nfragment MeetingMinuteSignatureSection on Meeting {\\n  id\\n  signed\\n  lockedForSigning\\n  viewerHasSigned\\n  viewerCanSign\\n  viewerShouldSign\\n  requiredSignees {\\n    id\\n    member {\\n      id\\n      name\\n    }\\n    name\\n  }\\n  signees {\\n    id\\n    name\\n  }\\n}\nfragment AgendaIssues on Issue {\\n  ...AgendaItemIssue\\n  id\\n}\nfragment AgendaItemIssue on Issue {\\n  ...Issue\\n  id\\n  title\\n  resolved\\n  position\\n  organization {\\n    id\\n  }\\n}\nfragment Issue on Issue {\\n  id\\n  title\\n  resolved\\n  description\\n  motion\\n  resolution\\n  informed\\n  comment\\n  needsFollowUp\\n  followUpDescription\\n  resolvedAt\\n  isTemplate\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  createdFromTemplateId\\n  parentId\\n  meeting {\\n    id\\n    date\\n  }\\n  tasks {\\n    id\\n    solved\\n    title\\n    deadline\\n    assignedTo {\\n      id\\n      name\\n    }\\n    comments {\\n      id\\n    }\\n  }\\n  organization {\\n    id\\n  }\\n  history {\\n    id\\n    title\\n    resolvedAt\\n    resolution\\n    resolved\\n    description\\n    followUpDescription\\n    comment\\n    meeting {\\n      id\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n  updatedBy {\\n    id\\n    name\\n  }\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdFrom {\\n    id\\n  }\\n}\nfragment AgendaSuggestedIssues on Issue {\\n  ...SuggestedIssuesSidebar\\n}\nfragment SuggestedIssuesSidebar on Issue {\\n  id\\n  title\\n  createdAt\\n  updatedAt\\n  description\\n  parentId\\n  createdFromTemplateId\\n  isTemplate\\n  motion\\n  createdBy {\\n    id\\n    name\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "styremoterPage",
+    "queryText": "query styremoterPage($organizationNumber: OrganizationID!) {\\n  organization(id: $organizationNumber) {\\n    id\\n    obosCompanyNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "suggestedMeetingIssues",
+    "queryText": "query suggestedMeetingIssues($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    id\\n    obosCompanyNumber\\n    suggestedIssues: issues(states: [SUGGESTION, FOLLOWUP, SCHEDULED]) {\\n      meeting {\\n        id\\n        date\\n        endDate\\n        ended\\n        signed\\n      }\\n      ...IssuesTableSuggestedIssues\\n    }\\n  }\\n}\nfragment IssuesTableSuggestedIssues on Issue {\\n  id\\n  title\\n  updatedAt\\n  createdAt\\n  isTemplate\\n  parentId\\n  needsFollowUp\\n  historyCount\\n  resolution\\n  createdBy {\\n    id\\n    name\\n  }\\n  meeting {\\n    id\\n    ended\\n    signed\\n    date\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "resolvedMeetingIssues",
+    "queryText": "query resolvedMeetingIssues($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    id\\n    obosCompanyNumber\\n    resolvedIssues: issues(states: [RESOLVED]) {\\n      ...IssuesTableSuggestedIssues\\n    }\\n  }\\n}\nfragment IssuesTableSuggestedIssues on Issue {\\n  id\\n  title\\n  updatedAt\\n  createdAt\\n  isTemplate\\n  parentId\\n  needsFollowUp\\n  historyCount\\n  resolution\\n  createdBy {\\n    id\\n    name\\n  }\\n  meeting {\\n    id\\n    ended\\n    signed\\n    date\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "templateMeetingIssues",
+    "queryText": "query templateMeetingIssues($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    id\\n    obosCompanyNumber\\n    templateIssues {\\n      ...IssuesTableSuggestedIssues\\n    }\\n  }\\n}\nfragment IssuesTableSuggestedIssues on Issue {\\n  id\\n  title\\n  updatedAt\\n  createdAt\\n  isTemplate\\n  parentId\\n  needsFollowUp\\n  historyCount\\n  resolution\\n  createdBy {\\n    id\\n    name\\n  }\\n  meeting {\\n    id\\n    ended\\n    signed\\n    date\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "resolvedIssue",
+    "queryText": "query resolvedIssue($id: NodeID!) {\\n  issue(id: $id) {\\n    ...IssuesTable_resolvedIssues\\n  }\\n}\nfragment IssuesTable_resolvedIssues on Issue {\\n  id\\n  resolved\\n  parentId\\n  title\\n  description\\n  motion\\n  resolution\\n  comment\\n  createdBy {\\n    id\\n    name\\n  }\\n  meeting {\\n    id\\n    date\\n  }\\n  ...Issue\\n  ...IssuePopover__issue\\n}\nfragment Issue on Issue {\\n  id\\n  title\\n  resolved\\n  description\\n  motion\\n  resolution\\n  informed\\n  comment\\n  needsFollowUp\\n  followUpDescription\\n  resolvedAt\\n  isTemplate\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  createdFromTemplateId\\n  parentId\\n  meeting {\\n    id\\n    date\\n  }\\n  tasks {\\n    id\\n    solved\\n    title\\n    deadline\\n    assignedTo {\\n      id\\n      name\\n    }\\n    comments {\\n      id\\n    }\\n  }\\n  organization {\\n    id\\n  }\\n  history {\\n    id\\n    title\\n    resolvedAt\\n    resolution\\n    resolved\\n    description\\n    followUpDescription\\n    comment\\n    meeting {\\n      id\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n  updatedBy {\\n    id\\n    name\\n  }\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdFrom {\\n    id\\n  }\\n}\nfragment IssuePopover__issue on Issue {\\n  id\\n  title\\n  resolved\\n  resolution\\n  informed\\n  isTemplate\\n  resolvedAt\\n  createdAt\\n  updatedAt\\n  organization {\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getIssue",
+    "queryText": "query getIssue($id: NodeID!) {\\n  issue(id: $id) {\\n    ...Issue\\n  }\\n}\nfragment Issue on Issue {\\n  id\\n  title\\n  resolved\\n  description\\n  motion\\n  resolution\\n  informed\\n  comment\\n  needsFollowUp\\n  followUpDescription\\n  resolvedAt\\n  isTemplate\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  createdFromTemplateId\\n  parentId\\n  meeting {\\n    id\\n    date\\n  }\\n  tasks {\\n    id\\n    solved\\n    title\\n    deadline\\n    assignedTo {\\n      id\\n      name\\n    }\\n    comments {\\n      id\\n    }\\n  }\\n  organization {\\n    id\\n  }\\n  history {\\n    id\\n    title\\n    resolvedAt\\n    resolution\\n    resolved\\n    description\\n    followUpDescription\\n    comment\\n    meeting {\\n      id\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n  updatedBy {\\n    id\\n    name\\n  }\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdFrom {\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "plannedMeetings",
+    "queryText": "query plannedMeetings($organizationId: OrganizationID!) {\\n  organization(id: $organizationId) {\\n    meetings(ended: false) {\\n      id\\n      date\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "searchIssue",
+    "queryText": "query searchIssue($query: SearchQuery!, $organizationId: OrganizationID!) {\\n  search(organizationId: $organizationId, query: $query) {\\n    organizationNumber\\n    items {\\n      result {\\n        ... on Issue {\\n          id\\n          title\\n          description\\n          resolved\\n          motion\\n          resolution\\n          comment\\n          parentId\\n          isTemplate\\n          createdAt\\n          createdBy {\\n            id\\n            name\\n          }\\n          meeting {\\n            id\\n            location\\n            date\\n          }\\n          ...Issue\\n          ...IssuePopover__issue\\n        }\\n      }\\n    }\\n    total\\n  }\\n}\nfragment Issue on Issue {\\n  id\\n  title\\n  resolved\\n  description\\n  motion\\n  resolution\\n  informed\\n  comment\\n  needsFollowUp\\n  followUpDescription\\n  resolvedAt\\n  isTemplate\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedAt\\n  createdFromTemplateId\\n  parentId\\n  meeting {\\n    id\\n    date\\n  }\\n  tasks {\\n    id\\n    solved\\n    title\\n    deadline\\n    assignedTo {\\n      id\\n      name\\n    }\\n    comments {\\n      id\\n    }\\n  }\\n  organization {\\n    id\\n  }\\n  history {\\n    id\\n    title\\n    resolvedAt\\n    resolution\\n    resolved\\n    description\\n    followUpDescription\\n    comment\\n    meeting {\\n      id\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n  updatedBy {\\n    id\\n    name\\n  }\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  createdFrom {\\n    id\\n  }\\n}\nfragment IssuePopover__issue on Issue {\\n  id\\n  title\\n  resolved\\n  resolution\\n  informed\\n  isTemplate\\n  resolvedAt\\n  createdAt\\n  updatedAt\\n  organization {\\n    id\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "generalAssemblyOwnerPage",
+    "queryText": "query generalAssemblyOwnerPage($obosCompanyNumber: OrganizationID!, $slug: String!) {\\n  assembly: generalAssembly(organizationId: $obosCompanyNumber, slug: $slug) {\\n    id\\n    slug\\n    date\\n    phase\\n    endDate\\n    ended\\n    ordinary\\n    digital\\n    year\\n    physicalMeetingDate\\n    location\\n    videoLocation\\n    proposalsEndAt\\n    proposalsSkipped\\n    invitationSentAt\\n    invitationAttachmentUrl\\n    protocolAttachmentUrl\\n    agendaIsVisibleToOwner\\n    viewerHasSeen\\n    inSession\\n    issues {\\n      ...GeneralAssembly_issues\\n      ...GeneralAssembly_election_issues\\n    }\\n    proposals(createdByViewer: true) {\\n      ...GeneralAssembly_proposals\\n    }\\n    organization {\\n      id\\n      obosCompanyNumber\\n      name\\n      viewerAsMember {\\n        id\\n        personId\\n        votesInAssembly\\n      }\\n      members: executiveMembers {\\n        id\\n        name\\n        roles\\n        email\\n      }\\n      systemContacts {\\n        id\\n        firstName\\n        lastName\\n        jobTitle\\n        profilePhotoUrl\\n        phoneNumber\\n        role\\n        email\\n      }\\n    }\\n  }\\n  viewer {\\n    id\\n    personId\\n    name\\n    memberships {\\n      obosCompanyNumber\\n      roles\\n    }\\n  }\\n}\nfragment GeneralAssembly_issues on GeneralAssemblyIssue {\\n  id\\n  ...GeneralAssembly_issue\\n}\nfragment GeneralAssembly_issue on GeneralAssemblyIssue {\\n  title\\n  description\\n  ... on GeneralAssemblyIssue {\\n    suggestedBy\\n    position\\n    requiredMajority\\n    requiredMotionMajority\\n    multiMotionVoting\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n    }\\n    updatedOnAssembly\\n    organization {\\n      id\\n    }\\n    motions {\\n      id\\n      motion\\n      createdAt\\n      updatedAt\\n      createdOnAssembly\\n      updatedOnAssembly\\n    }\\n    recommendation\\n    proposal {\\n      id\\n      createdBy {\\n        id\\n        name\\n      }\\n    }\\n    ...GeneralAssembly_issueResults\\n    ...GeneralAssembly_motionVote\\n    ...GeneralAssemblyIssue__Comments\\n  }\\n  __typename\\n}\nfragment GeneralAssembly_issueResults on GeneralAssemblyIssue {\\n  votingResults {\\n    passed\\n    issueId\\n    passedMotionId\\n    totalVotes\\n    votesAgainst\\n    votesFor\\n    votesBlank\\n    resolvedByChance\\n    motionVotes {\\n      motionId\\n      passed\\n      votesFor\\n    }\\n  }\\n}\nfragment GeneralAssembly_motionVote on GeneralAssemblyIssue {\\n  viewerVotes {\\n    motionId\\n    vote\\n  }\\n}\nfragment GeneralAssemblyIssue__Comments on GeneralAssemblyIssue {\\n  comments {\\n    id\\n    content\\n    createdAt\\n    createdBy {\\n      id\\n      name\\n      jobTitle\\n    }\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n}\nfragment GeneralAssembly_election_issues on GeneralAssemblyElectionIssue {\\n  id\\n  ...GeneralAssembly_election_issue\\n}\nfragment GeneralAssembly_election_issue on GeneralAssemblyElectionIssue {\\n  title\\n  description\\n  recommendation\\n  position\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n  ...GeneralAssembly_election_issue_viewer_votes\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  updatedOnAssembly\\n  candidates {\\n    id\\n    motivation\\n    createdOnAssembly\\n    updatedOnAssembly\\n    roles {\\n      id\\n      settingsId\\n    }\\n    nominee {\\n      firstName\\n      lastName\\n    }\\n    nominatedBy {\\n      name\\n    }\\n    resolvedByChance\\n    votesFor\\n    electedAs {\\n      role\\n      electedFor\\n      settingsId\\n      id\\n    }\\n  }\\n  election {\\n    role\\n    seats\\n    id\\n    electedFor\\n  }\\n  __typename\\n}\nfragment GeneralAssembly_election_issue_viewer_votes on GeneralAssemblyElectionIssue {\\n  viewerVotes {\\n    role\\n    issueId\\n    candidateId\\n  }\\n}\nfragment GeneralAssembly_proposals on GeneralAssemblyProposal {\\n  id\\n  title\\n  description\\n  motionProposal\\n  createdAt\\n  createdBy {\\n    id\\n    name\\n  }\\n  accepted\\n  rejected\\n  rejectionReason\\n  attachments {\\n    id\\n    filename\\n    url\\n    contentType\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "GetTerm",
+    "queryText": "query GetTerm($termType: TermType!) {\\n  getTerm(termType: $termType) {\\n    type\\n    decisionType\\n    viewerDecision {\\n      decisionMade\\n      decision {\\n        version\\n        decisionType\\n      }\\n      actionRequired\\n    }\\n    termData {\\n      version\\n      title\\n      description\\n      summary\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "myAccountNumber",
+    "queryText": "query myAccountNumber($obosCompanyNumber: ID!) {\\n  myAccountNumber(obosCompanyNumber: $obosCompanyNumber) {\\n    accountNumber\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "releaseLogPageQuery",
+    "queryText": "query releaseLogPageQuery {\\n  releaseLog {\\n    id\\n    title\\n    message\\n    emoji\\n    product\\n    startDate\\n    link\\n    module\\n    imageUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "globalMenuProfileQuery",
+    "queryText": "query globalMenuProfileQuery {\\n  viewer {\\n    id\\n    memberships {\\n      obosCompanyNumber\\n      name\\n      roles\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getSupplierArticles",
+    "queryText": "query getSupplierArticles {\\n  getSupplierArticles {\\n    id\\n    title\\n    introduction\\n    imageUrl\\n    slug\\n    metaImage {\\n      src\\n      aspectRatio\\n      width\\n      height\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "getSupplierArticle",
+    "queryText": "query getSupplierArticle($slug: String!) {\\n  getSupplierArticle(slug: $slug) {\\n    id\\n    title\\n    introduction\\n    text\\n    attachments {\\n      fileName\\n      url\\n      type\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "supplierInvoices",
+    "queryText": "query supplierInvoices($organizationNumber: OrganizationID!, $filters: SearchInvoiceInput!, $failSilently: Boolean) {\\n  supplierInvoices: searchInvoices(\\n    organizationId: $organizationNumber\\n    filters: $filters\\n    failSilently: $failSilently\\n  ) {\\n    invoices {\\n      ...ActiveInvoiceList\\n    }\\n    total\\n  }\\n}\nfragment ActiveInvoiceList on Invoice {\\n  ...InvoicePreview\\n  viewerCanApprove\\n}\nfragment InvoicePreview on Invoice {\\n  id\\n  invoiceNumber\\n  status\\n  dueDate\\n  issueDate\\n  amount\\n  currency\\n  autoApproved\\n  supplierName\\n  supplier {\\n    id\\n    name\\n    officialName\\n    logo\\n  }\\n  assigned {\\n    id\\n    name\\n    firstName\\n    lastName\\n    roles\\n    profilePhotoUrl\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "allSuppliers",
+    "queryText": "query allSuppliers($obosCompanyNumber: ID!, $options: SuppliersOptions) {\\n  categories: supplierCategories(obosCompanyNumber: $obosCompanyNumber) {\\n    id\\n    categoryId\\n    name\\n    subcategories {\\n      id\\n      categoryId\\n      name\\n    }\\n  }\\n  suppliers: suppliers(obosCompanyNumber: $obosCompanyNumber, options: $options) {\\n    total\\n    items {\\n      id\\n      name\\n      officialName\\n      logo\\n      organizationNumber\\n      favourite\\n      categories {\\n        id\\n        name\\n      }\\n      contacts {\\n        name\\n        phoneNumber\\n        email\\n      }\\n      ...SupplierContracts\\n      distanceToClient\\n      obosContracted\\n    }\\n  }\\n}\nfragment SupplierContracts on Supplier {\\n  contracts {\\n    id\\n    active\\n    startDate\\n    endDate\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "supplierPage",
+    "queryText": "query supplierPage($obosCompanyNumber: ID!, $supplierId: NodeID!) {\\n  organization: organizationByObosNumber(companyNumber: $obosCompanyNumber) {\\n    id\\n    obosCompanyNumber\\n  }\\n  viewer {\\n    id\\n    personId\\n    name\\n  }\\n  supplier(obosCompanyNumber: $obosCompanyNumber, supplierId: $supplierId) {\\n    id\\n    name\\n    officialName\\n    organizationNumber\\n    categories {\\n      id\\n      name\\n    }\\n    obosContracted\\n    discontinued\\n    logo\\n    favourite\\n    article\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n    ...SupplierContactInfo\\n    ...SupplierContacts\\n    ...DetailedSupplierContracts\\n    monthlySpending(numberOfMonths: 12) {\\n      lastInvoiceDate\\n      data {\\n        month\\n        amount\\n      }\\n      dataUpdatedAt\\n    }\\n  }\\n}\nfragment SupplierContactInfo on Supplier {\\n  contactInfo {\\n    phoneNumber\\n    email\\n    website\\n    address\\n    postalCode\\n    postalArea\\n    organizationNumber\\n  }\\n}\nfragment SupplierContacts on Supplier {\\n  contacts {\\n    id\\n    name\\n    position\\n    phoneNumber\\n    email\\n  }\\n}\nfragment DetailedSupplierContracts on Supplier {\\n  contracts {\\n    id\\n    active\\n    startDate\\n    renewalDate\\n    endDate\\n    ongoingContract\\n    description\\n    types\\n    attachments {\\n      id\\n      filename\\n      url\\n      contentType\\n    }\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "organizationSuppliers",
+    "queryText": "query organizationSuppliers($organizationNumber: ID!, $options: SuppliersOptions) {\\n  organization: organizationByObosNumber(companyNumber: $organizationNumber) {\\n    id\\n  }\\n  suppliers: suppliers(obosCompanyNumber: $organizationNumber, options: $options) {\\n    total\\n    items {\\n      id\\n      name\\n      officialName\\n      favourite\\n      organizationNumber\\n      categories {\\n        id\\n        name\\n      }\\n      logo\\n      discontinued\\n      contacts {\\n        name\\n        phoneNumber\\n        email\\n      }\\n      ...SupplierContracts\\n      obosContracted\\n    }\\n  }\\n}\nfragment SupplierContracts on Supplier {\\n  contracts {\\n    id\\n    active\\n    startDate\\n    endDate\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "TaskPopover",
+    "queryText": "query TaskPopover($id: NodeID!) {\\n  task(id: $id) {\\n    ...TaskPopover_task\\n  }\\n}\nfragment TaskPopover_task on Task {\\n  id\\n  title\\n  description\\n  deadline\\n  createdBy {\\n    id\\n    userId\\n    firstName\\n    lastName\\n  }\\n  assignedTo {\\n    id\\n    name\\n    userId\\n    isViewer\\n    member {\\n      id\\n      firstName\\n    }\\n  }\\n  solved\\n  solvedAt\\n  solvedBy {\\n    id\\n    name\\n  }\\n  createdAt\\n  attachments {\\n    ...TaskPopover_attachments\\n  }\\n  comments {\\n    id\\n  }\\n  parent {\\n    id\\n    title\\n    meeting {\\n      id\\n    }\\n  }\\n  organization {\\n    ...AssignedTo_organization\\n  }\\n}\nfragment TaskPopover_attachments on Attachment {\\n  id\\n  contentType\\n  url\\n  filename\\n  date: createdAt\\n}\nfragment AssignedTo_organization on Organization {\\n  id\\n  members: executiveMembers {\\n    id\\n    roles\\n    name\\n    userId\\n    firstName\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "AssignedTo",
+    "queryText": "query AssignedTo($id: ID!) {\\n  organization: organizationByObosNumber(companyNumber: $id) {\\n    ...AssignedTo_organization\\n  }\\n}\nfragment AssignedTo_organization on Organization {\\n  id\\n  members: executiveMembers {\\n    id\\n    roles\\n    name\\n    userId\\n    firstName\\n  }\\n}"
+  },
+  {
+    "operationType": "query",
+    "operationName": "userWithoutOrganizationQuery",
+    "queryText": "query userWithoutOrganizationQuery {\\n    viewer {\\n      id\\n      name\\n      firstName\\n      personId\\n      lastName\\n      phoneNumber\\n      email\\n\\n      admin\\n      developer\\n      styrerommetDebugger\\n      flags\\n      profilePhotoUrl\\n    }\\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "userWithOrganizationQuery",
+    "queryText": "query userWithOrganizationQuery($obosCompanyNumber: OrganizationID!) {\\n    viewer {\\n      id\\n      name\\n      firstName\\n      personId\\n      lastName\\n      hasHousingCompanyRoles\\n      # email / phoneNumber is queried from viewerAsMember\\n\\n      admin\\n      developer\\n      flags\\n      profilePhotoUrl\\n    }\\n\\n    organization(id: $obosCompanyNumber) {\\n      id\\n      status\\n      obosCompanyNumber\\n      organizationNumber\\n      name\\n      slug\\n      obosEnabled\\n      onProperty\\n      apartmentsCount\\n      modulesAvailable\\n      intendedForTest\\n      organizationCode\\n      isHBEF\\n      usesSmarterMail\\n\\n      viewerAsMember {\\n        id\\n        userId\\n        phoneNumber\\n        email\\n        roles\\n        permissions\\n      }\\n    }\\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "meetingIssuesWidget",
+    "queryText": "query meetingIssuesWidget($organizationNumber: ID!) {\\n        organization: organizationByObosNumber(companyNumber: $organizationNumber) {\\n          id\\n          suggestedIssues: issues(states: [SUGGESTION, SCHEDULED, FOLLOWUP]) {\\n            ...MeetingIssuesWidget_suggestedIssues\\n          }\\n        }\\n      }\nfragment MeetingIssuesWidget_suggestedIssues on Issue {\\n      id\\n      parentId\\n      title\\n      createdAt\\n      updatedAt\\n      isTemplate\\n      needsFollowUp\\n      historyCount\\n      meeting {\\n        date\\n        ended\\n        signed\\n      }\\n      createdBy {\\n        name\\n      }\\n    }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "inboxQuery",
+    "queryText": "query inboxQuery($obosCompanyNumber: OrganizationID!) {\\n    organization(id: $obosCompanyNumber) {\\n      id\\n      inbox {\\n        id\\n        unreadEmailsCount\\n      }\\n    }\\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "dashboardPage",
+    "queryText": "query dashboardPage($obosCompanyNumber: OrganizationID!) {\\n    news: OBOSBoardNews {\\n      ...NewsWidget_news\\n    }\\n    courses: OBOSCourses {\\n      ...CourseWidget_courses\\n    }\\n    organization(id: $obosCompanyNumber) {\\n      id\\n      status\\n      deleted\\n      slug\\n\\n      ...CompanyWidget_currentOrganization\\n\\n      systemContacts(filterOBOS: true) {\\n        ...ContactsWidget_contacts\\n      }\\n\\n      boardMembers {\\n        ...ContactsWidget_boardMembers\\n      }\\n\\n      routines(active: true, completed: false) {\\n        ...HMSWidget_routines\\n      }\\n\\n      deviations(resolved: false) {\\n        ...HMSWidget_deviations\\n      }\\n\\n      HMSSetup {\\n        updatedAt\\n      }\\n\\n      generalAssemblies(onlyActive: true, endedDaysAgo: 28) {\\n        ...GeneralAssemblyHeader_generalAssemblies\\n      }\\n    }\\n  }\nfragment NewsWidget_news on OBOSBoardNewsArticle {\\n      id\\n      url\\n      title\\n      firstPublishedAt\\n    }\nfragment CourseWidget_courses on OBOSCourseArticle {\\n      id\\n      url\\n      title\\n      start\\n      end\\n      location\\n    }\nfragment CompanyWidget_currentOrganization on Organization {\\n      id\\n      name\\n    }\nfragment ContactsWidget_contacts on OrganizationSystemContact {\\n  id\\n  firstName\\n  lastName\\n  jobTitle\\n  role\\n  profilePhotoUrl\\n  email\\n  phoneNumber\\n}\nfragment ContactsWidget_boardMembers on Member {\\n  id\\n  firstName\\n  lastName\\n  roles\\n  profilePhotoUrl\\n  email\\n  phoneNumber\\n}\nfragment HMSWidget_routines on HMSRoutine {\\n      id\\n      name\\n      delayedTo\\n      deadline\\n      requireAuthorized\\n      custom\\n      key\\n    }\nfragment HMSWidget_deviations on HMSDeviation {\\n      id\\n      description\\n      createdAt\\n    }\nfragment GeneralAssemblyHeader_generalAssemblies on GeneralAssembly {\\n      id\\n      slug\\n      phase\\n      inSession\\n      lockedForSigning\\n      openedForProposals\\n      agendaIsVisibleToOwner\\n      ordinary\\n      digital\\n      year\\n      endDate\\n    }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "globalMenu_unreadElementsCount",
+    "queryText": "query globalMenu_unreadElementsCount($obosCompanyNumber: OrganizationID!) {\\n    organization(id: $obosCompanyNumber) {\\n      id\\n      inbox {\\n        id\\n        unreadEmailsCount\\n      }\\n      threadNotificationsForViewer(onlyAssignedToViewer: false)\\n    }\\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "CompanyWidget_memberships",
+    "queryText": "query CompanyWidget_memberships {\\n        viewer {\\n          id\\n          memberships {\\n            ...CompanyWidget_allOrganizations\\n          }\\n        }\\n      }\nfragment CompanyWidget_allOrganizations on Membership {\\n      name\\n      roles\\n      obosCompanyNumber\\n    }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "CommentsQuery",
+    "queryText": "query CommentsQuery($parentId: UnpackedNodeID!) {\\n    comments(parentId: $parentId) {\\n      ...Comments_comment\\n    }\\n  }\nfragment Comments_comment on Comment {\\n    ...Comment_Data\\n    thread {\\n      ...Comment_Data\\n    }\\n    threadCount\\n  }\nfragment Comment_Data on Comment {\\n    id\\n    content\\n    createdBy {\\n      id\\n      userId\\n      firstName\\n      lastName\\n      roles\\n      profilePhotoUrl\\n      isViewer\\n    }\\n    createdAt\\n    updatedAt\\n    threadId\\n    attachments {\\n      id\\n      filename\\n      url\\n    }\\n    deletedAt\\n  }"
+  },
+  {
+    "operationType": "query",
+    "operationName": "activeInvoices",
+    "queryText": "query activeInvoices($organizationNumber: OrganizationID!, $filters: SearchInvoiceInput!) {\\n    activeInvoices: searchInvoices(\\n      organizationId: $organizationNumber\\n      filters: $filters\\n      failSilently: false\\n    ) {\\n      invoices {\\n        ...ActiveInvoiceListFragment\\n      }\\n      total\\n    }\\n  }\nfragment ActiveInvoiceListFragment on Invoice {\\n    ...InvoicePreviewFragment\\n    viewerCanApprove\\n  }\nfragment InvoicePreviewFragment on Invoice {\\n    id\\n    invoiceNumber\\n    status\\n    dueDate\\n    issueDate\\n    amount\\n    currency\\n    autoApproved\\n\\n    supplierName\\n    supplier {\\n      id\\n      name\\n      officialName\\n      logo\\n    }\\n\\n    assigned {\\n      id\\n      name\\n      firstName\\n      lastName\\n      roles\\n      profilePhotoUrl\\n    }\\n\\n    # Be very careful about adding new properties to this query, it can be VERY expensive to fetch some stuff from Semine\\n    # (Like timeline, attachments, comments)\\n  }"
+  }
+]
