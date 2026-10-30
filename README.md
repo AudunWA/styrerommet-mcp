@@ -1,20 +1,23 @@
 # Styrerommet MCP
 
-A local MCP server for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read board meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
+[![npm version](https://img.shields.io/npm/v/styrerommet-mcp.svg)](https://www.npmjs.com/package/styrerommet-mcp)
 
-Uses MCP SDK v2 and protocol **2026-07-28**, with compatibility for 2025 clients. Generic GraphQL tools accept cataloged queries only.
+> [!WARNING]
+> Experimental, unofficial MCP server, not affiliated with OBOS. Use at your own risk. Review and manually approve every tool call, including the data it shares and any changes it makes.
+
+Connect your AI client to Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg. Read meetings, residents, invoices, accounts and documents; manage suppliers, HMS deviations and maintenance; edit unpublished Vibbo handbook drafts.
 
 ## Install
 
-You need an OBOS account with access to your cooperative, plus Chrome or Edge for browser login. For **Claude Desktop**, use the [bundle installation](#claude-desktop) below. For npm and other clients, install [Node.js 24+](https://nodejs.org/).
+You need an OBOS account with access to your cooperative and **Chrome or Edge** for sign-in. For Claude Desktop, use the [desktop bundle](#claude-desktop). Other clients need [Node.js 24+](https://nodejs.org/).
 
-**Before the first npm release:** use [Development](#development) below. Once `0.1.0` is published, open a terminal and sign in:
+Sign in before connecting an npm-based client:
 
 ```sh
 npx --yes styrerommet-mcp@0.1.0 --auth
 ```
 
-For faster reauthentication, choose **Vipps** and enable **“Remember me in this browser”** in the login window. Complete the browser login and wait for confirmation. Your cooperative is detected automatically. Then connect your client below; clients use the same saved login. No API key or repository clone is required for the npm installation. Playwright uses your installed browser and does not download one.
+Choose **Vipps** and enable **“Remember me in this browser”** for faster reauthentication. Wait for the terminal to confirm sign-in. Your cooperative is detected automatically, and clients share the saved login on your computer. Run the same command to sign in again. The server uses your installed browser; no browser download or API key is needed.
 
 ## Clients
 
@@ -35,18 +38,17 @@ Use a chat running on your local computer. Workspace policies may restrict local
 
 ### Claude Desktop
 
-After the first GitHub Release finishes, [download Styrerommet for Claude Desktop](https://github.com/AudunWA/styrerommet-mcp/releases/latest/download/styrerommet-mcp.mcpb).
+[Download the desktop bundle](https://github.com/AudunWA/styrerommet-mcp/releases/latest/download/styrerommet-mcp.mcpb), then:
 
-1. Open the `.mcpb` file with Claude Desktop and approve installation. Alternatively, use **Settings → Desktop app → Extensions → Manage → Advanced settings → Install Extension…**.
-2. Start a chat and ask: “Sign in to Styrerommet using `login_interactive`.” Choose **Vipps** and enable **“Remember me in this browser”** when prompted.
-3. Try: “Show my organization and upcoming board meetings.”
+1. Open **Settings → Desktop app → Extensions → Manage → Advanced settings → Install Extension…** and select the `.mcpb` file.
+2. Start a chat and ask: “Sign in to Styrerommet using `login_interactive`.” Use the Vipps and “Remember me” options described above.
 
-The bundle includes the server and production dependencies, so npm installation is unnecessary. It requires Claude's Node runtime to support **Node.js 24+**; use the manual setup below if your Claude version's runtime is older. To update a downloaded bundle, install the new `.mcpb` from the same link. Disable any existing manual `styrerommet` entry before installing the bundle to avoid duplicate servers.
+The bundle includes the server and its dependencies. Claude's Node runtime must support **Node.js 24+**; otherwise use the manual setup below. To update, install the latest bundle from the same link. Use one installation method at a time to avoid duplicate servers. [Official setup](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
 
 <details>
 <summary>Manual setup with Node.js 24+ and npm</summary>
 
-Open **Settings → Developer → Edit Config**. In newer layouts, look for **Local MCP servers** under **Settings → Desktop app → Extensions → Manage**. Merge this into `claude_desktop_config.json`, preserving any existing servers:
+Open **Settings → Developer → Edit Config** and merge this into `claude_desktop_config.json`:
 
 ```json
 {
@@ -59,12 +61,7 @@ Open **Settings → Developer → Edit Config**. In newer layouts, look for **Lo
 }
 ```
 
-The configuration file lives at:
-
-- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
-Save, fully quit Claude, and reopen it. Check **+ → Connectors** for `styrerommet`. [Official setup](https://modelcontextprotocol.io/docs/develop/connect-local-servers), [current settings layout](https://support.claude.com/en/articles/10949351-getting-started-with-local-mcp-servers-on-claude-desktop).
+Configuration file: `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, or `%APPDATA%\Claude\claude_desktop_config.json` on Windows. Save, fully quit Claude, and reopen it. [Manual setup guide](https://modelcontextprotocol.io/docs/develop/connect-local-servers).
 
 </details>
 
@@ -74,7 +71,7 @@ Save, fully quit Claude, and reopen it. Check **+ → Connectors** for `styrerom
 codex mcp add styrerommet -- npx --yes styrerommet-mcp@0.1.0
 ```
 
-Local Codex clients and ChatGPT Desktop share MCP configuration on the same host.
+Local Codex clients and ChatGPT Desktop share MCP configuration on the same host. [Official setup](https://learn.chatgpt.com/docs/extend/mcp#configure-with-the-cli).
 
 ### Claude Code
 
@@ -82,31 +79,36 @@ Local Codex clients and ChatGPT Desktop share MCP configuration on the same host
 claude mcp add --scope user --transport stdio styrerommet -- npx --yes styrerommet-mcp@0.1.0
 ```
 
-**Windows:** use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-mcp@0.1.0"]` in desktop configuration. For CLI setup, put `cmd /c npx --yes styrerommet-mcp@0.1.0` after `--`.
+[Official setup](https://code.claude.com/docs/en/mcp#option-3-add-a-local-stdio-server).
 
-**Troubleshooting:** verify `node --version` reports 24 or newer, and run the sign-in command in a terminal first. If the app cannot find `npx`, use its absolute path (`command -v npx` on macOS/Linux, `where npx` on Windows), then restart the app. Keep the package version pinned in your configuration and update it when upgrading.
+Once connected, try: “Show my organization and upcoming board meetings.” Keep the version pinned in your client configuration and update it when upgrading.
 
-Try: “Show my organization and upcoming board meetings.”
+<details>
+<summary>Troubleshooting</summary>
+
+- Check that `node --version` reports 24 or newer, and run the sign-in command in a terminal first.
+- If a desktop app cannot find `npx`, use its absolute path (`command -v npx` on macOS/Linux, `where npx` on Windows), then restart the app.
+- If `npx` fails to launch on Windows, use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-mcp@0.1.0"]`. For CLI setup, put `cmd /c npx --yes styrerommet-mcp@0.1.0` after `--`.
+
+</details>
 
 ## Privacy, GDPR and service terms
 
-The server runs locally, but tool results are passed to your AI client and may be sent to its model provider. Styrerommet, Vibbo and connected services can expose residents' personal details, financial records and confidential board documents.
+The server runs locally, but tool results go to your AI client and may be sent to its model provider. They can contain residents' personal details, financial records and confidential board documents.
 
-Before sharing personal data, confirm your cooperative authorizes the use and has a GDPR legal basis. Retrieve only what is needed; anonymize where possible. Assess the AI provider's retention, use for model training, transfers outside the EEA and need for a data processing agreement. Account access alone does not authorize onward disclosure.
+Confirm your cooperative authorizes this use and has a GDPR legal basis. Retrieve only what is needed and anonymize where possible. Assess your AI provider's retention, model training, transfers outside the EEA and need for a data processing agreement. Account access alone does not authorize onward disclosure.
 
-Follow [Styrerommet's terms](https://styrerommet.no/bruksvilkar), [Vibbo's terms and privacy notice](https://vibbo.no/personvernerklaering), [OBOS's group privacy notice](https://www.obos.no/om-obos/personvern) and [OBOS Eiendomsforvaltning's privacy notice](https://www.obos.no/om-obos/personvern/personvernerklaring-for-obos-eiendomsforvaltning-as), plus your AI provider's terms. The MIT license covers this server's code; it does not override confidentiality duties, service terms or rights to the data.
+Follow [Styrerommet's terms](https://styrerommet.no/bruksvilkar), [Vibbo's terms and privacy notice](https://vibbo.no/personvernerklaering), [OBOS's group privacy notice](https://www.obos.no/om-obos/personvern) and [OBOS Eiendomsforvaltning's privacy notice](https://www.obos.no/om-obos/personvern/personvernerklaring-for-obos-eiendomsforvaltning-as), plus your AI provider's terms. The MIT license covers the code, not permission to use or disclose service data.
 
-## Credentials and access
+## Credentials
 
-Cookies and a dedicated browser profile are stored under `styrerommet-mcp` in your platform's application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are plaintext; files use owner-only permissions on POSIX. Protect this directory and never share it.
+Credentials and a dedicated browser profile are stored locally under `styrerommet-mcp` in your application-data directory: `~/Library/Application Support` on macOS, `%LOCALAPPDATA%` on Windows, or `${XDG_DATA_HOME:-~/.local/share}` on Linux. Credentials are **plaintext**, with owner-only permissions on POSIX. Protect this directory and never share it.
 
-Set `STYREROMMET_ENV_PATH` to use a different credential file; project `.env` files are not loaded automatically. See [.env.example](https://github.com/AudunWA/styrerommet-mcp/blob/main/.env.example) for overrides. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
-
-Write tools change real records, and upload/download tools access local files with your OS permissions. Keep client approvals enabled. Vibbo topic edits remain unpublished drafts.
+For optional settings, see [.env.example](https://github.com/AudunWA/styrerommet-mcp/blob/main/.env.example). `STYREROMMET_ENV_PATH` overrides the credential file; project `.env` files are not loaded automatically. Use `--auth mittbygg` to refresh only Mitt Bygg, or `NO_AUTO_LOGIN=true` to prevent automatic browser prompts.
 
 ## Tools
 
-**Read** tools retrieve information. **Write** tools change records or save local files and credentials. Vibbo topic changes remain unpublished drafts.
+**Read** tools retrieve information. **Write** tools change real records or save local files and credentials. Uploads and downloads use your OS file permissions. Vibbo topic edits remain unpublished drafts.
 
 <details>
 <summary>Show all 137 tools</summary>
@@ -255,37 +257,18 @@ Write tools change real records, and upload/download tools access local files wi
 
 ## Development
 
-Development, CI and release builds use **Node.js 26**; the published server supports **Node.js 24+**. With Node.js 26 installed (`nvm use` if you use nvm), clone the repository and use pnpm:
+Use **Node.js 26** and **pnpm 12.16.1**. From a checkout:
 
 ```sh
-git clone https://github.com/AudunWA/styrerommet-mcp.git
-cd styrerommet-mcp
-npm install --global pnpm@12.16.1
 pnpm install --frozen-lockfile
 pnpm check
-pnpm auth
+pnpm start
 ```
-
-For either desktop app, replace the npm launch settings above with command `node` and one argument: `/absolute/path/to/styrerommet-mcp/dist/index.js`. Use an absolute path to Node too if it is installed through a version manager.
-
-`pnpm start` runs from source. `pnpm check` checks source and script types, runs tests, builds, and tests both the npm installation and an extracted MCPB with both protocol generations. Build and package-check scripts are TypeScript executed directly by Node.js.
-
-To save both artifacts locally, set `STYREROMMET_PACKAGE_OUTPUT_DIR` to `release` when running `pnpm check`.
 
 ## Releases
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles. Choose a [SemVer](https://semver.org/) version when releasing: patch for fixes, minor for new features, major for breaking changes. The initial version is **0.1.0**.
+Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. Update the version with `pnpm version patch --no-git-tag-version` (or `minor` / `major`) and merge the change to `main`.
 
-For subsequent versions, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`) and commit the version update. In **GitHub → Releases → Draft a new release**, create a matching `vX.Y.Z` tag from that commit on `main`, click **Generate release notes**, review, and publish. GitHub Releases hold the changelog; there is no separate changelog file.
+Publish a [GitHub Release](https://github.com/AudunWA/styrerommet-mcp/releases) with the matching `vX.Y.Z` tag and generated release notes. The workflow tests the package, publishes to npm using trusted publishing and attaches the desktop bundle. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**.
 
-Publishing a GitHub Release starts `release.yml`: it verifies the version, tests and packs the server with pnpm, then independently publishes the verified npm artifact using OIDC and attaches `styrerommet-mcp.mcpb` to the GitHub Release. An npm publishing failure does not block the Claude Desktop download. No release is created by merging to `main`. Downloads become available when the asset upload completes.
-
-Before releasing, use **Actions → Publish → Run workflow** to test building, artifact upload/download and an npm publish dry run. This manual preflight never publishes to npm or creates a GitHub Release. Keep GitHub immutable releases disabled with this flow, since it attaches the MCPB after publication.
-
-The committed `manifest.json` defines the Claude bundle. Packing takes its version and Node requirement from `package.json` and includes only the tested production installation. Generated bundles are release assets, not committed files; the README's latest-release link stays the same.
-
-One-time setup: enable npm 2FA and reserve the package with a [bootstrap stage](https://docs.npmjs.com/staged-publishing/) using a separate version such as `0.0.0-bootstrap.0`, keeping `0.1.0` available for release. Staging creates a public `0.0.0-stage` placeholder. Keep the bootstrap stage pending until the first GitHub release publishes successfully, then reject it; rejecting the only stage before any release unpublishes the placeholder and triggers npm's 24-hour republishing cooldown. Do not approve the bootstrap stage.
-
-Configure [trusted publishing](https://docs.npmjs.com/trusted-publishers/) for repository `AudunWA/styrerommet-mcp`, workflow filename `release.yml`, environment `npm`, allowing **npm publish**. Make the repository public for provenance and allow `v*` tags in the GitHub `npm` environment. Complete the first trusted publish within two days of creating its configuration. No npm token is needed. pnpm manages the repo; npm's CLI handles registry operations and consumer installation tests.
-
-[MIT License](LICENSE). Independent of OBOS; service interfaces may change. Dependencies retain their own licenses, and service names and query definitions remain subject to their owners' rights.
+[MIT License](LICENSE).
