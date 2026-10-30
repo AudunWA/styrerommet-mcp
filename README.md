@@ -267,8 +267,8 @@ pnpm start
 
 ## Releases
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. Update the version with `pnpm version patch --no-git-tag-version` (or `minor` / `major`) and merge the change to `main`.
+Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. On a clean release branch, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`); the version hook updates the README pins and desktop manifest automatically. Run `pnpm check`, then commit and merge all version changes to `main`.
 
-Publish a [GitHub Release](https://github.com/AudunWA/styrerommet-mcp/releases) with the matching `vX.Y.Z` tag and generated release notes. The workflow tests the package, publishes to npm using trusted publishing and attaches the desktop bundle. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**.
+Publish a [GitHub Release](https://github.com/AudunWA/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package, publishes to npm using trusted publishing and attaches the desktop bundle. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
 
 [MIT License](LICENSE).
