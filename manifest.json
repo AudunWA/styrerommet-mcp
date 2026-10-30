@@ -3,7 +3,7 @@
   "manifest_version": "0.3",
   "name": "styrerommet-mcp",
   "display_name": "Styrerommet",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Local tools for Styrerommet, Vibbo, Cantor, Arkiv and OBOS Mitt Bygg.",
   "author": { "name": "Audun Wigum Arbo" },
   "repository": {

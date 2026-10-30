@@ -1,6 +1,6 @@
 {
   "name": "styrerommet-mcp",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Local MCP server for Styrerommet, Vibbo, Cantor, Arkiv, and OBOS Mitt Bygg.",
   "type": "module",
   "main": "dist/index.js",
@@ -18,9 +18,10 @@
     "build": "node scripts/build.ts",
     "test": "node --test \"src/**/*.test.ts\"",
     "typecheck": "tsc --noEmit",
-    "check": "pnpm typecheck && pnpm test && pnpm build && pnpm test:package",
+    "check": "node scripts/sync-version.ts --check && pnpm typecheck && pnpm test && pnpm build && pnpm test:package",
     "test:package": "node scripts/check-package.ts",
-    "prepack": "pnpm build"
+    "prepack": "pnpm build",
+    "version": "node scripts/sync-version.ts"
   },
   "keywords": [
     "mcp",
