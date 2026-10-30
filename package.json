@@ -1,6 +1,6 @@
 {
   "name": "styrerommet-mcp",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Local MCP server for Styrerommet, Vibbo, Cantor, Arkiv, and OBOS Mitt Bygg.",
   "type": "module",
   "main": "dist/index.js",
