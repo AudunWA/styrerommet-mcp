@@ -14,7 +14,7 @@ You need an OBOS account with access to your cooperative and **Chrome or Edge** 
 Sign in before connecting an npm-based client:
 
 ```sh
-npx --yes styrerommet-mcp@0.1.2 --auth
+npx --yes styrerommet-mcp@latest --auth
 ```
 
 Choose **Vipps** and enable **“Remember me in this browser”** for faster reauthentication. Wait for the terminal to confirm sign-in. Your cooperative is detected automatically, and clients share the saved login on your computer. Run the same command to sign in again. The server uses your installed browser; no browser download or API key is needed.
@@ -30,7 +30,7 @@ Choose **Vipps** and enable **“Remember me in this browser”** for faster rea
    | --- | --- |
    | Name | `styrerommet` |
    | Command | `npx` |
-   | Arguments | `--yes`, `styrerommet-mcp@0.1.2` (two arguments) |
+   | Arguments | `--yes`, `styrerommet-mcp@latest` (two arguments) |
 
 3. Save, then select **Restart**. Type `/mcp` in the composer to confirm the connection.
 
@@ -55,7 +55,7 @@ Open **Settings → Developer → Edit Config** and merge this into `claude_desk
   "mcpServers": {
     "styrerommet": {
       "command": "npx",
-      "args": ["--yes", "styrerommet-mcp@0.1.2"]
+      "args": ["--yes", "styrerommet-mcp@latest"]
     }
   }
 }
@@ -68,7 +68,7 @@ Configuration file: `~/Library/Application Support/Claude/claude_desktop_config.
 ### Codex
 
 ```sh
-codex mcp add styrerommet -- npx --yes styrerommet-mcp@0.1.2
+codex mcp add styrerommet -- npx --yes styrerommet-mcp@latest
 ```
 
 Local Codex clients and ChatGPT Desktop share MCP configuration on the same host. [Official setup](https://learn.chatgpt.com/docs/extend/mcp#configure-with-the-cli).
@@ -76,19 +76,19 @@ Local Codex clients and ChatGPT Desktop share MCP configuration on the same host
 ### Claude Code
 
 ```sh
-claude mcp add --scope user --transport stdio styrerommet -- npx --yes styrerommet-mcp@0.1.2
+claude mcp add --scope user --transport stdio styrerommet -- npx --yes styrerommet-mcp@latest
 ```
 
 [Official setup](https://code.claude.com/docs/en/mcp#option-3-add-a-local-stdio-server).
 
-Once connected, try: “Show my organization and upcoming board meetings.” Keep the version pinned in your client configuration and update it when upgrading.
+Once connected, try: “Show my organization and upcoming board meetings.” Restart your client or MCP server to pick up updates.
 
 <details>
 <summary>Troubleshooting</summary>
 
 - Check that `node --version` reports 24 or newer, and run the sign-in command in a terminal first.
 - If a desktop app cannot find `npx`, use its absolute path (`command -v npx` on macOS/Linux, `where npx` on Windows), then restart the app.
-- If `npx` fails to launch on Windows, use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-mcp@0.1.2"]`. For CLI setup, put `cmd /c npx --yes styrerommet-mcp@0.1.2` after `--`.
+- If `npx` fails to launch on Windows, use command `cmd` with arguments `["/c", "npx", "--yes", "styrerommet-mcp@latest"]`. For CLI setup, put `cmd /c npx --yes styrerommet-mcp@latest` after `--`.
 
 </details>
 
@@ -267,7 +267,7 @@ pnpm start
 
 ## Releases
 
-Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. On a clean release branch, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`); the version hook updates the README pins and desktop manifest automatically. Run `pnpm check`, then commit and merge all version changes to `main`.
+Use [Conventional Commits](https://www.conventionalcommits.org/) for PR titles and [SemVer](https://semver.org/) for versions. On a clean release branch, run `pnpm version patch --no-git-tag-version` (or `minor` / `major`); the version hook updates the desktop manifest automatically. Run `pnpm check`, then commit and merge all version changes to `main`.
 
 Publish a [GitHub Release](https://github.com/AudunWA/styrerommet-mcp/releases) with a new `vX.Y.Z` tag targeting that merged commit and generated release notes. Creating a GitHub Release does not bump the package version. The workflow tests the package, publishes to npm using trusted publishing and attaches the desktop bundle. Release notes are the changelog. For a dry run, use **Actions → Publish → Run workflow**. Leave existing release tags unchanged; use a new version to correct a release.
 

@@ -7,29 +7,17 @@ const { version } = JSON.parse(
 ) as { version: string };
 assert.match(version, /^\d+\.\d+\.\d+$/, "Expected a stable package version");
 
-const readmePath = new URL("README.md", root);
-const readme = readFileSync(readmePath, "utf8");
-assert.match(readme, /styrerommet-mcp@\d+\.\d+\.\d+/);
 const manifestPath = new URL("manifest.json", root);
 const manifest = readFileSync(manifestPath, "utf8");
 assert.equal(typeof JSON.parse(manifest).version, "string");
-
-for (const [file, current, updated] of [
-  [
-    readmePath,
-    readme,
-    readme.replaceAll(/styrerommet-mcp@\d+\.\d+\.\d+/g, `styrerommet-mcp@${version}`),
-  ],
-  [
-    manifestPath,
-    manifest,
-    manifest.replace(/("version":\s*")[^"]+/, (_, prefix: string) => `${prefix}${version}`),
-  ],
-] as const) {
-  if (current === updated) continue;
+const updated = manifest.replace(
+  /("version":\s*")[^"]+/,
+  (_, prefix: string) => `${prefix}${version}`,
+);
+if (manifest !== updated) {
   if (process.argv.includes("--check"))
     throw new Error(
-      `${file.pathname} is out of sync with package.json; run node scripts/sync-version.ts`,
+      "manifest.json is out of sync with package.json; run node scripts/sync-version.ts",
     );
-  writeFileSync(file, updated);
+  writeFileSync(manifestPath, updated);
 }
